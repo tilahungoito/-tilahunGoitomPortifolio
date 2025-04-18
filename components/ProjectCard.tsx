@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -46,7 +47,7 @@ type ProjectCardProps = {
 };
 
 // Extended map of technology names to their corresponding icons
-const techIcons: Record<string, JSX.Element> = {
+const techIcons: Record<string, React.ReactElement> = {
   'React': <FaReact className="text-blue-500" />,
   'Next.js': <SiNextdotjs className="text-black" />,
   'TypeScript': <SiTypescript className="text-blue-600" />,

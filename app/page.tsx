@@ -8,8 +8,7 @@ import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Skills from '../components/Skills'; // Import the new Skills component
-
-// ... (previous imports remain the same)
+import DownloadCV from '@/components/DownloadCV';
 
 const Home = () => {
   const [typingText, setTypingText] = useState('Software Engineer');
@@ -56,8 +55,6 @@ const Home = () => {
     },
   ];
 
-  // ... (rest of the component remains the same)
-
   return (
     <>
       <HireMeButton />
@@ -96,7 +93,7 @@ const Home = () => {
         >
           <span className="absolute left-0 top-0 text-primary">✍️</span>
           <span className="handwriting-animation">
-            I&apos;m a well-known tech passionate, dedicated to creating digital excellence.
+            I&apos;m known for tech passionate, dedicated to creating digital excellence.
           </span>
         </motion.p>
 
@@ -176,17 +173,14 @@ const Home = () => {
       transition={{ duration: 0.5 }}
       className="relative order-1 md:order-2"
     >
-      <div className="w-full h-96 bg-primary/10 rounded-2xl overflow-hidden relative">
-        <div className="absolute inset-0 flex items-start justify-center">
-          <Image
-            src="/profile.jpg"
-            alt="Profile"
-            width={400}
-            height={500}
-            className="h-auto w-auto object-cover"
-            priority
-          />
-        </div>
+      <div className="w-full h-80 md:h-96 bg-primary/10 rounded-2xl overflow-hidden">
+        <Image
+          src="/profile.jpg"
+          alt="Profile"
+          width={800}
+          height={600}
+          className="w-full h-full object-cover"
+        />
       </div>
       <motion.div
         animate={{
@@ -196,12 +190,15 @@ const Home = () => {
         transition={{
           duration: 4,
           repeat: Infinity,
-          repeatType: 'reverse',
+          repeatType: "reverse",
         }}
         className="absolute -bottom-4 -left-4 bg-primary text-light px-4 py-2 rounded-lg shadow-lg"
       >
-        <span className="font-bold">3+</span> Years Experience
+        <span className="font-bold">5+</span> Years Experience
       </motion.div>
+      <div className="absolute -bottom-4 right-4">
+        <DownloadCV />
+      </div>
       <div className="mt-6 text-center md:text-left">
         <AnimatedText
           text={typingText}
