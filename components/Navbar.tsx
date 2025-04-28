@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
@@ -12,6 +12,39 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  // Animation for the container
+  const containerVariants: Variants = {
+    initial: { x: 0 },
+    animate: {
+      x: [0, 5, -5, 3, -3, 0],
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        repeatType: "reverse" as const,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  // Animation for individual letters
+  const letterVariants: Variants = {
+    initial: { y: 0 },
+    animate: (i: number) => ({
+      y: [0, -5, 5, -3, 3, 0],
+      transition: {
+        duration: 2,
+        repeat: Infinity,
+        repeatType: "reverse" as const,
+        ease: "easeInOut",
+        delay: i * 0.1 // Stagger the animation for each letter
+      }
+    })
+  };
+
+  // Split the name into individual characters for animation
+  const name = "ጥላሁን ጎይቶኦም";
+  const characters = name.split("");
 
   return (
     <motion.nav
@@ -43,9 +76,34 @@ const Navbar = () => {
       />
     </motion.div>
   </div>
-  <span className="text-2xl font-bold text-primary">
-  ጥላሁን ጎይቶኦም {TG}
-  </span>
+  <motion.span 
+    className="text-2xl font-bold text-primary flex"
+    variants={containerVariants}
+    initial="initial"
+    animate="animate"
+  >
+    {characters.map((char, index) => (
+      <motion.span
+        key={index}
+        custom={index}
+        variants={letterVariants}
+        initial="initial"
+        animate="animate"
+        className="inline-block"
+      >
+        {char}
+      </motion.span>
+    ))}
+    <motion.span
+      custom={characters.length}
+      variants={letterVariants}
+      initial="initial"
+      animate="animate"
+      className="inline-block ml-1"
+    >
+      {TG}
+    </motion.span>
+  </motion.span>
 </Link>
 
         {/* Desktop Links */}

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const DownloadCV = () => {
   const handleDownload = () => {
-    window.open('/tilahunGoitom.png', '_blank');
+    window.open('/About me (1).pdf', '_blank');
   };
 
   return (
@@ -16,7 +16,7 @@ const DownloadCV = () => {
     >
       <button
         onClick={handleDownload}
-        className="bg-primary text-white p-4 rounded-full shadow-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+        className="bg-primary text-black p-4 rounded-full shadow-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
       >
         <FiDownload size={24} />
         <span className="hidden sm:inline">Download CV</span>

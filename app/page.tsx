@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Skills from '../components/Skills'; // Import the new Skills component
 import DownloadCV from '@/components/DownloadCV';
+import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
 
 const Home = () => {
   const [typingText, setTypingText] = useState('Software Engineer');
@@ -24,32 +25,32 @@ const Home = () => {
     {
       id: 1,
       title: 'E-commerce Platform',
-      description: 'Full-stack e-commerce solution with React, Node.js, and MongoDB,express and nextjs tha enable any one to show interst and buy and sale books, lecture and titorials and get benefitfe from peers working togather',
+      description: 'A comprehensive full-stack e-commerce solution built with React, Node.js, and MongoDB. This platform enables users to buy and sell educational materials including books, lectures, and tutorials. It features a collaborative learning environment where peers can work together and benefit from shared knowledge and resources.',
       tags: ['React', 'Next.js', 'Node.js', 'MongoDB', 'Express', 'Tailwind CSS'],
       image: '/mycourses.png',
       link: 'https://peer-courses-tilahun-dtqk-git-main-tilahuns-projects-82416c09.vercel.app',
     },
     {
       id: 2,
-      title: 'Shul shire hospital mangament system',
-      description: 'This provised some automation to shire referal hospital for ducorrs to make and recorde appointments to patient',
-      tags: ['php', 'Xampp', 'Bootstap', 'javascrpit', 'HTML'],
+      title: 'Shire Referral Hospital Management System',
+      description: 'A comprehensive hospital management system developed for Shire Referral Hospital. This system automates the appointment scheduling process, allowing doctors to efficiently manage and record patient appointments. It streamlines administrative workflows and improves the overall patient care experience.',
+      tags: ['php', 'Xampp', 'Bootstrap', 'JavaScript', 'HTML'],
       image: '/shire referal.png',
       link: 'https://github.com/tilahungoito/Shire-Hospital-patient-appointment-system',
     },
     {
       id: 3,
-      title: 'deseas prediction system',
-      description: 'A disease prediction system uses machine learning to analyze patient data, such as symptoms and vital signs, to predict the likelihood of a disease.',
-      tags: ['Python', 'flask', 'padas', 'xgboost'],
+      title: 'Disease Prediction System',
+      description: 'An advanced machine learning-based disease prediction system that analyzes patient data including symptoms and vital signs to predict the likelihood of various diseases. This tool assists healthcare professionals in making more informed diagnostic decisions and improving patient outcomes through early intervention.',
+      tags: ['Python', 'Flask', 'Pandas', 'XGBoost'],
       image: '/predictorDisease.png',
       link: 'https://github.com/tilahungoito/CodeAlpha_diseases_predictor',
     },
     {
       id: 4,
-      title: 'Product hub for every one',
-      description: 'This for every one with any thing he/she want to sale present it to this plat form and find any one need and deal with',
-      tags: ['React', 'Node.js', 'css', 'vite', 'HTML', 'express'],
+      title: 'Product Hub Marketplace',
+      description: 'A versatile e-commerce platform that enables users to showcase and sell any product or service. The platform features an intuitive interface for listing items, searching for products, and facilitating transactions between buyers and sellers. It creates a comprehensive marketplace for diverse goods and services.',
+      tags: ['React', 'Node.js', 'CSS', 'Vite', 'HTML', 'Express'],
       image: '/find product.png',
       link: 'https://findproducts-2.onrender.com/',
     },
@@ -173,14 +174,117 @@ const Home = () => {
       transition={{ duration: 0.5 }}
       className="relative order-1 md:order-2"
     >
-      <div className="w-full h-80 md:h-96 bg-primary/10 rounded-2xl overflow-hidden">
-        <Image
-          src="/profile.jpg"
-          alt="Profile"
-          width={800}
-          height={600}
-          className="w-full h-full object-cover"
-        />
+      <div className="w-full h-80 md:h-96 rounded-2xl overflow-hidden relative">
+        {/* Fantastic background with gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 opacity-80 z-10"></div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-32 h-32 bg-yellow-400 rounded-full opacity-20 blur-2xl z-0"></div>
+        <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-full opacity-20 blur-2xl z-0"></div>
+        
+        {/* Floating images animation */}
+        <motion.div 
+          className="absolute top-0 left-0 w-16 h-16 z-20"
+          animate={{
+            x: [0, 100, 200, 300, 200, 100, 0],
+            y: [0, 50, 0, 50, 0, 50, 0],
+            rotate: [0, 10, 0, -10, 0, 10, 0],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        >
+          <Image
+            src="/tilahun1.jpg"
+            alt="Tilahun 1"
+            width={64}
+            height={64}
+            className="rounded-full border-2 border-white shadow-lg"
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="absolute top-1/4 right-0 w-16 h-16 z-20"
+          animate={{
+            x: [0, -100, -200, -300, -200, -100, 0],
+            y: [0, -50, 0, -50, 0, -50, 0],
+            rotate: [0, -10, 0, 10, 0, -10, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 2
+          }}
+        >
+          <Image
+            src="/tilahun2.jpg"
+            alt="Tilahun 2"
+            width={64}
+            height={64}
+            className="rounded-full border-2 border-white shadow-lg"
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="absolute bottom-1/4 left-0 w-16 h-16 z-20"
+          animate={{
+            x: [0, 150, 250, 350, 250, 150, 0],
+            y: [0, -30, 0, -30, 0, -30, 0],
+            rotate: [0, 15, 0, -15, 0, 15, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 4
+          }}
+        >
+          <Image
+            src="/tilahun3.jpg"
+            alt="Tilahun 3"
+            width={64}
+            height={64}
+            className="rounded-full border-2 border-white shadow-lg"
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="absolute bottom-0 right-1/4 w-16 h-16 z-20"
+          animate={{
+            x: [0, -150, -250, -350, -250, -150, 0],
+            y: [0, 30, 0, 30, 0, 30, 0],
+            rotate: [0, -15, 0, 15, 0, -15, 0],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 6
+          }}
+        >
+          <Image
+            src="/tilahun4.jpg"
+            alt="Tilahun 4"
+            width={64}
+            height={64}
+            className="rounded-full border-2 border-white shadow-lg"
+          />
+        </motion.div>
+        
+        {/* Profile image with proper positioning */}
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <Image
+            src="/tilea.jpg"
+            alt="Profile"
+            width={800}
+            height={800}
+            className="w-full h-full object-contain object-center"
+            priority
+          />
+        </div>
       </div>
       <motion.div
         animate={{
@@ -237,38 +341,71 @@ const Home = () => {
         </div>
       </section>
 
+      <section id="testimonials" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">What People Say</h2>
+          <div className="max-w-4xl mx-auto">
+            <AnimatedTestimonials
+              testimonials={[
+                {
+                  quote: "Tilahun is an exceptional developer who consistently delivers high-quality work. His attention to detail and problem-solving skills are outstanding.",
+                  name: "Gk Gebremedhin",
+                  designation: "Chief Executive Officer at Vite Technologies Pvt Ltd",
+                  src: "/testimonials/person1.jfif",
+                },
+                {
+                  quote: "As Dean of Software Engineering, I've had the privilege of observing Tilahun's growth from student to professional. His dedication to excellence, innovative thinking, and ability to apply theoretical knowledge to practical solutions is remarkable. He represents the caliber of graduates we strive to produce at Mekelle University.",
+                  name: "Selama Gebremeskel",
+                  designation: "Dean of Software Engineering at Mekelle University",
+                  src: "https://ui-avatars.com/api/?name=Selama+Gebremeskel&background=0D8ABC&color=fff&size=200",
+                },
+                {
+                  quote: "Tilahun demonstrates exceptional technical aptitude and a deep understanding of networking principles. His ability to troubleshoot complex issues and implement innovative solutions sets him apart. As his instructor, I've been impressed by his dedication to continuous learning and his collaborative approach to problem-solving.",
+                  name: "Girmay Teklehymanot",
+                  designation: "Chief of Networking and IT",
+                  src: "https://ui-avatars.com/api/?name=Girmay+Teklehymanot&background=0D8ABC&color=fff&size=200",
+                },
+              ]}
+              autoplay={true}
+            />
+          </div>
+        </div>
+      </section>
+
       <section id="contact" className="py-16">
-        <h2 className="text-3xl font-bold mb-12 text-center">Get In Touch</h2>
-        <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-          <p className="mb-6 text-center">
-            Have a project in mind or want to discuss potential opportunities?
-            Love to hear from you!
-          </p>
-          <div className="flex justify-center gap-4">
-            <a
-              href="https://github.com/tilahungoito"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-dark text-light rounded-full hover:bg-dark/90 transition-colors"
-            >
-              <FiGithub size={24} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/tilahun-goitom-559401302/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-dark text-light rounded-full hover:bg-dark/90 transition-colors"
-            >
-              <FiLinkedin size={24} />
-            </a>
-            <a
-              href="https://x.com/TilahunGo1921"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-dark text-light rounded-full hover:bg-dark/90 transition-colors"
-            >
-              <FiTwitter size={24} />
-            </a>
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">Get In Touch</h2>
+          <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+            <p className="mb-6 text-center">
+              Have a project in mind or want to discuss potential opportunities?
+              Love to hear from you!
+            </p>
+            <div className="flex justify-center gap-4">
+              <a
+                href="https://github.com/tilahungoito"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-dark text-light rounded-full hover:bg-dark/90 transition-colors"
+              >
+                <FiGithub size={24} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/tilahun-goitom-559401302/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-dark text-light rounded-full hover:bg-dark/90 transition-colors"
+              >
+                <FiLinkedin size={24} />
+              </a>
+              <a
+                href="https://x.com/TilahunGo1921"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-dark text-light rounded-full hover:bg-dark/90 transition-colors"
+              >
+                <FiTwitter size={24} />
+              </a>
+            </div>
           </div>
         </div>
       </section>
