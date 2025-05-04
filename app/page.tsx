@@ -276,14 +276,14 @@ const Home = () => {
         
         {/* Profile image with proper positioning */}
         <div className="absolute inset-0 flex items-center justify-center z-20">
-          <Image
+        <Image
             src="/tilea.jpg"
-            alt="Profile"
-            width={800}
+          alt="Profile"
+          width={800}
             height={800}
             className="w-full h-full object-contain object-center"
             priority
-          />
+        />
         </div>
       </div>
       <motion.div
@@ -351,7 +351,7 @@ const Home = () => {
                   quote: "Tilahun is an exceptional developer who consistently delivers high-quality work. His attention to detail and problem-solving skills are outstanding.",
                   name: "Gk Gebremedhin",
                   designation: "Chief Executive Officer at Vite Technologies Pvt Ltd",
-                  src: "/testimonials/person1.jfif",
+                  src: "/testimonials/person1.png",
                 },
                 {
                   quote: "As Dean of Software Engineering, I've had the privilege of observing Tilahun's growth from student to professional. His dedication to excellence, innovative thinking, and ability to apply theoretical knowledge to practical solutions is remarkable. He represents the caliber of graduates we strive to produce at Mekelle University.",

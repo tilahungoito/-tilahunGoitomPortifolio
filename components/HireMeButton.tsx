@@ -72,12 +72,12 @@ const HireMeButton = () =>
       </motion.button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-bg-green-100 bg-opacity-100 z-40 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-40 flex items-center justify-center p-4 overflow-y-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="bg-light rounded-lg p-6 max-w-md w-full relative"
+            className="bg-white rounded-lg p-6 max-w-md w-full relative shadow-lg my-8"
           >
             <button
               onClick={() => setIsOpen(false)}
