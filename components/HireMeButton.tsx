@@ -28,27 +28,41 @@ const HireMeButton = () =>
   {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitMessage(""); // Clear any previous messages
+
+    // Format the email data
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      message: formData.message,
+      to_name: 'Tilahun', // Your name
+      reply_to: formData.email, // This ensures replies go to the sender
+    };
 
     try
     {
-      await emailjs.send(
+      const result = await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        formData,
+        templateParams,
         process.env.NEXT_PUBLIC_EMAILJS_USER_ID!
       );
 
-      setSubmitMessage("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
-      setTimeout(() =>
-      {
-        setSubmitMessage("");
-        setIsOpen(false);
-      }, 2000);
+      if (result.status === 200) {
+        setSubmitMessage("Message sent successfully! I'll get back to you soon.");
+        setFormData({ name: "", email: "", message: "" });
+        setTimeout(() =>
+        {
+          setSubmitMessage("");
+          setIsOpen(false);
+        }, 3000);
+      } else {
+        throw new Error('Failed to send message');
+      }
     } catch (error)
     {
-      console.error(error);
-      setSubmitMessage("Failed to send message. Please try again.");
+      console.error('EmailJS Error:', error);
+      setSubmitMessage("Failed to send message. Please try again or contact me directly at your-email@example.com");
     } finally
     {
       setIsSubmitting(false);
