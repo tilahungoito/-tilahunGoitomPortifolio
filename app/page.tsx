@@ -23,6 +23,14 @@ const Home = () => {
 
   const projects = [
     {
+      id: 5,
+      title: 'Mekelle University Research Network',
+      description: 'A sophisticated WordPress-based platform designed to enhance academic collaboration and research visibility at Mekelle University. This comprehensive system enables researchers to create detailed professional profiles, showcase their publications, and connect with potential collaborators. Features include advanced search capabilities, research interest matching, and a dynamic news feed highlighting university research achievements.',
+      tags: ['WordPress', 'PHP', 'MySQL', 'JavaScript', 'CSS'],
+      image: '/wordpress.png',
+      link: '#',
+    },
+    {
       id: 1,
       title: 'E-commerce Platform',
       description: 'A comprehensive full-stack e-commerce solution built with React, Node.js, and MongoDB. This platform enables users to buy and sell educational materials including books, lectures, and tutorials. It features a collaborative learning environment where peers can work together and benefit from shared knowledge and resources.',
@@ -334,10 +342,18 @@ const Home = () => {
 
       <section id="projects" className="py-16">
         <h2 className="text-3xl font-bold mb-12 text-center">Featured Projects</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+        <div className="relative">
+          <div className="overflow-x-auto pb-8">
+            <div className="flex gap-8 min-w-max px-4">
+              {projects.map((project, index) => (
+                <div key={project.id} className="w-[400px] flex-shrink-0">
+                  <ProjectCard project={project} index={index} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
         </div>
       </section>
 
