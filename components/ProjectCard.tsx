@@ -27,7 +27,10 @@ import {
   SiExpress,
   SiCss3,
   SiMysql,
-  SiWordpress
+  SiWordpress,
+  SiNestjs,
+  SiTypeorm,
+  SiSwagger
 } from 'react-icons/si';
 import { DiJava } from 'react-icons/di';
 import Image from 'next/image';
@@ -77,7 +80,10 @@ const techIcons: Record<string, React.ReactElement> = {
   'Vite': <SiVite className="text-purple-500" />,
   'Express': <SiExpress className="text-gray-800" />,
   'Java': <DiJava className="text-red-500" />,
-  'WordPress': <SiWordpress className="text-blue-600" />
+  'WordPress': <SiWordpress className="text-blue-600" />,
+  'NestJS': <SiNestjs className="text-red-500" />,
+  'TypeORM': <SiTypeorm className="text-red-600" />,
+  'Swagger': <SiSwagger className="text-green-500" />
 };
 
 const ProjectCard = ({ project, index, isActive }: ProjectCardProps) => {

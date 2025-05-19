@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 import { FiChevronLeft, FiChevronRight, FiFileText } from 'react-icons/fi';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const certifications = [
   {
@@ -141,9 +142,11 @@ export default function CertificationsPage() {
                             </a>
                           </div>
                         ) : (
-                          <img
+                          <Image
                             src={cert.preview}
                             alt={cert.title}
+                            width={400}
+                            height={500}
                             className="w-full h-full object-cover"
                           />
                         )}
