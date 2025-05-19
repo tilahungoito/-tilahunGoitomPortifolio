@@ -4,7 +4,7 @@ import AnimatedText from '../components/AnimatedText';
 import HireMeButton from '../components/HireMeButton';
 import { motion } from 'framer-motion';
 import ProjectCard from '../components/ProjectCard';
-import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiTwitter, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Skills from '../components/Skills'; // Import the new Skills component
@@ -13,6 +13,36 @@ import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
 
 const Home = () => {
   const [typingText, setTypingText] = useState('Software Engineer');
+  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && activeProjectIndex < projects.length - 1) {
+      setActiveProjectIndex(activeProjectIndex + 1);
+    }
+    if (isRightSwipe && activeProjectIndex > 0) {
+      setActiveProjectIndex(activeProjectIndex - 1);
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -169,7 +199,7 @@ const Home = () => {
         </a>
         <a
           href="#contact"
-          className="border-2 border-dark px-6 py-3 rounded-lg hover:bg-dark hover:text-light transition-colors cursor-pointer"
+          className="bg-primary text-light px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
         >
           Contact Me
         </a>
@@ -190,7 +220,7 @@ const Home = () => {
         <div className="absolute top-0 left-0 w-32 h-32 bg-yellow-400 rounded-full opacity-20 blur-2xl z-0"></div>
         <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-full opacity-20 blur-2xl z-0"></div>
         
-        {/* Floating images animation */}
+        {/* Floating images with sun rays */}
         <motion.div 
           className="absolute top-0 left-0 w-16 h-16 z-20"
           animate={{
@@ -204,13 +234,27 @@ const Home = () => {
             ease: "linear"
           }}
         >
-          <Image
-            src="/tilahun1.jpg"
-            alt="Tilahun 1"
-            width={64}
-            height={64}
-            className="rounded-full border-2 border-white shadow-lg"
-          />
+          <div className="relative">
+            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="sun-ray"
+                  style={{
+                    transform: `rotate(${i * 30}deg)`,
+                    '--i': i
+                  } as React.CSSProperties}
+                />
+              ))}
+            </div>
+            <Image
+              src="/tilahun1.jpg"
+              alt="Tilahun 1"
+              width={64}
+              height={64}
+              className="rounded-full border-2 border-white shadow-lg relative z-10"
+            />
+          </div>
         </motion.div>
         
         <motion.div 
@@ -227,13 +271,27 @@ const Home = () => {
             delay: 2
           }}
         >
-          <Image
-            src="/tilahun2.jpg"
-            alt="Tilahun 2"
-            width={64}
-            height={64}
-            className="rounded-full border-2 border-white shadow-lg"
-          />
+          <div className="relative">
+            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="sun-ray"
+                  style={{
+                    transform: `rotate(${i * 30}deg)`,
+                    '--i': i
+                  } as React.CSSProperties}
+                />
+              ))}
+            </div>
+            <Image
+              src="/tilahun2.jpg"
+              alt="Tilahun 2"
+              width={64}
+              height={64}
+              className="rounded-full border-2 border-white shadow-lg relative z-10"
+            />
+          </div>
         </motion.div>
         
         <motion.div 
@@ -250,13 +308,27 @@ const Home = () => {
             delay: 4
           }}
         >
-          <Image
-            src="/tilahun3.jpg"
-            alt="Tilahun 3"
-            width={64}
-            height={64}
-            className="rounded-full border-2 border-white shadow-lg"
-          />
+          <div className="relative">
+            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="sun-ray"
+                  style={{
+                    transform: `rotate(${i * 30}deg)`,
+                    '--i': i
+                  } as React.CSSProperties}
+                />
+              ))}
+            </div>
+            <Image
+              src="/tilahun3.jpg"
+              alt="Tilahun 3"
+              width={64}
+              height={64}
+              className="rounded-full border-2 border-white shadow-lg relative z-10"
+            />
+          </div>
         </motion.div>
         
         <motion.div 
@@ -273,25 +345,54 @@ const Home = () => {
             delay: 6
           }}
         >
-          <Image
-            src="/tilahun4.jpg"
-            alt="Tilahun 4"
-            width={64}
-            height={64}
-            className="rounded-full border-2 border-white shadow-lg"
-          />
+          <div className="relative">
+            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="sun-ray"
+                  style={{
+                    transform: `rotate(${i * 30}deg)`,
+                    '--i': i
+                  } as React.CSSProperties}
+                />
+              ))}
+            </div>
+            <Image
+              src="/tilahun4.jpg"
+              alt="Tilahun 4"
+              width={64}
+              height={64}
+              className="rounded-full border-2 border-white shadow-lg relative z-10"
+            />
+          </div>
         </motion.div>
         
         {/* Profile image with proper positioning */}
         <div className="absolute inset-0 flex items-center justify-center z-20">
-        <Image
-            src="/tilea.jpg"
-          alt="Profile"
-          width={800}
-            height={800}
-            className="w-full h-full object-contain object-center"
-            priority
-        />
+          <div className="relative">
+            {/* Optimized Sun Rays Container */}
+            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="sun-ray"
+                  style={{
+                    transform: `rotate(${i * 30}deg)`,
+                    '--i': i
+                  } as React.CSSProperties}
+                />
+              ))}
+            </div>
+            <Image
+              src="/tilea.jpg"
+              alt="Profile"
+              width={800}
+              height={800}
+              className="w-full h-full object-contain object-center relative z-10 rounded-full"
+              priority
+            />
+          </div>
         </div>
       </div>
       <motion.div
@@ -334,6 +435,80 @@ const Home = () => {
       animation: handwriting 2s ease-in-out forwards;
       animation-delay: calc(var(--delay) * 0.4s);
     }
+    @keyframes sun-rays {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .animate-sun-rays {
+      animation: sun-rays 30s linear infinite;
+      position: absolute;
+      inset: -100px;
+      z-index: 1;
+      will-change: transform;
+      pointer-events: none;
+    }
+    .sun-ray {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 100px;
+      background: linear-gradient(to top,
+        transparent 0%,
+        rgba(255, 215, 0, 0.2) 20%,
+        rgba(255, 215, 0, 0.4) 40%,
+        rgba(255, 165, 0, 0.6) 60%,
+        rgba(255, 165, 0, 0.8) 80%,
+        rgba(255, 165, 0, 1) 100%
+      );
+      transform-origin: bottom center;
+      filter: blur(1px);
+      animation: ray-pulse 3s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.2s);
+      will-change: transform, height, opacity;
+      pointer-events: none;
+    }
+    @keyframes ray-pulse {
+      0%, 100% {
+        height: 100px;
+        opacity: 0.7;
+      }
+      50% {
+        height: 150px;
+        opacity: 1;
+      }
+    }
+    /* Optimized glow effect */
+    .relative::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(
+        circle at center,
+        rgba(255, 215, 0, 0.3) 0%,
+        rgba(255, 165, 0, 0.2) 30%,
+        transparent 70%
+      );
+      border-radius: 50%;
+      z-index: 0;
+      animation: glow-pulse 4s ease-in-out infinite;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+    @keyframes glow-pulse {
+      0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+      }
+    }
   `}</style>
 </section>
 
@@ -342,18 +517,78 @@ const Home = () => {
 
       <section id="projects" className="py-16">
         <h2 className="text-3xl font-bold mb-12 text-center">Featured Projects</h2>
-        <div className="relative">
-          <div className="overflow-x-auto pb-8">
-            <div className="flex gap-8 min-w-max px-4">
-              {projects.map((project, index) => (
-                <div key={project.id} className="w-[400px] flex-shrink-0">
-                  <ProjectCard project={project} index={index} />
-                </div>
-              ))}
-            </div>
+        <div className="relative max-w-4xl mx-auto">
+          {/* Navigation Buttons */}
+          <button
+            onClick={() => {
+              if (activeProjectIndex > 0) {
+                setActiveProjectIndex(activeProjectIndex - 1);
+              }
+            }}
+            className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors ${
+              activeProjectIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={activeProjectIndex === 0}
+          >
+            <FiChevronLeft size={24} className={activeProjectIndex === 0 ? 'text-gray-400' : 'text-primary'} />
+          </button>
+          
+          <button
+            onClick={() => {
+              if (activeProjectIndex < projects.length - 1) {
+                setActiveProjectIndex(activeProjectIndex + 1);
+              }
+            }}
+            className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors ${
+              activeProjectIndex === projects.length - 1 ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={activeProjectIndex === projects.length - 1}
+          >
+            <FiChevronRight size={24} className={activeProjectIndex === projects.length - 1 ? 'text-gray-400' : 'text-primary'} />
+          </button>
+
+          {/* Single Card Container */}
+          <div 
+            className="relative h-[600px]"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ 
+                  opacity: activeProjectIndex === index ? 1 : 0,
+                  x: activeProjectIndex === index ? 0 : (index < activeProjectIndex ? -100 : 100),
+                  scale: activeProjectIndex === index ? 1 : 0.9,
+                  transition: { duration: 0.5 }
+                }}
+                className={`absolute inset-0 ${
+                  activeProjectIndex === index ? 'z-10' : 'z-0'
+                }`}
+              >
+                <ProjectCard 
+                  project={project} 
+                  index={index} 
+                  isActive={index === activeProjectIndex}
+                />
+              </motion.div>
+            ))}
           </div>
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
+
+          {/* Progress Indicators */}
+          <div className="flex justify-center gap-2 mt-8">
+            {projects.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveProjectIndex(index)}
+                className={`w-3 h-3 rounded-full transition-colors ${
+                  activeProjectIndex === index ? 'bg-[rgb(var(--color-primary))]' : 'bg-gray-300'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
