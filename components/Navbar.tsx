@@ -79,7 +79,7 @@ const Navbar = () => {
       transition={{ duration: 0.5 }}
       className="sticky top-0 z-[100] bg-light/80 backdrop-blur-sm shadow-sm"
     >
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="w-full px-2 sm:px-4 lg:px-8 py-4 flex justify-between items-center">
       <Link href="/" className="flex items-center gap-3">
   {/* Logo Image with Circle and Hover Effect */}
   <div className="relative">
@@ -139,7 +139,7 @@ const Navbar = () => {
               onClick={toggleSkillsMenu}
               className="flex items-center gap-1 px-3 py-2 text-gray-700 hover:text-primary transition-colors"
             >
-              Skills
+            Skills
               <span className={`text-xs transition-transform duration-200 ${isSkillsMenuOpen ? 'rotate-180' : ''}`}>▼</span>
             </button>
             {isSkillsMenuOpen && (
@@ -164,7 +164,7 @@ const Navbar = () => {
                   onClick={() => setIsSkillsMenuOpen(false)}
                 >
                   Blogs
-                </Link>
+          </Link>
               </div>
             )}
           </div>
@@ -199,7 +199,7 @@ const Navbar = () => {
             onClick={toggleSkillsMenu}
             className="flex items-center justify-between py-2 text-gray-700 hover:text-primary transition-colors"
           >
-            Skills
+          Skills
             <span className={`text-xs transition-transform duration-200 ${isSkillsMenuOpen ? 'rotate-180' : ''}`}>▼</span>
           </button>
           {isSkillsMenuOpen && (
@@ -233,7 +233,7 @@ const Navbar = () => {
                 }}
               >
                 Blogs
-              </Link>
+        </Link>
             </div>
           )}
         </div>

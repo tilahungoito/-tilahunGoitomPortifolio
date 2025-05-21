@@ -2,7 +2,7 @@
 // app/components/HireMeButton.tsx
 import { motion } from 'framer-motion';
 import { FiMail } from 'react-icons/fi';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
 const HireMeButton = () =>
@@ -15,6 +15,15 @@ const HireMeButton = () =>
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [isEmailJSReady, setIsEmailJSReady] = useState(false);
+
+  useEffect(() => {
+    // Initialize EmailJS
+    if (process.env.NEXT_PUBLIC_EMAILJS_USER_ID) {
+      emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_USER_ID);
+      setIsEmailJSReady(true);
+    }
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -30,25 +39,69 @@ const HireMeButton = () =>
     setIsSubmitting(true);
     setSubmitMessage(""); // Clear any previous messages
 
-    // Format the email data
-    const templateParams = {
-      from_name: formData.name,
+    if (!isEmailJSReady) {
+      setSubmitMessage("Email service is not ready. Please try again later.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Format the email data for message to you
+    const messageToYouParams = {
+      name: formData.name,
       from_email: formData.email,
+      reply_to: formData.email,
       message: formData.message,
-      to_name: 'Tilahun', // Your name
-      reply_to: formData.email, // This ensures replies go to the sender
+      to_email: 'tilay1921@gmail.com'
+    };
+
+    // Format the auto-reply to client
+    const autoReplyParams = {
+      to_name: formData.name,
+      to_email: formData.email,
+      message: "Thank you for reaching out! I have received your message and will get back to you as soon as possible.",
+      from_name: "Tilahun"
     };
 
     try
     {
+      if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID ||
+          !process.env.NEXT_PUBLIC_EMAILJS_USER_ID) {
+        throw new Error('EmailJS configuration is missing');
+      }
+
+      // Initialize EmailJS if not already initialized
+      if (!isEmailJSReady) {
+        emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_USER_ID);
+      }
+
+      // First, send the message to you
       const result = await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        templateParams,
-        process.env.NEXT_PUBLIC_EMAILJS_USER_ID!
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        messageToYouParams,
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID
       );
 
       if (result.status === 200) {
+        // Then send auto-reply to the client using a different template
+        try {
+          const autoReplyResult = await emailjs.send(
+            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+            process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+            autoReplyParams,
+            process.env.NEXT_PUBLIC_EMAILJS_USER_ID
+          );
+          
+          if (autoReplyResult.status !== 200) {
+            console.error('Auto-reply failed:', autoReplyResult);
+          }
+        } catch (autoReplyError) {
+          console.error('Auto-reply Error:', autoReplyError);
+          // Don't throw error here, as the main message was sent successfully
+        }
+
         setSubmitMessage("Message sent successfully! I'll get back to you soon.");
         setFormData({ name: "", email: "", message: "" });
         setTimeout(() =>
@@ -62,7 +115,20 @@ const HireMeButton = () =>
     } catch (error)
     {
       console.error('EmailJS Error:', error);
-      setSubmitMessage("Failed to send message. Please try again or contact me directly at your-email@example.com");
+      let errorMessage = "Failed to send message. ";
+      
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage += "Network error. Please check your internet connection.";
+        } else if (error.message.includes('configuration is missing')) {
+          errorMessage += "Email service is not properly configured.";
+        } else {
+          errorMessage += error.message;
+        }
+      }
+      
+      errorMessage += " Please try again or contact me directly at tilay1921@gmail.com";
+      setSubmitMessage(errorMessage);
     } finally
     {
       setIsSubmitting(false);
@@ -73,16 +139,15 @@ const HireMeButton = () =>
     <>
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed right-6 z-50 flex items-center gap-2 bg-primary text-light px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all cursor-pointer"
+        className="fixed z-50 flex items-center justify-center bg-primary text-light rounded-full shadow-lg hover:shadow-xl transition-all cursor-pointer bottom-6 right-6 w-14 h-14 sm:w-auto sm:h-auto sm:px-6 sm:py-3 gap-0 sm:gap-2"
         style={{
-          bottom: '20vh', // Adjusting for distance from bottom
-          animation: 'moveUpDown 3s ease-in-out infinite', // Adding animation
+          animation: 'moveUpDown 3s ease-in-out infinite',
         }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
         <FiMail />
-        Hire Me
+        <span className="hidden sm:inline">Hire Me</span>
       </motion.button>
 
       {isOpen && (
