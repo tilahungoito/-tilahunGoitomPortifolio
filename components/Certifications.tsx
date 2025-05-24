@@ -44,13 +44,13 @@ const certifications: Certification[] = [
 
 const Certifications = () => {
   return (
-    <section id="certifications" className="py-16 bg-light">
+    <section id="certifications" className="py-16">
       <div className="container mx-auto px-4">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-3xl font-bold text-center mb-12"
+          className="text-3xl font-bold text-center mb-12 text-[rgb(var(--color-foreground))]"
         >
           Certifications
         </motion.h2>
@@ -61,11 +61,11 @@ const Certifications = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              className="card card-hover overflow-hidden"
             >
               <div className="relative h-48">
                 {cert.image.endsWith('.pdf') ? (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                  <div className="w-full h-full flex items-center justify-center bg-[rgb(var(--color-input))]">
                     <span className="text-4xl">📄</span>
                   </div>
                 ) : (
@@ -78,14 +78,18 @@ const Certifications = () => {
                 )}
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{cert.title}</h3>
-                <p className="text-gray-600">{cert.description}</p>
+                <h3 className="text-xl font-semibold mb-2 text-[rgb(var(--color-foreground))]">
+                  {cert.title}
+                </h3>
+                <p className="text-[rgb(var(--color-muted))]">
+                  {cert.description}
+                </p>
                 {cert.pdf && (
                   <a
                     href={cert.pdf}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-4 inline-block text-primary hover:underline"
+                    className="mt-4 inline-block text-[rgb(var(--color-primary))] hover:underline"
                   >
                     View Certificate
                   </a>

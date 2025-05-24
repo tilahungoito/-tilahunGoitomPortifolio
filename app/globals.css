@@ -1,21 +1,101 @@
 /*app/ globals.css */
 @import "tailwindcss";
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
-@layer base {
-  :root {
-    --color-primary: 255, 107, 107;
-    --color-secondary: 78, 205, 196;
-    --color-dark: 26, 26, 26;
-    --color-light: 247, 255, 247;
-  }
+:root {
+  --color-primary: 59, 130, 246; /* Blue-500 */
+  --color-secondary: 99, 102, 241; /* Indigo-500 */
+  --color-accent: 236, 72, 153; /* Pink-500 */
+  --color-background: 255, 255, 255;
+  --color-foreground: 17, 24, 39;
+  --color-muted: 107, 114, 128;
+  --color-border: 229, 231, 235;
+  --color-card: 255, 255, 255;
+  --color-card-foreground: 17, 24, 39;
+  --color-input: 229, 231, 235;
+  --color-input-foreground: 17, 24, 39;
+  --color-ring: 59, 130, 246;
+}
 
-  body {
-    background-color: rgb(var(--color-light));
-    color: rgb(var(--color-dark));
-  }
+[data-theme="dark"] {
+  --color-primary: 96, 165, 250; /* Blue-400 */
+  --color-secondary: 129, 140, 248; /* Indigo-400 */
+  --color-accent: 244, 114, 182; /* Pink-400 */
+  --color-background: 17, 24, 39;
+  --color-foreground: 243, 244, 246;
+  --color-muted: 156, 163, 175;
+  --color-border: 55, 65, 81;
+  --color-card: 31, 41, 55;
+  --color-card-foreground: 243, 244, 246;
+  --color-input: 55, 65, 81;
+  --color-input-foreground: 243, 244, 246;
+  --color-ring: 96, 165, 250;
+}
+
+* {
+  @apply transition-colors duration-200;
+}
+
+body {
+  @apply bg-[rgb(var(--color-background))] text-[rgb(var(--color-foreground))];
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply text-[rgb(var(--color-foreground))];
+}
+
+p {
+  @apply text-[rgb(var(--color-foreground))];
+}
+
+/* Enhanced Card Styles */
+.card {
+  @apply bg-[rgb(var(--color-card))] text-[rgb(var(--color-card-foreground))] 
+         border border-[rgb(var(--color-border))] rounded-lg shadow-md 
+         hover:shadow-lg transition-all duration-200;
+}
+
+.card-hover {
+  @apply hover:scale-[1.02] hover:shadow-xl;
+}
+
+/* Button Styles */
+.button {
+  @apply bg-[rgb(var(--color-primary))] text-white 
+         hover:bg-[rgb(var(--color-primary))]/90 
+         transition-all duration-200 
+         rounded-lg px-4 py-2 
+         shadow-md hover:shadow-lg;
+}
+
+.button-secondary {
+  @apply bg-[rgb(var(--color-secondary))] text-white 
+         hover:bg-[rgb(var(--color-secondary))]/90;
+}
+
+.button-accent {
+  @apply bg-[rgb(var(--color-accent))] text-white 
+         hover:bg-[rgb(var(--color-accent))]/90;
+}
+
+/* Navigation Styles */
+.nav-link {
+  @apply text-[rgb(var(--color-foreground))] 
+         hover:text-[rgb(var(--color-primary))] 
+         transition-colors duration-200;
+}
+
+/* Input Styles */
+.input {
+  @apply bg-[rgb(var(--color-input))] 
+         text-[rgb(var(--color-input-foreground))] 
+         border border-[rgb(var(--color-border))] 
+         rounded-lg px-4 py-2 
+         focus:ring-2 focus:ring-[rgb(var(--color-ring))] 
+         focus:border-transparent 
+         transition-all duration-200;
 }
 
 /* Custom scrollbar */
@@ -24,18 +104,113 @@
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgb(var(--color-light));
+  @apply bg-[rgb(var(--color-background))];
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(var(--color-primary));
-  border-radius: 9999px;
+  @apply bg-[rgb(var(--color-primary))] rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(var(--color-primary), 0.8);
+  @apply opacity-80;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Keep existing animations */
+@keyframes handwriting {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+.handwriting-animation {
+  display: inline-block;
+  animation: handwriting 2s ease-in-out forwards;
+  animation-delay: calc(var(--delay) * 0.4s);
+}
+
+@keyframes sun-rays {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-sun-rays {
+  animation: sun-rays 30s linear infinite;
+  position: absolute;
+  inset: -100px;
+  z-index: 1;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.sun-ray {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(to top,
+    transparent 0%,
+    rgba(255, 215, 0, 0.2) 20%,
+    rgba(255, 215, 0, 0.4) 40%,
+    rgba(255, 165, 0, 0.6) 60%,
+    rgba(255, 165, 0, 0.8) 80%,
+    rgba(255, 165, 0, 1) 100%
+  );
+  transform-origin: bottom center;
+  filter: blur(1px);
+  animation: ray-pulse 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.2s);
+  will-change: transform, height, opacity;
+  pointer-events: none;
+}
+
+@keyframes ray-pulse {
+  0%, 100% {
+    height: 100px;
+    opacity: 0.7;
+  }
+  50% {
+    height: 150px;
+    opacity: 1;
+  }
+}
+
+/* Optimized glow effect */
+.relative::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 215, 0, 0.3) 0%,
+    rgba(255, 165, 0, 0.2) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  z-index: 0;
+  animation: glow-pulse 4s ease-in-out infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
 }
