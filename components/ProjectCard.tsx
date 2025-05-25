@@ -49,7 +49,6 @@ interface Project {
 interface ProjectCardProps {
   project: Project;
   isActive: boolean;
-  index: number;
 }
 
 // Extended map of technology names to their corresponding icons
@@ -86,7 +85,7 @@ const techIcons: Record<string, React.ReactElement> = {
   'Swagger': <SiSwagger className="text-green-500" />
 };
 
-export default function ProjectCard({ project, isActive, index }: ProjectCardProps) {
+export default function ProjectCard({ project, isActive }: ProjectCardProps) {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
@@ -116,63 +115,63 @@ export default function ProjectCard({ project, isActive, index }: ProjectCardPro
           className="object-cover"
         />
       </div>
-      
+
       <h3 className="text-xl font-bold mb-2 text-[rgb(var(--color-foreground))]">
         {project.title}
       </h3>
       
-      <div className="relative">
-        <p 
-          ref={descriptionRef}
+        <div className="relative">
+          <p 
+            ref={descriptionRef}
           className={`text-[rgb(var(--color-muted))] mb-4 flex-grow transition-all duration-300 ${
             !showFullDescription ? 'line-clamp-3' : ''
-          }`}
-        >
-          {project.description}
-        </p>
-        {isOverflowing && (
-          <button
-            onClick={() => setShowFullDescription(!showFullDescription)}
+            }`}
+          >
+            {project.description}
+          </p>
+          {isOverflowing && (
+            <button
+              onClick={() => setShowFullDescription(!showFullDescription)}
             className="text-[rgb(var(--color-primary))] hover:underline text-sm"
-          >
+            >
             {showFullDescription ? 'Show Less' : 'Show More'}
-          </button>
-        )}
-      </div>
-      
-      <div className="flex flex-wrap gap-2 mb-4">
+            </button>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-4">
         {project.tags.map((tag, i) => (
-          <span
-            key={i}
+            <span
+              key={i}
             className="flex items-center gap-1 px-3 py-1 text-sm rounded-full bg-[rgb(var(--color-primary))]/10 text-[rgb(var(--color-primary))]"
-          >
+            >
             {techIcons[tag] || null}
-            <span>{tag}</span>
-          </span>
-        ))}
-      </div>
-      
-      <div className="flex gap-4">
-        <a
-          href={project.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 text-[rgb(var(--color-primary))] hover:underline"
-        >
-          <FiExternalLink />
-          View Project
-        </a>
-        {project.link.includes('github.com') && (
+              <span>{tag}</span>
+            </span>
+          ))}
+        </div>
+
+        <div className="flex gap-4">
           <a
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))]"
+          className="flex items-center gap-2 text-[rgb(var(--color-primary))] hover:underline"
           >
-            <FiGithub />
-            Source Code
+            <FiExternalLink />
+            View Project
           </a>
-        )}
+          {project.link.includes('github.com') && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            className="flex items-center gap-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))]"
+            >
+              <FiGithub />
+              Source Code
+            </a>
+          )}
       </div>
     </motion.div>
   );

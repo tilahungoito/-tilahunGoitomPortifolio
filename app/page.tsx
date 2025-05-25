@@ -7,15 +7,19 @@ import ProjectCard from '../components/ProjectCard';
 import { FiGithub, FiLinkedin, FiTwitter, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import Skills from '../components/Skills'; // Import the new Skills component
+import Skills from '../components/Skills';
 import DownloadCV from '@/components/DownloadCV';
 import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
+import TopNavigation from '../components/TopNavigation';
+import ScrollToTop from '../components/ScrollToTop';
+import CertificateModal from '../components/CertificateModal';
 
 const Home = () => {
   const [typingText, setTypingText] = useState('Software Engineer');
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
@@ -104,9 +108,14 @@ const Home = () => {
 
   return (
     <div className="overflow-x-hidden w-full">
+      <TopNavigation 
+        isCertificateModalOpen={isCertificateModalOpen}
+        setIsCertificateModalOpen={setIsCertificateModalOpen}
+      />
       <HireMeButton />
+      <ScrollToTop />
 
-      <section className="min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+      <section id="home" className="min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-8 items-center w-full max-w-7xl mx-auto">
     <div className="order-2 md:order-1">
       <AnimatedText
@@ -520,7 +529,7 @@ const Home = () => {
   `}</style>
 </section>
 
-      <section className="py-8 px-4 sm:px-6 lg:px-8">
+      <section id="skills" className="py-8 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">My Skills</h2>
           <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto text-sm sm:text-base">
@@ -528,7 +537,10 @@ const Home = () => {
             From front-end to back-end development, I&apos;ve mastered a diverse range of technologies 
             that enable me to build robust and scalable applications.
           </p>
-      <Skills />
+          <Skills 
+            isCertificateModalOpen={isCertificateModalOpen}
+            setIsCertificateModalOpen={setIsCertificateModalOpen}
+          />
         </div>
       </section>
 
@@ -593,7 +605,6 @@ const Home = () => {
               >
                 <ProjectCard 
                   project={project} 
-                  index={index} 
                   isActive={index === activeProjectIndex}
                 />
               </motion.div>
@@ -689,6 +700,11 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <CertificateModal 
+        isOpen={isCertificateModalOpen} 
+        onClose={() => setIsCertificateModalOpen(false)} 
+      />
     </div>
   );
 };

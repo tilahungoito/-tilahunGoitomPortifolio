@@ -1,10 +1,11 @@
 // components/Skills.tsx
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaReact, FaNodeJs, FaPython, FaJava, FaAws, FaDocker, FaGitAlt, FaAndroid, FaApple, FaVuejs, FaFigma, FaJira, FaCode, FaMobile, FaServer, FaDatabase, FaTools, FaVial } from 'react-icons/fa';
+import { FaReact, FaNodeJs, FaPython, FaJava, FaAws, FaDocker, FaGitAlt, FaAndroid, FaApple, FaVuejs, FaFigma, FaJira, FaCode, FaMobile, FaServer, FaDatabase, FaTools, FaVial, FaChevronDown } from 'react-icons/fa';
 import { SiTypescript, SiJavascript, SiTailwindcss, SiNextdotjs, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiNestjs, SiExpress, SiPrisma, SiJest, SiCypress, SiSelenium, SiFlutter, SiCplusplus, SiSpringboot, SiCanva, SiPostman, SiSwagger } from 'react-icons/si';
 import { TbBrandReactNative } from 'react-icons/tb';
+import CertificateModal from './CertificateModal';
 
 interface Skill {
     name: string;
@@ -64,8 +65,36 @@ const skills: Skill[] = [
     { name: 'Swagger', icon: <SiSwagger className="text-[rgb(var(--color-primary))]" />, level: 85, category: 'tools' },
 ];
 
-const Skills = () => {
-    const categories = ['languages', 'frontend', 'mobile', 'backend', 'database', 'devops', 'testing', 'tools'];
+interface SkillsProps {
+    isCertificateModalOpen: boolean;
+    setIsCertificateModalOpen: (isOpen: boolean) => void;
+}
+
+const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificateModalOpen }) => {
+    const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+        languages: true,
+        frontend: false,
+        mobile: false,
+        backend: false,
+        database: false,
+        devops: false,
+        testing: false,
+        tools: false,
+        certifications: false
+    });
+
+    const toggleCategory = (category: string) => {
+        if (category === 'certifications') {
+            setIsCertificateModalOpen(true);
+            return;
+        }
+        setExpandedCategories(prev => ({
+            ...prev,
+            [category]: !prev[category]
+        }));
+    };
+
+    const categories = ['languages', 'frontend', 'mobile', 'backend', 'database', 'devops', 'testing', 'tools', 'certifications'];
     const categoryTitles = {
         languages: { title: 'Programming Languages', icon: <FaCode className="text-[rgb(var(--color-primary))] text-2xl" /> },
         frontend: { title: 'Frontend Development', icon: <FaReact className="text-[rgb(var(--color-primary))] text-2xl" /> },
@@ -74,13 +103,14 @@ const Skills = () => {
         database: { title: 'Database & ORM', icon: <FaDatabase className="text-[rgb(var(--color-primary))] text-2xl" /> },
         devops: { title: 'DevOps & Tools', icon: <FaTools className="text-[rgb(var(--color-primary))] text-2xl" /> },
         testing: { title: 'Testing & Quality', icon: <FaVial className="text-[rgb(var(--color-primary))] text-2xl" /> },
-        tools: { title: 'Design & Development Tools', icon: <FaFigma className="text-[rgb(var(--color-primary))] text-2xl" /> }
+        tools: { title: 'Design & Development Tools', icon: <FaFigma className="text-[rgb(var(--color-primary))] text-2xl" /> },
+        certifications: { title: 'Professional Certifications', icon: <FaCode className="text-[rgb(var(--color-primary))] text-2xl" /> }
     };
 
     return (
         <section id="skills" className="py-16">
             <div className="container mx-auto px-4">
-                <motion.h2
+                <motion.h2 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -89,47 +119,70 @@ const Skills = () => {
                     Technical Skills
                 </motion.h2>
                 {categories.map((category, categoryIndex) => (
-                    <div key={category} className="mb-12">
-                        <motion.h3
+                    <div key={category} className="mb-6">
+                        <motion.button
+                            onClick={() => toggleCategory(category)}
+                            className="w-full flex items-center justify-between p-4 rounded-lg bg-[rgb(var(--color-card))] hover:bg-[rgb(var(--color-card-hover))] transition-colors"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-                            className="text-2xl font-semibold mb-6 text-[rgb(var(--color-foreground))] flex items-center gap-3"
                         >
-                            {categoryTitles[category as keyof typeof categoryTitles].icon}
-                            {categoryTitles[category as keyof typeof categoryTitles].title}
-                        </motion.h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {skills
-                                .filter(skill => skill.category === category)
-                                .map((skill, index) => (
-                                    <motion.div
-                                        key={skill.name}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                                        className="card card-hover p-6"
-                                    >
-                                        <div className="flex items-center mb-4">
-                                            <div className="text-3xl mr-4">{skill.icon}</div>
-                                            <h4 className="text-xl font-semibold text-[rgb(var(--color-foreground))]">
-                                                {skill.name}
-                                            </h4>
-                                        </div>
-                                        <div className="w-full bg-[rgb(var(--color-input))] rounded-full h-2.5">
+                            <div className="flex items-center gap-3">
+                                {categoryTitles[category as keyof typeof categoryTitles].icon}
+                                <h3 className="text-xl font-semibold text-[rgb(var(--color-foreground))]">
+                                    {categoryTitles[category as keyof typeof categoryTitles].title}
+                                </h3>
+                            </div>
+                            {category !== 'certifications' && (
+                                <FaChevronDown 
+                                    className={`text-[rgb(var(--color-foreground))] transition-transform ${
+                                        expandedCategories[category] ? 'rotate-180' : ''
+                                    }`}
+                                />
+                            )}
+                        </motion.button>
+                        
+                        {expandedCategories[category] && category !== 'certifications' && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="mt-4"
+                            >
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {skills
+                                        .filter(skill => skill.category === category)
+                                        .map((skill, index) => (
                                             <motion.div
-                                                initial={{ width: 0 }}
-                                                whileInView={{ width: `${skill.level}%` }}
-                                                transition={{ duration: 1, delay: index * 0.1 }}
-                                                className="h-2.5 rounded-full bg-[rgb(var(--color-primary))]"
-                                            />
-                                        </div>
-                                        <div className="mt-2 text-right text-sm text-[rgb(var(--color-muted))]">
-                                            {skill.level}%
-                                        </div>
-                                    </motion.div>
-                                ))}
-                        </div>
+                                                key={skill.name}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                                className="card card-hover p-6"
+                                            >
+                                                <div className="flex items-center mb-4">
+                                                    <div className="text-3xl mr-4">{skill.icon}</div>
+                                                    <h4 className="text-xl font-semibold text-[rgb(var(--color-foreground))]">
+                                                        {skill.name}
+                                                    </h4>
+                                                </div>
+                                                <div className="w-full bg-[rgb(var(--color-input))] rounded-full h-2.5">
+                                                    <motion.div
+                                                        initial={{ width: 0 }}
+                                                        whileInView={{ width: `${skill.level}%` }}
+                                                        transition={{ duration: 1, delay: index * 0.1 }}
+                                                        className="h-2.5 rounded-full bg-[rgb(var(--color-primary))]"
+                                                    />
+                                                </div>
+                                                <div className="mt-2 text-right text-sm text-[rgb(var(--color-muted))]">
+                                                    {skill.level}%
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                </div>
+                            </motion.div>
+                        )}
                     </div>
                 ))}
                 <motion.div
@@ -143,6 +196,10 @@ const Skills = () => {
                     </p>
                 </motion.div>
             </div>
+            <CertificateModal 
+                isOpen={isCertificateModalOpen} 
+                onClose={() => setIsCertificateModalOpen(false)} 
+            />
         </section>
     );
 };
