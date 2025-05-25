@@ -110,14 +110,14 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
     return (
         <section id="skills" className="py-16">
             <div className="container mx-auto px-4">
-                <motion.h2 
+            <motion.h2 
                     initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
                     className="text-3xl font-bold text-center mb-12 text-[rgb(var(--color-foreground))]"
-                >
+            >
                     Technical Skills
-                </motion.h2>
+            </motion.h2>
                 {categories.map((category, categoryIndex) => (
                     <div key={category} className="mb-6">
                         <motion.button
@@ -143,7 +143,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                         </motion.button>
                         
                         {expandedCategories[category] && category !== 'certifications' && (
-                            <motion.div
+            <motion.div 
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
@@ -154,7 +154,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                                     {skills
                                         .filter(skill => skill.category === category)
                                         .map((skill, index) => (
-                                            <motion.div
+                    <motion.div
                                                 key={skill.name}
                                                 initial={{ opacity: 0, y: 20 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
@@ -166,15 +166,15 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                                                     <h4 className="text-xl font-semibold text-[rgb(var(--color-foreground))]">
                                                         {skill.name}
                                                     </h4>
-                                                </div>
+                        </div>
                                                 <div className="w-full bg-[rgb(var(--color-input))] rounded-full h-2.5">
-                                                    <motion.div
+                                        <motion.div
                                                         initial={{ width: 0 }}
                                                         whileInView={{ width: `${skill.level}%` }}
                                                         transition={{ duration: 1, delay: index * 0.1 }}
                                                         className="h-2.5 rounded-full bg-[rgb(var(--color-primary))]"
-                                                    />
-                                                </div>
+                                        />
+                                    </div>
                                                 <div className="mt-2 text-right text-sm text-[rgb(var(--color-muted))]">
                                                     {skill.level}%
                                                 </div>
@@ -183,7 +183,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                                 </div>
                             </motion.div>
                         )}
-                    </div>
+                        </div>
                 ))}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -194,7 +194,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                     <p className="text-lg text-[rgb(var(--color-muted))] leading-relaxed text-justify">
                         In the rapidly evolving landscape of technology, I maintain a steadfast commitment to continuous learning and skill enhancement. My dedication to mastering new technologies and methodologies enables me to deliver innovative solutions that drive business value. Through systematic learning and practical application, I ensure that each project benefits from the latest advancements in software development, resulting in robust, scalable, and user-centric applications.
                     </p>
-                </motion.div>
+            </motion.div>
             </div>
             <CertificateModal 
                 isOpen={isCertificateModalOpen} 

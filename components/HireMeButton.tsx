@@ -1,136 +1,41 @@
 'use client';
 // app/components/HireMeButton.tsx
-import { motion } from 'framer-motion';
-import { FiMail } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaPaperPlane } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
 
-const HireMeButton = () =>
-{
-  const [isOpen, setIsOpen] = useState(false);
+const HireMeButton = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
+    name: '',
+    email: '',
+    message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState("");
-  const [isEmailJSReady, setIsEmailJSReady] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  useEffect(() => {
-    // Initialize EmailJS
-    if (process.env.NEXT_PUBLIC_EMAILJS_USER_ID) {
-      emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_USER_ID);
-      setIsEmailJSReady(true);
-    }
-  }, []);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) =>
-  {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) =>
-  {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitMessage(""); // Clear any previous messages
+    setSubmitStatus('idle');
 
-    if (!isEmailJSReady) {
-      setSubmitMessage("Email service is not ready. Please try again later.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Format the email data for message to you
-    const messageToYouParams = {
-      name: formData.name,
-      from_email: formData.email,
-      reply_to: formData.email,
-      message: formData.message,
-      to_email: 'tilay1921@gmail.com'
-    };
-
-    // Format the auto-reply to client
-    const autoReplyParams = {
-      to_name: formData.name,
-      to_email: formData.email,
-      message: "Thank you for reaching out! I have received your message and will get back to you as soon as possible.",
-      from_name: "Tilahun"
-    };
-
-    try
-    {
-      if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
-          !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 
-          !process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID ||
-          !process.env.NEXT_PUBLIC_EMAILJS_USER_ID) {
-        throw new Error('EmailJS configuration is missing');
-      }
-
-      // Initialize EmailJS if not already initialized
-      if (!isEmailJSReady) {
-        emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_USER_ID);
-      }
-
-      // First, send the message to you
-      const result = await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        messageToYouParams,
-        process.env.NEXT_PUBLIC_EMAILJS_USER_ID
-      );
-
-      if (result.status === 200) {
-        // Then send auto-reply to the client using a different template
-        try {
-          const autoReplyResult = await emailjs.send(
-            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-            process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID,
-            autoReplyParams,
-            process.env.NEXT_PUBLIC_EMAILJS_USER_ID
-          );
-          
-          if (autoReplyResult.status !== 200) {
-            console.error('Auto-reply failed:', autoReplyResult);
-          }
-        } catch (autoReplyError) {
-          console.error('Auto-reply Error:', autoReplyError);
-          // Don't throw error here, as the main message was sent successfully
-        }
-
-        setSubmitMessage("Message sent successfully! I'll get back to you soon.");
-        setFormData({ name: "", email: "", message: "" });
-        setTimeout(() =>
+    try {
+      await emailjs.send(
+        'service_8qkqg8p',
+        'template_8qkqg8p',
         {
-          setSubmitMessage("");
-          setIsOpen(false);
-        }, 3000);
-      } else {
-        throw new Error('Failed to send message');
-      }
-    } catch (error)
-    {
-      console.error('EmailJS Error:', error);
-      let errorMessage = "Failed to send message. ";
-      
-      if (error instanceof Error) {
-        if (error.message.includes('Failed to fetch')) {
-          errorMessage += "Network error. Please check your internet connection.";
-        } else if (error.message.includes('configuration is missing')) {
-          errorMessage += "Email service is not properly configured.";
-        } else {
-          errorMessage += error.message;
-        }
-      }
-      
-      errorMessage += " Please try again or contact me directly at tilay1921@gmail.com";
-      setSubmitMessage(errorMessage);
-    } finally
-    {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        '8qkqg8p'
+      );
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch {
+      setSubmitStatus('error');
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -138,125 +43,115 @@ const HireMeButton = () =>
   return (
     <>
       <motion.button
-        onClick={() => setIsOpen(true)}
-        className="fixed z-50 flex items-center justify-center bg-primary text-light rounded-full shadow-lg hover:shadow-xl transition-all cursor-pointer bottom-6 right-6 w-14 h-14 sm:w-auto sm:h-auto sm:px-6 sm:py-3 gap-0 sm:gap-2"
-        style={{
-          animation: 'moveUpDown 3s ease-in-out infinite',
-        }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsModalOpen(true)}
+        className="fixed bottom-8 right-8 z-50 p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <FiMail />
-        <span className="hidden sm:inline">Hire Me</span>
+        <div className="relative">
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <FaPaperPlane className="text-2xl text-[rgb(var(--color-primary))]" />
+        </div>
       </motion.button>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center p-4 overflow-y-auto">
+      <AnimatePresence>
+        {isModalOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="bg-white rounded-lg p-6 max-w-md w-full relative shadow-lg my-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            onClick={() => setIsModalOpen(false)}
           >
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 text-dark hover:text-primary"
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-[rgb(var(--color-card))] rounded-lg p-6 max-w-md w-full"
+              onClick={e => e.stopPropagation()}
             >
-              ✕
-            </button>
-
-            <h2 className="text-2xl font-bold mb-4">Let&apos;s Work Together</h2>
-
-            {submitMessage ? (
-              <div
-                className={`p-4 rounded ${submitMessage.includes("successfully")
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
-                  }`}
-              >
-                {submitMessage}
-              </div>
-            ) : (
+              <h2 className="text-2xl font-bold mb-4 text-[rgb(var(--color-foreground))]">Get in Touch</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-dark"
-                  >
-                    Your Name
+                  <label htmlFor="name" className="block text-sm font-medium text-[rgb(var(--color-foreground))] mb-1">
+                    Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    name="name"
                     value={formData.name}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-input))] text-[rgb(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-primary))] focus:border-transparent"
                     required
-                    className="mt-1 block w-full rounded-md border-dark border-opacity-30 shadow-sm focus:border-primary focus:ring-primary"
                   />
                 </div>
-
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-dark"
-                  >
-                    Your Email
+                  <label htmlFor="email" className="block text-sm font-medium text-[rgb(var(--color-foreground))] mb-1">
+                    Email
                   </label>
                   <input
                     type="email"
                     id="email"
-                    name="email"
                     value={formData.email}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-input))] text-[rgb(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-primary))] focus:border-transparent"
                     required
-                    className="mt-1 block w-full rounded-md border-dark border-opacity-30 shadow-sm focus:border-primary focus:ring-primary"
                   />
                 </div>
-
                 <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-dark"
-                  >
+                  <label htmlFor="message" className="block text-sm font-medium text-[rgb(var(--color-foreground))] mb-1">
                     Message
                   </label>
                   <textarea
                     id="message"
-                    name="message"
-                    rows={4}
                     value={formData.message}
-                    onChange={handleChange}
+                    onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                    className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-input))] text-[rgb(var(--color-foreground))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-primary))] focus:border-transparent"
+                    rows={4}
                     required
-                    className="mt-1 block w-full rounded-md border-dark border-opacity-30 shadow-sm focus:border-primary focus:ring-primary"
                   />
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-primary text-light py-2 px-4 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 cursor-pointer"
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </button>
+                <div className="flex justify-end gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-4 py-2 rounded-lg text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))] transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-4 py-2 rounded-lg bg-[rgb(var(--color-primary))] text-[rgb(var(--color-light))] hover:bg-[rgb(var(--color-primary))]/90 transition-colors disabled:opacity-50"
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </button>
+                </div>
+                {submitStatus === 'success' && (
+                  <p className="text-green-500 text-sm">Message sent successfully!</p>
+                )}
+                {submitStatus === 'error' && (
+                  <p className="text-red-500 text-sm">Failed to send message. Please try again.</p>
+                )}
               </form>
-            )}
+            </motion.div>
           </motion.div>
-        </div>
-      )}
-      <style jsx>{`
-        @keyframes moveUpDown {
-          0% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-          100% {
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        )}
+      </AnimatePresence>
     </>
   );
 };

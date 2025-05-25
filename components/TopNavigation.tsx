@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaHome, FaCode, FaProjectDiagram, FaComments, FaDownload, FaChevronDown } from 'react-icons/fa';
 import CertificateModal from './CertificateModal';
@@ -15,13 +15,11 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSkillsSubmenuOpen, setIsSkillsSubmenuOpen] = useState(false);
-    const skillsSubmenuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
             
-            // Update active section based on scroll position
             const sections = ['home', 'skills', 'projects', 'testimonials', 'contact'];
             const currentSection = sections.find(section => {
                 const element = document.getElementById(section);
@@ -37,24 +35,14 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
             }
         };
 
-        const handleClickOutside = (event: MouseEvent) => {
-            if (skillsSubmenuRef.current && !skillsSubmenuRef.current.contains(event.target as Node)) {
-                setIsSkillsSubmenuOpen(false);
-            }
-        };
-
         window.addEventListener('scroll', handleScroll);
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const scrollToSection = (sectionId: string) => {
         const element = document.getElementById(sectionId);
         if (element) {
-            const offset = 80; // Account for fixed header
+            const offset = 80;
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -66,9 +54,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
     };
 
     const handleNavigationClick = (sectionId: string) => {
-        console.log('Navigation clicked:', sectionId);
         if (sectionId === 'certifications') {
-            console.log('Opening certificate modal');
             setIsCertificateModalOpen(true);
             setIsMobileMenuOpen(false);
             setIsSkillsSubmenuOpen(false);
@@ -113,9 +99,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                             TG
                         </motion.div>
                         
+                        {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-8">
                             {navItems.map((item) => (
-                                <div key={item.id} className="relative" ref={item.id === 'skills' ? skillsSubmenuRef : null}>
+                                <div key={item.id} className="relative">
                                     <motion.button
                                         onClick={() => {
                                             if (item.id === 'skills') {
@@ -164,7 +151,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                             ))}
                         </div>
 
-                        {/* Mobile menu button */}
+                        {/* Mobile Menu Button */}
                         <motion.button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="md:hidden p-2 rounded-lg hover:bg-[rgb(var(--color-card-hover))]"
