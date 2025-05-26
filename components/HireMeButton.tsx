@@ -1,9 +1,14 @@
 'use client';
 // app/components/HireMeButton.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPaperPlane } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
+
+// EmailJS configuration from environment variables
+const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_USER_ID;
 
 const HireMeButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,26 +19,89 @@ const HireMeButton = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [initError, setInitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!PUBLIC_KEY) {
+      console.error('EmailJS public key is not defined in environment variables');
+      setInitError('Email service configuration is missing');
+      return;
+    }
+
+    try {
+      // Initialize EmailJS with the public key from environment variables
+      emailjs.init(PUBLIC_KEY);
+      console.log('EmailJS initialized successfully with key:', PUBLIC_KEY);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to initialize EmailJS';
+      console.error('EmailJS initialization error:', errorMessage);
+      setInitError(errorMessage);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (initError) {
+      console.error('Cannot submit: EmailJS not initialized properly');
+      setSubmitStatus('error');
+      return;
+    }
+
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      console.error('EmailJS configuration is incomplete');
+      setSubmitStatus('error');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
     try {
-      await emailjs.send(
-        'service_8qkqg8p',
-        'template_8qkqg8p',
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        '8qkqg8p'
+      console.log('Attempting to send email with params:', {
+        serviceId: SERVICE_ID,
+        templateId: TEMPLATE_ID,
+        publicKey: PUBLIC_KEY
+      });
+
+      // Updated template parameters for better email handling
+      const templateParams = {
+        to_email: 'tilay1921@gmail.com',
+        from_name: formData.name,
+        from_email: formData.email,
+        reply_to: formData.email,
+        message: formData.message,
+        title: formData.message.substring(0, 50) + '...', // First 50 characters of message as title
+        name: formData.name
+      };
+
+      const response = await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        templateParams
       );
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-    } catch {
+
+      console.log('EmailJS response:', response);
+
+      if (response.status === 200) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setIsModalOpen(false), 2000);
+      } else {
+        throw new Error(`Failed to send email: ${response.text}`);
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 
+        typeof error === 'object' && error !== null && 'text' in error ? 
+        (error as { text: string }).text : 'Unknown error';
+      
+      console.error('EmailJS Error Details:', {
+        error,
+        message: errorMessage,
+        serviceId: SERVICE_ID,
+        templateId: TEMPLATE_ID,
+        publicKey: PUBLIC_KEY
+      });
+      
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -145,7 +213,9 @@ const HireMeButton = () => {
                   <p className="text-green-500 text-sm">Message sent successfully!</p>
                 )}
                 {submitStatus === 'error' && (
-                  <p className="text-red-500 text-sm">Failed to send message. Please try again.</p>
+                  <p className="text-red-500 text-sm">
+                    {initError ? 'Email service is not available. Please try again later.' : 'Failed to send message. Please try again.'}
+                  </p>
                 )}
               </form>
             </motion.div>

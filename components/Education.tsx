@@ -10,17 +10,12 @@ interface Education {
 
 const education: Education[] = [
   {
-    degree: "Bachelor of Science in Computer Science",
+    degree: "Bachelor of Science in Software Engineering",
     institution: "University of Technology",
-    period: "2016 - 2020",
+    period: "2019 - 2025",
     description: "Focused on software engineering, data structures, and algorithms. Participated in various hackathons and coding competitions."
   },
-  {
-    degree: "Master of Science in Software Engineering",
-    institution: "Tech University",
-    period: "2020 - 2022",
-    description: "Specialized in advanced software development methodologies, cloud computing, and distributed systems."
-  }
+  
 ];
 
 const Education = () => {

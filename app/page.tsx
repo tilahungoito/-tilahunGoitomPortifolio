@@ -4,49 +4,22 @@ import AnimatedText from '../components/AnimatedText';
 import HireMeButton from '../components/HireMeButton';
 import { motion } from 'framer-motion';
 import ProjectCard from '../components/ProjectCard';
-import { FiGithub, FiLinkedin, FiTwitter, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import Skills from '../components/Skills';
-import DownloadCV from '@/components/DownloadCV';
-import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
+import CertificateModal from '../components/CertificateModal';
+import { AnimatedTestimonials } from '../components/ui/animated-testimonials';
+import DownloadCV from '../components/DownloadCV';
+import Image from 'next/image';
+import { FiChevronLeft, FiChevronRight, FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
 import TopNavigation from '../components/TopNavigation';
 import ScrollToTop from '../components/ScrollToTop';
-import CertificateModal from '../components/CertificateModal';
 
 const Home = () => {
-  const [typingText, setTypingText] = useState('Software Engineer');
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
-
-  // Minimum swipe distance (in px)
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe && activeProjectIndex < projects.length - 1) {
-      setActiveProjectIndex(activeProjectIndex + 1);
-    }
-    if (isRightSwipe && activeProjectIndex > 0) {
-      setActiveProjectIndex(activeProjectIndex - 1);
-    }
-  };
+  const [typingText, setTypingText] = useState('Software Engineer');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,14 +34,14 @@ const Home = () => {
       title: "Role Based Insurance System",
       description: "A comprehensive health insurance management system that streamlines policy administration, claims processing, and member services. Features include automated underwriting, digital claims processing, provider network management, and integrated payment systems. The platform enhances operational efficiency through automated workflows and real-time analytics.",
       image: "/insurance admin.png",
-      tags: ["NestJS", "TypeORM", "PostgreSQL", "Swagger","Next.js", "Docker"],
+      technologies: ["NestJS", "TypeORM", "PostgreSQL", "Swagger","Next.js", "Docker"],
       link: "https://github.com/EthiopianInsuranceCoorpration/EIC.git"
     },
     {
       id: 5,
       title: 'Mekelle University Research Network',
       description: 'A sophisticated WordPress-based platform designed to enhance academic collaboration and research visibility at Mekelle University. This comprehensive system enables researchers to create detailed professional profiles, showcase their publications, and connect with potential collaborators. Features include advanced search capabilities, research interest matching, and a dynamic news feed highlighting university research achievements.',
-      tags: ['WordPress', 'PHP', 'MySQL', 'JavaScript', 'CSS'],
+      technologies: ['WordPress', 'PHP', 'MySQL', 'JavaScript', 'CSS'],
       image: '/wordpress.png',
       link: '#',
     },
@@ -76,7 +49,7 @@ const Home = () => {
       id: 1,
       title: 'E-commerce Platform',
       description: 'A comprehensive full-stack e-commerce solution built with React, Node.js, and MongoDB. This platform enables users to buy and sell educational materials including books, lectures, and tutorials. It features a collaborative learning environment where peers can work together and benefit from shared knowledge and resources.',
-      tags: ['React', 'Node.js', 'MongoDB', 'Express', "Next.js", 'Tailwind CSS'],
+      technologies: ['React', 'Node.js', 'MongoDB', 'Express', "Next.js", 'Tailwind CSS'],
       image: '/mycourses.png',
       link: 'https://peer-courses-tilahun-dtqk-git-main-tilahuns-projects-82416c09.vercel.app',
     },
@@ -84,7 +57,7 @@ const Home = () => {
       id: 2,
       title: 'Shire Referral Hospital Management System',
       description: 'A comprehensive hospital management system developed for Shire Referral Hospital. This system automates the appointment scheduling process, allowing doctors to efficiently manage and record patient appointments. It streamlines administrative workflows and improves the overall patient care experience.',
-      tags: ['PHP', 'XAMPP', 'Bootstrap', 'JavaScript', 'HTML'],
+      technologies: ['PHP', 'XAMPP', 'Bootstrap', 'JavaScript', 'HTML'],
       image: '/shire referal.png',
       link: 'https://github.com/tilahungoito/Shire-Hospital-patient-appointment-system',
     },
@@ -92,7 +65,7 @@ const Home = () => {
       id: 3,
       title: 'Disease Prediction System',
       description: 'An advanced machine learning-based disease prediction system that analyzes patient data including symptoms and vital signs to predict the likelihood of various diseases. This tool assists healthcare professionals in making more informed diagnostic decisions and improving patient outcomes through early intervention.',
-      tags: ['Python', 'Flask', 'Pandas', 'XGBoost', 'Scikit-learn'],
+      technologies: ['Python', 'Flask', 'Pandas', 'XGBoost', 'Scikit-learn'],
       image: '/predictorDisease.png',
       link: 'https://github.com/tilahungoito/CodeAlpha_diseases_predictor',
     },
@@ -100,11 +73,36 @@ const Home = () => {
       id: 4,
       title: 'Product Hub Marketplace',
       description: 'A versatile e-commerce platform that enables users to showcase and sell any product or service. The platform features an intuitive interface for listing items, searching for products, and facilitating transactions between buyers and sellers. It creates a comprehensive marketplace for diverse goods and services.',
-      tags: ['React', 'Node.js', 'Vite', 'Express', 'MongoDB'],
+      technologies: ['React', 'Node.js', 'Vite', 'Express', 'MongoDB'],
       image: '/find product.png',
       link: 'https://findproducts-2.onrender.com/',
     }
   ];
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && activeProjectIndex < projects.length - 1) {
+      setActiveProjectIndex(activeProjectIndex + 1);
+    } else if (isRightSwipe && activeProjectIndex > 0) {
+      setActiveProjectIndex(activeProjectIndex - 1);
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   return (
     <div className="overflow-x-hidden w-full">

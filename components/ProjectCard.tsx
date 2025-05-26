@@ -42,7 +42,7 @@ interface Project {
   title: string;
   description: string;
   image: string;
-  tags: string[];
+  technologies: string[];
   link: string;
 }
 
@@ -140,7 +140,7 @@ export default function ProjectCard({ project, isActive }: ProjectCardProps) {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
-        {project.tags.map((tag, i) => (
+        {project.technologies.map((tag, i) => (
             <span
               key={i}
             className="flex items-center gap-1 px-3 py-1 text-sm rounded-full bg-[rgb(var(--color-primary))]/10 text-[rgb(var(--color-primary))]"
