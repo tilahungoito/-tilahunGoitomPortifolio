@@ -9,6 +9,7 @@ import emailjs from '@emailjs/browser';
 const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
 const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_USER_ID;
+const REPLY_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID;
 
 const HireMeButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,7 +48,7 @@ const HireMeButton = () => {
       return;
     }
 
-    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY || !REPLY_TEMPLATE_ID) {
       console.error('EmailJS configuration is incomplete');
       setSubmitStatus('error');
       return;
@@ -57,37 +58,43 @@ const HireMeButton = () => {
     setSubmitStatus('idle');
 
     try {
-      console.log('Attempting to send email with params:', {
-        serviceId: SERVICE_ID,
-        templateId: TEMPLATE_ID,
-        publicKey: PUBLIC_KEY
-      });
-
-      // Updated template parameters for better email handling
-      const templateParams = {
+      // Send message to admin
+      const adminTemplateParams = {
         to_email: 'tilay1921@gmail.com',
         from_name: formData.name,
         from_email: formData.email,
         reply_to: formData.email,
         message: formData.message,
-        title: formData.message.substring(0, 50) + '...', // First 50 characters of message as title
+        title: formData.message.substring(0, 50) + '...',
         name: formData.name
       };
 
-      const response = await emailjs.send(
+      const adminResponse = await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
-        templateParams
+        adminTemplateParams
       );
 
-      console.log('EmailJS response:', response);
+      // Send auto-reply to user
+      const replyTemplateParams = {
+        to_email: formData.email,
+        to_name: formData.name,
+        from_name: 'Tilahun Goitom',
+        message: `Thank you for reaching out! I have received your message and will get back to you as soon as possible.\n\nBest regards,\nTilahun Goitom`
+      };
 
-      if (response.status === 200) {
+      const replyResponse = await emailjs.send(
+        SERVICE_ID,
+        REPLY_TEMPLATE_ID,
+        replyTemplateParams
+      );
+
+      if (adminResponse.status === 200 && replyResponse.status === 200) {
         setSubmitStatus('success');
         setFormData({ name: '', email: '', message: '' });
         setTimeout(() => setIsModalOpen(false), 2000);
       } else {
-        throw new Error(`Failed to send email: ${response.text}`);
+        throw new Error('Failed to send one or more emails');
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 
@@ -99,6 +106,7 @@ const HireMeButton = () => {
         message: errorMessage,
         serviceId: SERVICE_ID,
         templateId: TEMPLATE_ID,
+        replyTemplateId: REPLY_TEMPLATE_ID,
         publicKey: PUBLIC_KEY
       });
       

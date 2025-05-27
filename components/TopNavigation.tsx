@@ -91,13 +91,48 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
             >
                 <div className="container mx-auto px-4">
                     <div className="flex items-center justify-between h-16">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-xl font-bold text-[rgb(var(--color-primary))]"
-                        >
-                            TG
-                        </motion.div>
+                        <div className="flex items-center gap-4">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-xl font-bold text-[rgb(var(--color-primary))]"
+                            >
+                                TG
+                            </motion.div>
+                            <motion.div
+                                initial={{ y: -100, opacity: 0 }}
+                                animate={{ 
+                                    y: [null, 0, -20, 0, -10, 0, -5, 0],
+                                    opacity: [null, 1, 1, 1, 1, 1, 1, 1]
+                                }}
+                                transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    repeatDelay: 3,
+                                    ease: [0.17, 0.67, 0.83, 0.67], // Custom easing for bouncy effect
+                                    times: [0, 0.2, 0.4, 0.6, 0.7, 0.8, 0.9, 1]
+                                }}
+                                className="relative"
+                            >
+                                <span className="text-xl font-bold text-[rgb(var(--color-foreground))]">
+                                    ጥላሁን ጎይቶኦም
+                                </span>
+                                <motion.div
+                                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[rgb(var(--color-primary))]"
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ 
+                                        scaleX: [0, 1, 1, 0],
+                                        opacity: [0, 1, 1, 0]
+                                    }}
+                                    transition={{
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        repeatDelay: 3,
+                                        times: [0, 0.2, 0.8, 1]
+                                    }}
+                                />
+                            </motion.div>
+                        </div>
                         
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-8">

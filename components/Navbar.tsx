@@ -11,7 +11,7 @@ const Navbar = () => {
   const [isSkillsMenuOpen, setIsSkillsMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const TG="TG";
+  const TG="{TGDEV}";
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -69,7 +69,7 @@ const Navbar = () => {
   };
 
   // Split the name into individual characters for animation
-  const name = "ጥላሁን ጎይቶኦም";
+  const name = "Tilahun";
   const characters = name.split("");
 
   return (

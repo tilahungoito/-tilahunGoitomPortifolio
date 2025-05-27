@@ -18,7 +18,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onClose }) 
             image: '/certifications/TilahunGoitom(SoftwareEngineer) (1).pdf',
             description: 'Bachelor\'s degree in Software Engineering with comprehensive training in modern development practices, software architecture, and project management.',
             issuer: 'Mekelle University',
-            date: '2021',
+            date: '2025',
             skills: [
                 'Software Design',
                 'System Architecture',
@@ -50,7 +50,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onClose }) 
             image: '/certifications/ccna2.png',
             description: 'Cisco Certified Network Associate certification validating skills in network fundamentals, security, and automation.',
             issuer: 'Cisco Systems',
-            date: '2023',
+            date: '2024',
             skills: ['Network Infrastructure', 'Routing & Switching', 'Security Fundamentals', 'Network Automation'],
             level: 'Associate',
             verification: '/certifications/ccna2.png'
