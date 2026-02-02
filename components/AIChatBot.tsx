@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaRobot, FaTimes, FaPaperPlane, FaCommentDots } from 'react-icons/fa';
-import { projects } from '@/data/projects';
 
 interface Message {
     id: string;
@@ -77,7 +76,7 @@ export default function AIChatBot() {
         }, typingSpeed);
 
         return () => clearTimeout(timeout);
-    }, [charIndex, isDeleting, suggestionIndex, isFocused]);
+    }, [charIndex, isDeleting, suggestionIndex, isFocused, suggestions]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -106,7 +105,7 @@ export default function AIChatBot() {
         const timeoutId = setTimeout(() => {
             try {
                 controller.abort();
-            } catch (e) {
+            } catch {
                 // Ignore abort errors
             }
         }, 10000); // 10s timeout for better tolerance

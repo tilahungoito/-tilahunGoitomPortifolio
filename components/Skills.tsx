@@ -79,7 +79,7 @@ interface SkillsProps {
     setIsCertificateModalOpen: (isOpen: boolean) => void;
 }
 
-const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen: _isCertificateModalOpen, setIsCertificateModalOpen }) => {
+const Skills: React.FC<SkillsProps> = ({ setIsCertificateModalOpen }) => {
     const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
         languages: true,
         frontend: false,
