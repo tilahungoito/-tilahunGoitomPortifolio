@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProjectCard from './ProjectCard';
-import { projects, Project } from '../data/projects';
+import { projects } from '../data/projects';
 import { FiChevronLeft, FiChevronRight, FiGrid, FiLayers } from 'react-icons/fi';
 
 interface FeaturedProjectsProps {

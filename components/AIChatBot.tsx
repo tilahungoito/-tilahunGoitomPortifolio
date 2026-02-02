@@ -128,11 +128,11 @@ export default function AIChatBot() {
             if (data.error) throw new Error(data.error);
 
             addMessageWithTypewriter(data.text);
-        } catch (error: any) {
+        } catch (error: unknown) {
             clearTimeout(timeoutId);
 
             // Handle AbortError specifically to avoid "signal is aborted without reason"
-            if (error.name === 'AbortError') {
+            if (error instanceof Error && error.name === 'AbortError') {
                 console.warn('[AI Bot] Request timed out. Falling back to local brain.');
             } else {
                 console.error('Chat API Error:', error);
@@ -272,7 +272,7 @@ export default function AIChatBot() {
                                     <FaRobot className="text-blue-400 text-xl animate-pulse" />
                                 </div>
                                 <div>
-                                    <h3 className="text-white font-bold text-sm tracking-wide">Tilahun's AI</h3>
+                                    <h3 className="text-white font-bold text-sm tracking-wide">Tilahun&apos;s AI</h3>
                                     <div className="flex items-center gap-1.5">
                                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
                                         <span className="text-[10px] text-green-400 uppercase tracking-widest font-semibold">Online</span>

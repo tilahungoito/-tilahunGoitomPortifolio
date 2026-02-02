@@ -9,7 +9,7 @@ interface TopNavigationProps {
     setIsCertificateModalOpen: (isOpen: boolean) => void;
 }
 
-const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, setIsCertificateModalOpen }) => {
+const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen: _isCertificateModalOpen, setIsCertificateModalOpen }) => {
     const [activeSection, setActiveSection] = useState('home');
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
