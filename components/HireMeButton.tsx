@@ -57,6 +57,14 @@ const HireMeButton = () => {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
+    // Debug: Log environment variables (first 5 chars only for security)
+    console.log('EmailJS Config Check:', {
+      serviceId: SERVICE_ID ? SERVICE_ID.substring(0, 10) + '...' : 'MISSING',
+      templateId: TEMPLATE_ID ? TEMPLATE_ID.substring(0, 10) + '...' : 'MISSING',
+      replyTemplateId: REPLY_TEMPLATE_ID ? REPLY_TEMPLATE_ID.substring(0, 10) + '...' : 'MISSING',
+      publicKey: PUBLIC_KEY ? PUBLIC_KEY.substring(0, 5) + '...' : 'MISSING'
+    });
+
     try {
       // Send message to admin
       const adminTemplateParams = {
@@ -69,11 +77,14 @@ const HireMeButton = () => {
         name: formData.name
       };
 
+      console.log('Sending admin email...');
       const adminResponse = await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        adminTemplateParams
+        SERVICE_ID!,
+        TEMPLATE_ID!,
+        adminTemplateParams,
+        PUBLIC_KEY!
       );
+      console.log('Admin email sent:', adminResponse);
 
       // Send auto-reply to user
       const replyTemplateParams = {
@@ -83,11 +94,14 @@ const HireMeButton = () => {
         message: `Thank you for reaching out! I have received your message and will get back to you as soon as possible.\n\nBest regards,\nTilahun Goitom`
       };
 
+      console.log('Sending auto-reply email...');
       const replyResponse = await emailjs.send(
-        SERVICE_ID,
-        REPLY_TEMPLATE_ID,
-        replyTemplateParams
+        SERVICE_ID!,
+        REPLY_TEMPLATE_ID!,
+        replyTemplateParams,
+        PUBLIC_KEY!
       );
+      console.log('Auto-reply sent:', replyResponse);
 
       if (adminResponse.status === 200 && replyResponse.status === 200) {
         setSubmitStatus('success');
@@ -97,19 +111,31 @@ const HireMeButton = () => {
         throw new Error('Failed to send one or more emails');
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 
-        typeof error === 'object' && error !== null && 'text' in error ? 
-        (error as { text: string }).text : 'Unknown error';
-      
+      // Extract error message from various error formats
+      let errorMessage = 'Unknown error';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        if ('text' in error) {
+          errorMessage = (error as { text: string }).text;
+        } else if ('message' in error) {
+          errorMessage = (error as { message: string }).message;
+        } else {
+          errorMessage = JSON.stringify(error);
+        }
+      }
+
       console.error('EmailJS Error Details:', {
         error,
+        errorType: typeof error,
+        errorKeys: typeof error === 'object' && error !== null ? Object.keys(error) : 'N/A',
         message: errorMessage,
         serviceId: SERVICE_ID,
         templateId: TEMPLATE_ID,
         replyTemplateId: REPLY_TEMPLATE_ID,
-        publicKey: PUBLIC_KEY
+        publicKey: PUBLIC_KEY ? PUBLIC_KEY.substring(0, 5) + '...' : 'MISSING'
       });
-      
+
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);

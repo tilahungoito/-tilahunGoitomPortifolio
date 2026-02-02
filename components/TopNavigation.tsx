@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaHome, FaCode, FaProjectDiagram, FaComments, FaDownload, FaChevronDown } from 'react-icons/fa';
-import CertificateModal from './CertificateModal';
 
 interface TopNavigationProps {
     isCertificateModalOpen: boolean;
@@ -19,7 +18,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
-            
+
             const sections = ['home', 'skills', 'projects', 'testimonials', 'contact'];
             const currentSection = sections.find(section => {
                 const element = document.getElementById(section);
@@ -29,7 +28,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                 }
                 return false;
             });
-            
+
             if (currentSection) {
                 setActiveSection(currentSection);
             }
@@ -67,9 +66,9 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
 
     const navItems = [
         { id: 'home', label: 'Home', icon: <FaHome /> },
-        { 
-            id: 'skills', 
-            label: 'Skills', 
+        {
+            id: 'skills',
+            label: 'Skills',
             icon: <FaCode />,
             submenu: [
                 { id: 'certifications', label: 'Certifications', icon: <FaDownload /> }
@@ -85,9 +84,8 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
             <motion.nav
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-                    isScrolled ? 'bg-[rgb(var(--color-card))] shadow-lg' : 'bg-transparent'
-                }`}
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-[rgb(var(--color-card))] shadow-lg' : 'bg-transparent'
+                    }`}
             >
                 <div className="container mx-auto px-4">
                     <div className="flex items-center justify-between h-16">
@@ -101,7 +99,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                             </motion.div>
                             <motion.div
                                 initial={{ y: -100, opacity: 0 }}
-                                animate={{ 
+                                animate={{
                                     y: [null, 0, -20, 0, -10, 0, -5, 0],
                                     opacity: [null, 1, 1, 1, 1, 1, 1, 1]
                                 }}
@@ -120,7 +118,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                                 <motion.div
                                     className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[rgb(var(--color-primary))]"
                                     initial={{ scaleX: 0 }}
-                                    animate={{ 
+                                    animate={{
                                         scaleX: [0, 1, 1, 0],
                                         opacity: [0, 1, 1, 0]
                                     }}
@@ -133,7 +131,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                                 />
                             </motion.div>
                         </div>
-                        
+
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-8">
                             {navItems.map((item) => (
@@ -146,11 +144,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                                                 handleNavigationClick(item.id);
                                             }
                                         }}
-                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                                            activeSection === item.id
-                                                ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
-                                                : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
-                                        }`}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
+                                            ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                            : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                            }`}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
@@ -223,11 +220,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                                                         handleNavigationClick(item.id);
                                                     }
                                                 }}
-                                                className={`w-full flex items-center justify-between px-4 py-2 rounded-lg transition-colors ${
-                                                    activeSection === item.id
-                                                        ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
-                                                        : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
-                                                }`}
+                                                className={`w-full flex items-center justify-between px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
+                                                    ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                                    : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                                    }`}
                                                 whileHover={{ scale: 1.02 }}
                                                 whileTap={{ scale: 0.98 }}
                                             >
@@ -239,7 +235,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                                                     <FaChevronDown className={`transition-transform ${isSkillsSubmenuOpen ? 'rotate-180' : ''}`} />
                                                 )}
                                             </motion.button>
-                                            
+
                                             {item.submenu && isSkillsSubmenuOpen && (
                                                 <motion.div
                                                     initial={{ opacity: 0, height: 0 }}
@@ -269,10 +265,6 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ isCertificateModalOpen, s
                     )}
                 </AnimatePresence>
             </motion.nav>
-            <CertificateModal 
-                isOpen={isCertificateModalOpen} 
-                onClose={() => setIsCertificateModalOpen(false)} 
-            />
         </>
     );
 };

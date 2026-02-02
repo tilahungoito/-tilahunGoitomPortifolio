@@ -3,24 +3,33 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaReact, FaNodeJs, FaPython, FaJava, FaAws, FaDocker, FaGitAlt, FaAndroid, FaApple, FaVuejs, FaFigma, FaJira, FaCode, FaMobile, FaServer, FaDatabase, FaTools, FaVial, FaChevronDown } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiTailwindcss, SiNextdotjs, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiNestjs, SiExpress, SiPrisma, SiJest, SiCypress, SiSelenium, SiFlutter, SiCplusplus, SiSpringboot, SiCanva, SiPostman, SiSwagger } from 'react-icons/si';
+import { SiTypescript, SiJavascript, SiTailwindcss, SiNextdotjs, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiNestjs, SiExpress, SiPrisma, SiJest, SiCypress, SiSelenium, SiFlutter, SiCplusplus, SiSpringboot, SiCanva, SiPostman, SiSwagger, SiTensorflow, SiPytorch, SiJupyter, SiKeras, SiPandas, SiScikitlearn } from 'react-icons/si';
+import { GiArtificialIntelligence, GiBrain } from 'react-icons/gi';
 import { TbBrandReactNative } from 'react-icons/tb';
-import CertificateModal from './CertificateModal';
 
 interface Skill {
     name: string;
     icon: React.ReactElement;
     level: number;
-    category: 'frontend' | 'backend' | 'database' | 'devops' | 'testing' | 'mobile' | 'languages' | 'tools';
+    category: 'frontend' | 'backend' | 'database' | 'devops' | 'testing' | 'mobile' | 'languages' | 'aiml' | 'tools';
 }
 
 const skills: Skill[] = [
     // Programming Languages
     { name: 'JavaScript', icon: <SiJavascript className="text-[rgb(var(--color-primary))]" />, level: 90, category: 'languages' },
     { name: 'TypeScript', icon: <SiTypescript className="text-[rgb(var(--color-primary))]" />, level: 85, category: 'languages' },
-    { name: 'Python', icon: <FaPython className="text-[rgb(var(--color-primary))]" />, level: 80, category: 'languages' },
+    { name: 'Python', icon: <FaPython className="text-[rgb(var(--color-primary))]" />, level: 95, category: 'languages' },
     { name: 'Java', icon: <FaJava className="text-[rgb(var(--color-primary))]" />, level: 75, category: 'languages' },
     { name: 'C++', icon: <SiCplusplus className="text-[rgb(var(--color-primary))]" />, level: 70, category: 'languages' },
+
+    // AI & Machine Learning
+    { name: 'TensorFlow', icon: <SiTensorflow className="text-[rgb(var(--color-primary))]" />, level: 85, category: 'aiml' },
+    { name: 'PyTorch', icon: <SiPytorch className="text-[rgb(var(--color-primary))]" />, level: 80, category: 'aiml' },
+    { name: 'Keras', icon: <SiKeras className="text-[rgb(var(--color-primary))]" />, level: 85, category: 'aiml' },
+    { name: 'Jupyter Notebooks', icon: <SiJupyter className="text-[rgb(var(--color-primary))]" />, level: 90, category: 'aiml' },
+    { name: 'Scikit-Learn', icon: <SiScikitlearn className="text-[rgb(var(--color-primary))]" />, level: 85, category: 'aiml' },
+    { name: 'CNN / Deep Learning', icon: <GiBrain className="text-[rgb(var(--color-primary))]" />, level: 80, category: 'aiml' },
+    { name: 'Pandas', icon: <SiPandas className="text-[rgb(var(--color-primary))]" />, level: 90, category: 'aiml' },
 
     // Frontend
     { name: 'React', icon: <FaReact className="text-[rgb(var(--color-primary))]" />, level: 90, category: 'frontend' },
@@ -79,6 +88,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
         database: false,
         devops: false,
         testing: false,
+        aiml: false,
         tools: false,
         certifications: false
     });
@@ -94,7 +104,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
         }));
     };
 
-    const categories = ['languages', 'frontend', 'mobile', 'backend', 'database', 'devops', 'testing', 'tools', 'certifications'];
+    const categories = ['languages', 'aiml', 'frontend', 'mobile', 'backend', 'database', 'devops', 'testing', 'tools', 'certifications'];
     const categoryTitles = {
         languages: { title: 'Programming Languages', icon: <FaCode className="text-[rgb(var(--color-primary))] text-2xl" /> },
         frontend: { title: 'Frontend Development', icon: <FaReact className="text-[rgb(var(--color-primary))] text-2xl" /> },
@@ -103,6 +113,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
         database: { title: 'Database & ORM', icon: <FaDatabase className="text-[rgb(var(--color-primary))] text-2xl" /> },
         devops: { title: 'DevOps & Tools', icon: <FaTools className="text-[rgb(var(--color-primary))] text-2xl" /> },
         testing: { title: 'Testing & Quality', icon: <FaVial className="text-[rgb(var(--color-primary))] text-2xl" /> },
+        aiml: { title: 'AI & Machine Learning', icon: <GiArtificialIntelligence className="text-[rgb(var(--color-primary))] text-2xl" /> },
         tools: { title: 'Design & Development Tools', icon: <FaFigma className="text-[rgb(var(--color-primary))] text-2xl" /> },
         certifications: { title: 'Professional Certifications', icon: <FaCode className="text-[rgb(var(--color-primary))] text-2xl" /> }
     };
@@ -110,14 +121,14 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
     return (
         <section id="skills" className="py-16">
             <div className="container mx-auto px-4">
-            <motion.h2 
+                <motion.h2
                     initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
                     className="text-3xl font-bold text-center mb-12 text-[rgb(var(--color-foreground))]"
-            >
+                >
                     Technical Skills
-            </motion.h2>
+                </motion.h2>
                 {categories.map((category, categoryIndex) => (
                     <div key={category} className="mb-6">
                         <motion.button
@@ -134,16 +145,15 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                                 </h3>
                             </div>
                             {category !== 'certifications' && (
-                                <FaChevronDown 
-                                    className={`text-[rgb(var(--color-foreground))] transition-transform ${
-                                        expandedCategories[category] ? 'rotate-180' : ''
-                                    }`}
+                                <FaChevronDown
+                                    className={`text-[rgb(var(--color-foreground))] transition-transform ${expandedCategories[category] ? 'rotate-180' : ''
+                                        }`}
                                 />
                             )}
                         </motion.button>
-                        
+
                         {expandedCategories[category] && category !== 'certifications' && (
-            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
@@ -154,7 +164,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                                     {skills
                                         .filter(skill => skill.category === category)
                                         .map((skill, index) => (
-                    <motion.div
+                                            <motion.div
                                                 key={skill.name}
                                                 initial={{ opacity: 0, y: 20 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
@@ -166,15 +176,15 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                                                     <h4 className="text-xl font-semibold text-[rgb(var(--color-foreground))]">
                                                         {skill.name}
                                                     </h4>
-                        </div>
+                                                </div>
                                                 <div className="w-full bg-[rgb(var(--color-input))] rounded-full h-2.5">
-                                        <motion.div
+                                                    <motion.div
                                                         initial={{ width: 0 }}
                                                         whileInView={{ width: `${skill.level}%` }}
                                                         transition={{ duration: 1, delay: index * 0.1 }}
                                                         className="h-2.5 rounded-full bg-[rgb(var(--color-primary))]"
-                                        />
-                                    </div>
+                                                    />
+                                                </div>
                                                 <div className="mt-2 text-right text-sm text-[rgb(var(--color-muted))]">
                                                     {skill.level}%
                                                 </div>
@@ -183,7 +193,7 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                                 </div>
                             </motion.div>
                         )}
-                        </div>
+                    </div>
                 ))}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -194,12 +204,8 @@ const Skills: React.FC<SkillsProps> = ({ isCertificateModalOpen, setIsCertificat
                     <p className="text-lg text-[rgb(var(--color-muted))] leading-relaxed text-justify">
                         In the rapidly evolving landscape of technology, I maintain a steadfast commitment to continuous learning and skill enhancement. My dedication to mastering new technologies and methodologies enables me to deliver innovative solutions that drive business value. Through systematic learning and practical application, I ensure that each project benefits from the latest advancements in software development, resulting in robust, scalable, and user-centric applications.
                     </p>
-            </motion.div>
+                </motion.div>
             </div>
-            <CertificateModal 
-                isOpen={isCertificateModalOpen} 
-                onClose={() => setIsCertificateModalOpen(false)} 
-            />
         </section>
     );
 };

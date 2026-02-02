@@ -1,0 +1,123 @@
+{
+    "persona": {
+        "name": "Tilahun Goitom",
+        "role": "Full Stack Software Engineer & Cross-Platform Mobile Developer",
+        "education": "BSc in Software Engineering from Mekelle University",
+        "certifications": [
+            "Cisco Networking Enterprise Level Certified"
+        ],
+        "experience": "5+ years in professional software development",
+        "location": "Ethiopia",
+        "contact": {
+            "email": "tilay1921@gmail.com",
+            "linkedin": "https://www.linkedin.com/in/tilahun-goitom-559401302/",
+            "github": "https://github.com/tilahungoito",
+            "twitter": "https://x.com/TilahunGo1921"
+        }
+    },
+    "core_competencies": [
+        "Software Engineering",
+        "Full Stack Web Development",
+        "Cross-Platform Mobile Development (Flutter/Dart)",
+        "Artificial Intelligence (Machine Learning, Deep Learning)",
+        "Clinical Decision Support Systems",
+        "Database Management"
+    ],
+    "institutions": [
+        {
+            "name": "Mekelle University",
+            "projects": [
+                "Research Network Platform"
+            ],
+            "role": "Student & Developer"
+        },
+        {
+            "name": "Ethiopian Insurance Corporation (EIC)",
+            "projects": [
+                "Role Based Insurance System"
+            ],
+            "role": "Software Developer"
+        },
+        {
+            "name": "Shire Referral Hospital",
+            "projects": [
+                "Hospital Management System"
+            ],
+            "role": "Lead Developer"
+        }
+    ],
+    "projects": [
+        {
+            "id": 7,
+            "title": "AI-Based Health Assistant (Malaria & Pneumonia Detection)",
+            "description": "A comprehensive, production-ready system featuring both a Web interface and a Flutter mobile application. Includes intelligent health analysis, medical image detection (Malaria & Pneumonia), and AI doctor consultations.",
+            "technologies": [
+                "Next.js",
+                "Node.js",
+                "Flask",
+                "Express",
+                "PostgreSQL",
+                "Python",
+                "TensorFlow",
+                "Keras",
+                "Flutter",
+                "Dart"
+            ],
+            "github": "https://github.com/5TH-SOFTWARE-ENGINEERING/AI-Based-Health-Assistant-with-Clinical-Decision-Support-for-Malaria-and-Pneumonia.git",
+            "type": "Group Collaboration (5th Year Software Engineering Group)"
+        },
+        {
+            "id": 6,
+            "title": "Role Based Insurance System (EIC)",
+            "description": "Comprehensive health insurance management for EIC. Automated policy administration and claims processing.",
+            "technologies": [
+                "NestJS",
+                "TypeORM",
+                "PostgreSQL",
+                "Docker",
+                "Next.js"
+            ],
+            "github": "https://github.com/EthiopianInsuranceCoorpration/EIC.git",
+            "type": "Institutional Project"
+        },
+        {
+            "id": 3,
+            "title": "Disease Prediction System",
+            "description": "Analyzes symptoms and vitals using XGBoost to predict the likelihood of various diseases.",
+            "technologies": [
+                "Python",
+                "Flask",
+                "XGBoost",
+                "Pandas",
+                "Scikit-learn"
+            ],
+            "github": "https://github.com/tilahungoito/CodeAlpha_diseases_predictor",
+            "type": "Solo Project"
+        },
+        {
+            "id": 2,
+            "title": "Shire Referral Hospital Management System",
+            "description": "Automated appointment scheduling and patient record management to streamline hospital workflows.",
+            "technologies": [
+                "PHP",
+                "XAMPP",
+                "Bootstrap",
+                "JavaScript"
+            ],
+            "github": "https://github.com/tilahungoito/Shire-Hospital-patient-appointment-system",
+            "type": "Institutional Project"
+        }
+    ],
+    "collaborations": [
+        {
+            "group_name": "5th-year Software Engineering Group",
+            "project": "AI-Based Health Assistant",
+            "synergy": "Focus on clinical decision support and medical image analysis."
+        },
+        {
+            "partner": "Ethiopian Insurance Corporation Team",
+            "project": "Role Based Insurance System",
+            "synergy": "Enterprise-level role-based access control and secure financial handling."
+        }
+    ]
+}

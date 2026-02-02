@@ -3,22 +3,19 @@
 import AnimatedText from '../components/AnimatedText';
 import HireMeButton from '../components/HireMeButton';
 import { motion } from 'framer-motion';
-import ProjectCard from '../components/ProjectCard';
 import Skills from '../components/Skills';
 import CertificateModal from '../components/CertificateModal';
 import { AnimatedTestimonials } from '../components/ui/animated-testimonials';
 import DownloadCV from '../components/DownloadCV';
+import FeaturedProjects from '../components/FeaturedProjects';
 import Image from 'next/image';
-import { FiChevronLeft, FiChevronRight, FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import TopNavigation from '../components/TopNavigation';
 import ScrollToTop from '../components/ScrollToTop';
 
 const Home = () => {
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
-  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [typingText, setTypingText] = useState('Software Engineer');
 
   useEffect(() => {
@@ -28,85 +25,10 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const projects = [
-    {
-      id: 6,
-      title: "Role Based Insurance System",
-      description: "A comprehensive health insurance management system that streamlines policy administration, claims processing, and member services. Features include automated underwriting, digital claims processing, provider network management, and integrated payment systems. The platform enhances operational efficiency through automated workflows and real-time analytics.",
-      image: "/insurance admin.png",
-      technologies: ["NestJS", "TypeORM", "PostgreSQL", "Swagger","Next.js", "Docker"],
-      link: "https://github.com/EthiopianInsuranceCoorpration/EIC.git"
-    },
-    {
-      id: 5,
-      title: 'Mekelle University Research Network',
-      description: 'A sophisticated WordPress-based platform designed to enhance academic collaboration and research visibility at Mekelle University. This comprehensive system enables researchers to create detailed professional profiles, showcase their publications, and connect with potential collaborators. Features include advanced search capabilities, research interest matching, and a dynamic news feed highlighting university research achievements.',
-      technologies: ['WordPress', 'PHP', 'MySQL', 'JavaScript', 'CSS'],
-      image: '/wordpress.png',
-      link: '#',
-    },
-    {
-      id: 1,
-      title: 'E-commerce Platform',
-      description: 'A comprehensive full-stack e-commerce solution built with React, Node.js, and MongoDB. This platform enables users to buy and sell educational materials including books, lectures, and tutorials. It features a collaborative learning environment where peers can work together and benefit from shared knowledge and resources.',
-      technologies: ['React', 'Node.js', 'MongoDB', 'Express', "Next.js", 'Tailwind CSS'],
-      image: '/mycourses.png',
-      link: 'https://peer-courses-tilahun-dtqk-git-main-tilahuns-projects-82416c09.vercel.app',
-    },
-    {
-      id: 2,
-      title: 'Shire Referral Hospital Management System',
-      description: 'A comprehensive hospital management system developed for Shire Referral Hospital. This system automates the appointment scheduling process, allowing doctors to efficiently manage and record patient appointments. It streamlines administrative workflows and improves the overall patient care experience.',
-      technologies: ['PHP', 'XAMPP', 'Bootstrap', 'JavaScript', 'HTML'],
-      image: '/shire referal.png',
-      link: 'https://github.com/tilahungoito/Shire-Hospital-patient-appointment-system',
-    },
-    {
-      id: 3,
-      title: 'Disease Prediction System',
-      description: 'An advanced machine learning-based disease prediction system that analyzes patient data including symptoms and vital signs to predict the likelihood of various diseases. This tool assists healthcare professionals in making more informed diagnostic decisions and improving patient outcomes through early intervention.',
-      technologies: ['Python', 'Flask', 'Pandas', 'XGBoost', 'Scikit-learn'],
-      image: '/predictorDisease.png',
-      link: 'https://github.com/tilahungoito/CodeAlpha_diseases_predictor',
-    },
-    {
-      id: 4,
-      title: 'Product Hub Marketplace',
-      description: 'A versatile e-commerce platform that enables users to showcase and sell any product or service. The platform features an intuitive interface for listing items, searching for products, and facilitating transactions between buyers and sellers. It creates a comprehensive marketplace for diverse goods and services.',
-      technologies: ['React', 'Node.js', 'Vite', 'Express', 'MongoDB'],
-      image: '/find product.png',
-      link: 'https://findproducts-2.onrender.com/',
-    }
-  ];
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe && activeProjectIndex < projects.length - 1) {
-      setActiveProjectIndex(activeProjectIndex + 1);
-    } else if (isRightSwipe && activeProjectIndex > 0) {
-      setActiveProjectIndex(activeProjectIndex - 1);
-    }
-
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
 
   return (
     <div className="overflow-x-hidden w-full">
-      <TopNavigation 
+      <TopNavigation
         isCertificateModalOpen={isCertificateModalOpen}
         setIsCertificateModalOpen={setIsCertificateModalOpen}
       />
@@ -115,328 +37,328 @@ const Home = () => {
 
       <section id="home" className="min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-8 items-center w-full max-w-7xl mx-auto">
-    <div className="order-2 md:order-1">
-      <AnimatedText
-        text="Hi,✋ I'm Tilahun.G"
+          <div className="order-2 md:order-1">
+            <AnimatedText
+              text="Hi,✋ I'm Tilahun.G"
               className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4"
-      />
-      <AnimatedText
-        text="Full Stack Developer"
+            />
+            <AnimatedText
+              text="Full Stack Developer"
               className="text-xl sm:text-2xl md:text-4xl text-primary mb-4"
-      />
-      
-      {/* Enhanced About Me Content with Handwriting Animation */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
+            />
+
+            {/* Enhanced About Me Content with Handwriting Animation */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
               className="text-base sm:text-lg mb-8 space-y-4"
-      >
-        <motion.p
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{
-            duration: 2,
-            ease: "easeInOut",
-            delay: 0.4
-          }}
-          style={{
-            position: 'relative',
-            paddingLeft: '2rem'
-          }}
-        >
-          <span className="absolute left-0 top-0 text-primary">✍️</span>
-          <span className="handwriting-animation">
-            I&apos;m known for tech passionate, dedicated to creating digital excellence.
-          </span>
-        </motion.p>
+            >
+              <motion.p
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{
+                  duration: 2,
+                  ease: "easeInOut",
+                  delay: 0.4
+                }}
+                style={{
+                  position: 'relative',
+                  paddingLeft: '2rem'
+                }}
+              >
+                <span className="absolute left-0 top-0 text-primary">✍️</span>
+                <span className="handwriting-animation">
+                  I&apos;m known for tech passionate, dedicated to creating digital excellence.
+                </span>
+              </motion.p>
 
-        <motion.p
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{
-            duration: 2,
-            ease: "easeInOut",
-            delay: 0.8
-          }}
-          style={{
-            position: 'relative',
-            paddingLeft: '2rem'
-          }}
-        >
-          <span className="absolute left-0 top-0 text-primary">🎓</span>
-          <span className="handwriting-animation">
-            Bachelor of Software Engineering from Mekelle University.
-          </span>
-        </motion.p>
+              <motion.p
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{
+                  duration: 2,
+                  ease: "easeInOut",
+                  delay: 0.8
+                }}
+                style={{
+                  position: 'relative',
+                  paddingLeft: '2rem'
+                }}
+              >
+                <span className="absolute left-0 top-0 text-primary">🎓</span>
+                <span className="handwriting-animation">
+                  Bachelor of Software Engineering from Mekelle University.
+                </span>
+              </motion.p>
 
-        <motion.p
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{
-            duration: 2,
-            ease: "easeInOut",
-            delay: 1.2
-          }}
-          style={{
-            position: 'relative',
-            paddingLeft: '2rem'
-          }}
-        >
-          <span className="absolute left-0 top-0 text-primary">🔌</span>
-          <span className="handwriting-animation">
-            Cisco Networking Enterprise Level Certified professional.
-          </span>
-        </motion.p>
+              <motion.p
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{
+                  duration: 2,
+                  ease: "easeInOut",
+                  delay: 1.2
+                }}
+                style={{
+                  position: 'relative',
+                  paddingLeft: '2rem'
+                }}
+              >
+                <span className="absolute left-0 top-0 text-primary">🔌</span>
+                <span className="handwriting-animation">
+                  Cisco Networking Enterprise Level Certified professional.
+                </span>
+              </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6 }}
-        >
-          I build exceptional digital experiences with modern technologies.
-          Focused on creating intuitive, performant, and accessible web
-          applications and mobile apps.
-        </motion.p>
-      </motion.div>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.6 }}
+              >
+                I build exceptional digital experiences with modern technologies.
+                Focused on creating intuitive, performant, and accessible web
+                applications and mobile apps.
+              </motion.p>
+            </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4"
-      >
-        <a
-          href="#projects"
+            >
+              <a
+                href="#projects"
                 className="bg-dark text-light px-6 py-3 rounded-lg hover:bg-dark/90 transition-colors cursor-pointer text-center"
-        >
-          View Projects
-        </a>
-        <a
-          href="#contact"
+              >
+                View Projects
+              </a>
+              <a
+                href="#contact"
                 className="bg-primary text-light px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors cursor-pointer text-center"
-        >
-          Contact Me
-        </a>
-      </motion.div>
-    </div>
+              >
+                Contact Me
+              </a>
+            </motion.div>
+          </div>
 
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      className="relative order-1 md:order-2"
-    >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative order-1 md:order-2"
+          >
             <div className="w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden relative">
-        {/* Fantastic background with gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 opacity-80 z-10"></div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-32 h-32 bg-yellow-400 rounded-full opacity-20 blur-2xl z-0"></div>
-        <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-full opacity-20 blur-2xl z-0"></div>
-        
-        {/* Floating images with sun rays */}
-        <motion.div 
-          className="absolute top-0 left-0 w-16 h-16 z-20"
-          animate={{
-            x: [0, 100, 200, 300, 200, 100, 0],
-            y: [0, 50, 0, 50, 0, 50, 0],
-            rotate: [0, 10, 0, -10, 0, 10, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
-              {[...Array(12)].map((_, i) => (
-                <div
-                  key={i}
-                  className="sun-ray"
-                  style={{
-                    transform: `rotate(${i * 30}deg)`,
-                    '--i': i
-                  } as React.CSSProperties}
-                />
-              ))}
-            </div>
-            <Image
-              src="/tilahun1.jpg"
-              alt="Tilahun 1"
-              width={64}
-              height={64}
-              className="rounded-full border-2 border-white shadow-lg relative z-10"
-            />
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="absolute top-1/4 right-0 w-16 h-16 z-20"
-          animate={{
-            x: [0, -100, -200, -300, -200, -100, 0],
-            y: [0, -50, 0, -50, 0, -50, 0],
-            rotate: [0, -10, 0, 10, 0, -10, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 2
-          }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
-              {[...Array(12)].map((_, i) => (
-                <div
-                  key={i}
-                  className="sun-ray"
-                  style={{
-                    transform: `rotate(${i * 30}deg)`,
-                    '--i': i
-                  } as React.CSSProperties}
-                />
-              ))}
-            </div>
-            <Image
-              src="/tilahun2.jpg"
-              alt="Tilahun 2"
-              width={64}
-              height={64}
-              className="rounded-full border-2 border-white shadow-lg relative z-10"
-            />
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="absolute bottom-1/4 left-0 w-16 h-16 z-20"
-          animate={{
-            x: [0, 150, 250, 350, 250, 150, 0],
-            y: [0, -30, 0, -30, 0, -30, 0],
-            rotate: [0, 15, 0, -15, 0, 15, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 4
-          }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
-              {[...Array(12)].map((_, i) => (
-                <div
-                  key={i}
-                  className="sun-ray"
-                  style={{
-                    transform: `rotate(${i * 30}deg)`,
-                    '--i': i
-                  } as React.CSSProperties}
-                />
-              ))}
-            </div>
-            <Image
-              src="/tilahun3.jpg"
-              alt="Tilahun 3"
-              width={64}
-              height={64}
-              className="rounded-full border-2 border-white shadow-lg relative z-10"
-            />
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="absolute bottom-0 right-1/4 w-16 h-16 z-20"
-          animate={{
-            x: [0, -150, -250, -350, -250, -150, 0],
-            y: [0, 30, 0, 30, 0, 30, 0],
-            rotate: [0, -15, 0, 15, 0, -15, 0],
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 6
-          }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
-              {[...Array(12)].map((_, i) => (
-                <div
-                  key={i}
-                  className="sun-ray"
-                  style={{
-                    transform: `rotate(${i * 30}deg)`,
-                    '--i': i
-                  } as React.CSSProperties}
-                />
-              ))}
-            </div>
-            <Image
-              src="/tilahun4.jpg"
-              alt="Tilahun 4"
-              width={64}
-              height={64}
-              className="rounded-full border-2 border-white shadow-lg relative z-10"
-            />
-          </div>
-        </motion.div>
-        
-        {/* Profile image with proper positioning */}
-        <div className="absolute inset-0 flex items-center justify-center z-20">
-          <div className="relative">
-            {/* Optimized Sun Rays Container */}
-            <div className="absolute inset-0 animate-sun-rays pointer-events-none">
-              {[...Array(12)].map((_, i) => (
-                <div
-                  key={i}
-                  className="sun-ray"
-                  style={{
-                    transform: `rotate(${i * 30}deg)`,
-                    '--i': i
-                  } as React.CSSProperties}
-                />
-              ))}
-            </div>
-            <Image
-              src="/tilea.jpg"
-              alt="Profile"
-              width={800}
-              height={800}
-              className="w-full h-full object-contain object-center relative z-10 rounded-full"
-              priority
-            />
-          </div>
-        </div>
-      </div>
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          rotate: [0, 5, -5, 0],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          repeatType: "reverse",
-        }}
-        className="absolute -bottom-4 -left-4 bg-primary text-light px-4 py-2 rounded-lg shadow-lg"
-      >
-        <span className="font-bold">5+</span> Years Experience
-      </motion.div>
-      <div className="absolute -bottom-4 right-4">
-        <DownloadCV />
-      </div>
-      <div className="mt-6 text-center md:text-left">
-        <AnimatedText
-          text={typingText}
-          className="text-2xl md:text-3xl text-primary"
-        />
-      </div>
-    </motion.div>
-  </div>
+              {/* Fantastic background with gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 opacity-80 z-10"></div>
 
-  <style jsx global>{`
+              {/* Decorative elements */}
+              <div className="absolute top-0 left-0 w-32 h-32 bg-yellow-400 rounded-full opacity-20 blur-2xl z-0"></div>
+              <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-full opacity-20 blur-2xl z-0"></div>
+
+              {/* Floating images with sun rays */}
+              <motion.div
+                className="absolute top-0 left-0 w-16 h-16 z-20"
+                animate={{
+                  x: [0, 100, 200, 300, 200, 100, 0],
+                  y: [0, 50, 0, 50, 0, 50, 0],
+                  rotate: [0, 10, 0, -10, 0, 10, 0],
+                }}
+                transition={{
+                  duration: 15,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="sun-ray"
+                        style={{
+                          transform: `rotate(${i * 30}deg)`,
+                          '--i': i
+                        } as React.CSSProperties}
+                      />
+                    ))}
+                  </div>
+                  <Image
+                    src="/tilahun1.jpg"
+                    alt="Tilahun 1"
+                    width={64}
+                    height={64}
+                    className="rounded-full border-2 border-white shadow-lg relative z-10"
+                  />
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="absolute top-1/4 right-0 w-16 h-16 z-20"
+                animate={{
+                  x: [0, -100, -200, -300, -200, -100, 0],
+                  y: [0, -50, 0, -50, 0, -50, 0],
+                  rotate: [0, -10, 0, 10, 0, -10, 0],
+                }}
+                transition={{
+                  duration: 18,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: 2
+                }}
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="sun-ray"
+                        style={{
+                          transform: `rotate(${i * 30}deg)`,
+                          '--i': i
+                        } as React.CSSProperties}
+                      />
+                    ))}
+                  </div>
+                  <Image
+                    src="/tilahun2.jpg"
+                    alt="Tilahun 2"
+                    width={64}
+                    height={64}
+                    className="rounded-full border-2 border-white shadow-lg relative z-10"
+                  />
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="absolute bottom-1/4 left-0 w-16 h-16 z-20"
+                animate={{
+                  x: [0, 150, 250, 350, 250, 150, 0],
+                  y: [0, -30, 0, -30, 0, -30, 0],
+                  rotate: [0, 15, 0, -15, 0, 15, 0],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: 4
+                }}
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="sun-ray"
+                        style={{
+                          transform: `rotate(${i * 30}deg)`,
+                          '--i': i
+                        } as React.CSSProperties}
+                      />
+                    ))}
+                  </div>
+                  <Image
+                    src="/tilahun3.jpg"
+                    alt="Tilahun 3"
+                    width={64}
+                    height={64}
+                    className="rounded-full border-2 border-white shadow-lg relative z-10"
+                  />
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="absolute bottom-0 right-1/4 w-16 h-16 z-20"
+                animate={{
+                  x: [0, -150, -250, -350, -250, -150, 0],
+                  y: [0, 30, 0, 30, 0, 30, 0],
+                  rotate: [0, -15, 0, 15, 0, -15, 0],
+                }}
+                transition={{
+                  duration: 22,
+                  repeat: Infinity,
+                  ease: "linear",
+                  delay: 6
+                }}
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="sun-ray"
+                        style={{
+                          transform: `rotate(${i * 30}deg)`,
+                          '--i': i
+                        } as React.CSSProperties}
+                      />
+                    ))}
+                  </div>
+                  <Image
+                    src="/tilahun4.jpg"
+                    alt="Tilahun 4"
+                    width={64}
+                    height={64}
+                    className="rounded-full border-2 border-white shadow-lg relative z-10"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Profile image with proper positioning */}
+              <div className="absolute inset-0 flex items-center justify-center z-20">
+                <div className="relative">
+                  {/* Optimized Sun Rays Container */}
+                  <div className="absolute inset-0 animate-sun-rays pointer-events-none">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="sun-ray"
+                        style={{
+                          transform: `rotate(${i * 30}deg)`,
+                          '--i': i
+                        } as React.CSSProperties}
+                      />
+                    ))}
+                  </div>
+                  <Image
+                    src="/tilea.jpg"
+                    alt="Profile"
+                    width={800}
+                    height={800}
+                    className="w-full h-full object-contain object-center relative z-10 rounded-full"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+              className="absolute -bottom-4 -left-4 bg-primary text-light px-4 py-2 rounded-lg shadow-lg"
+            >
+              <span className="font-bold">5+</span> Years Experience
+            </motion.div>
+            <div className="absolute -bottom-4 right-4">
+              <DownloadCV />
+            </div>
+            <div className="mt-6 text-center md:text-left">
+              <AnimatedText
+                text={typingText}
+                className="text-2xl md:text-3xl text-primary"
+              />
+            </div>
+          </motion.div>
+        </div>
+
+        <style jsx global>{`
     @keyframes handwriting {
       from {
         clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
@@ -525,112 +447,31 @@ const Home = () => {
       }
     }
   `}</style>
-</section>
+      </section>
 
       <section id="skills" className="py-8 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">My Skills</h2>
           <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto text-sm sm:text-base">
-            A comprehensive showcase of my technical expertise and professional capabilities. 
-            From front-end to back-end development, I&apos;ve mastered a diverse range of technologies 
+            A comprehensive showcase of my technical expertise and professional capabilities.
+            From front-end to back-end development, I&apos;ve mastered a diverse range of technologies
             that enable me to build robust and scalable applications.
           </p>
-          <Skills 
+          <Skills
             isCertificateModalOpen={isCertificateModalOpen}
             setIsCertificateModalOpen={setIsCertificateModalOpen}
           />
         </div>
       </section>
 
-      <section id="projects" className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-7xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">Featured Projects</h2>
-          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto text-sm sm:text-base">
-            A curated collection of my most impactful work, showcasing my journey in creating innovative solutions. 
-            Each project represents my passion for building meaningful applications that solve real-world problems 
-            and make a difference in people&apos;s lives.
-          </p>
-        <div className="relative max-w-4xl mx-auto">
-          {/* Navigation Buttons */}
-          <button
-            onClick={() => {
-              if (activeProjectIndex > 0) {
-                setActiveProjectIndex(activeProjectIndex - 1);
-              }
-            }}
-            className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors ${
-              activeProjectIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            disabled={activeProjectIndex === 0}
-          >
-            <FiChevronLeft size={24} className={activeProjectIndex === 0 ? 'text-gray-400' : 'text-primary'} />
-          </button>
-          
-          <button
-            onClick={() => {
-              if (activeProjectIndex < projects.length - 1) {
-                setActiveProjectIndex(activeProjectIndex + 1);
-              }
-            }}
-            className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors ${
-              activeProjectIndex === projects.length - 1 ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            disabled={activeProjectIndex === projects.length - 1}
-          >
-            <FiChevronRight size={24} className={activeProjectIndex === projects.length - 1 ? 'text-gray-400' : 'text-primary'} />
-          </button>
-
-          {/* Single Card Container */}
-          <div 
-            className="relative h-[600px]"
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ 
-                  opacity: activeProjectIndex === index ? 1 : 0,
-                  x: activeProjectIndex === index ? 0 : (index < activeProjectIndex ? -100 : 100),
-                  scale: activeProjectIndex === index ? 1 : 0.9,
-                  transition: { duration: 0.5 }
-                }}
-                className={`absolute inset-0 ${
-                  activeProjectIndex === index ? 'z-10' : 'z-0'
-                }`}
-              >
-                <ProjectCard 
-                  project={project} 
-                  isActive={index === activeProjectIndex}
-                />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Progress Indicators */}
-          <div className="flex justify-center gap-2 mt-8">
-            {projects.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveProjectIndex(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  activeProjectIndex === index ? 'bg-[rgb(var(--color-primary))]' : 'bg-gray-300'
-                }`}
-              />
-            ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <FeaturedProjects autoSlideInterval={5000} />
 
       <section id="testimonials" className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center text-[rgb(var(--color-foreground))]">What People Say</h2>
           <p className="text-[rgb(var(--color-muted))] text-center mb-12 max-w-2xl mx-auto text-sm sm:text-base">
-            Words of encouragement and feedback from colleagues, mentors, and clients who have witnessed my 
-            growth and dedication firsthand. Their trust and support continue to inspire me to push boundaries 
+            Words of encouragement and feedback from colleagues, mentors, and clients who have witnessed my
+            growth and dedication firsthand. Their trust and support continue to inspire me to push boundaries
             and deliver excellence in everything I do.
           </p>
           <div className="max-w-4xl mx-auto">
@@ -699,9 +540,9 @@ const Home = () => {
         </div>
       </section>
 
-      <CertificateModal 
-        isOpen={isCertificateModalOpen} 
-        onClose={() => setIsCertificateModalOpen(false)} 
+      <CertificateModal
+        isOpen={isCertificateModalOpen}
+        onClose={() => setIsCertificateModalOpen(false)}
       />
     </div>
   );

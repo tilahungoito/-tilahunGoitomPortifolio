@@ -32,10 +32,10 @@ export default function RootLayout({
       <body className={`${inter.className} transition-colors duration-300`}>
         <ThemeProvider>
           <div className="relative">
-        <Navbar />
+            <Navbar />
             <ThemeToggle />
           </div>
-        <MotionWrapper>{children}</MotionWrapper>
+          <MotionWrapper>{children}</MotionWrapper>
         </ThemeProvider>
       </body>
     </html>
