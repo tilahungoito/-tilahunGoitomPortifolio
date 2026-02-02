@@ -11,9 +11,16 @@ const MODELS = [
     'gemini-flash-lite-latest'
 ];
 
+interface ChatMessage {
+    id?: string;
+    text: string;
+    sender: 'user' | 'ai';
+    timestamp?: string | Date;
+}
+
 export async function POST(req: Request) {
     try {
-        const { messages } = await req.json();
+        const { messages }: { messages: ChatMessage[] } = await req.json();
 
         if (!API_KEY) {
             console.warn('[AI Bot] GEMINI_API_KEY is missing!');
@@ -34,7 +41,7 @@ export async function POST(req: Request) {
     5. Always bridge non-tech questions (like "I am a farmer") back to your software expertise.
     6. Be friendly, professional, and concise.`;
 
-        const contents = messages.map((m: any) => ({
+        const contents = messages.map((m: ChatMessage) => ({
             role: m.sender === 'user' ? 'user' : 'model',
             parts: [{ text: m.text }]
         }));
@@ -82,8 +89,9 @@ export async function POST(req: Request) {
 
                 // For other errors, we might still want to try the next model just in case
                 lastError = 'API_ERROR';
-            } catch (err: any) {
-                console.error(`[AI Bot] Request to ${modelName} failed:`, err.message);
+            } catch (err) {
+                const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+                console.error(`[AI Bot] Request to ${modelName} failed:`, errorMessage);
                 lastError = 'FETCH_FAILED';
             }
         }
@@ -91,8 +99,9 @@ export async function POST(req: Request) {
         // If we're here, all models failed
         return NextResponse.json({ error: lastError || 'ALL_MODELS_FAILED' }, { status: 503 });
 
-    } catch (error: any) {
+    } catch (error) {
         console.error('Chat API Error:', error);
-        return NextResponse.json({ error: 'INTERNAL_ERROR', message: error.message }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : 'INTERNAL_ERROR';
+        return NextResponse.json({ error: 'INTERNAL_ERROR', message: errorMessage }, { status: 500 });
     }
 }

@@ -1,13 +1,14 @@
 /*app/ globals.css */
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 :root {
-  --color-primary: 59, 130, 246; /* Blue-500 */
-  --color-secondary: 99, 102, 241; /* Indigo-500 */
-  --color-accent: 236, 72, 153; /* Pink-500 */
+  --color-primary: 59, 130, 246;
+  /* Blue-500 */
+  --color-secondary: 99, 102, 241;
+  /* Indigo-500 */
+  --color-accent: 236, 72, 153;
+  /* Pink-500 */
   --color-background: 255, 255, 255;
   --color-foreground: 17, 24, 39;
   --color-muted: 107, 114, 128;
@@ -20,9 +21,12 @@
 }
 
 [data-theme="dark"] {
-  --color-primary: 96, 165, 250; /* Blue-400 */
-  --color-secondary: 129, 140, 248; /* Indigo-400 */
-  --color-accent: 244, 114, 182; /* Pink-400 */
+  --color-primary: 96, 165, 250;
+  /* Blue-400 */
+  --color-secondary: 129, 140, 248;
+  /* Indigo-400 */
+  --color-accent: 244, 114, 182;
+  /* Pink-400 */
   --color-background: 17, 24, 39;
   --color-foreground: 243, 244, 246;
   --color-muted: 156, 163, 175;
@@ -42,7 +46,12 @@ body {
   @apply bg-[rgb(var(--color-background))] text-[rgb(var(--color-foreground))];
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   @apply text-[rgb(var(--color-foreground))];
 }
 
@@ -52,9 +61,7 @@ p {
 
 /* Enhanced Card Styles */
 .card {
-  @apply bg-[rgb(var(--color-card))] text-[rgb(var(--color-card-foreground))] 
-         border border-[rgb(var(--color-border))] rounded-lg shadow-md 
-         hover:shadow-lg transition-all duration-200;
+  @apply bg-[rgb(var(--color-card))] text-[rgb(var(--color-card-foreground))] border border-[rgb(var(--color-border))] rounded-lg shadow-md hover:shadow-lg transition-all duration-200;
 }
 
 .card-hover {
@@ -63,39 +70,25 @@ p {
 
 /* Button Styles */
 .button {
-  @apply bg-[rgb(var(--color-primary))] text-white 
-         hover:bg-[rgb(var(--color-primary))]/90 
-         transition-all duration-200 
-         rounded-lg px-4 py-2 
-         shadow-md hover:shadow-lg;
+  @apply bg-[rgb(var(--color-primary))] text-white hover:bg-[rgb(var(--color-primary))]/90 transition-all duration-200 rounded-lg px-4 py-2 shadow-md hover:shadow-lg;
 }
 
 .button-secondary {
-  @apply bg-[rgb(var(--color-secondary))] text-white 
-         hover:bg-[rgb(var(--color-secondary))]/90;
+  @apply bg-[rgb(var(--color-secondary))] text-white hover:bg-[rgb(var(--color-secondary))]/90;
 }
 
 .button-accent {
-  @apply bg-[rgb(var(--color-accent))] text-white 
-         hover:bg-[rgb(var(--color-accent))]/90;
+  @apply bg-[rgb(var(--color-accent))] text-white hover:bg-[rgb(var(--color-accent))]/90;
 }
 
 /* Navigation Styles */
 .nav-link {
-  @apply text-[rgb(var(--color-foreground))] 
-         hover:text-[rgb(var(--color-primary))] 
-         transition-colors duration-200;
+  @apply text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors duration-200;
 }
 
 /* Input Styles */
 .input {
-  @apply bg-[rgb(var(--color-input))] 
-         text-[rgb(var(--color-input-foreground))] 
-         border border-[rgb(var(--color-border))] 
-         rounded-lg px-4 py-2 
-         focus:ring-2 focus:ring-[rgb(var(--color-ring))] 
-         focus:border-transparent 
-         transition-all duration-200;
+  @apply bg-[rgb(var(--color-input))] text-[rgb(var(--color-input-foreground))] border border-[rgb(var(--color-border))] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[rgb(var(--color-ring))] focus:border-transparent transition-all duration-200;
 }
 
 /* Custom scrollbar */
@@ -124,6 +117,7 @@ p {
   from {
     clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
   }
+
   to {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   }
@@ -139,6 +133,7 @@ p {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -160,13 +155,12 @@ p {
   width: 2px;
   height: 100px;
   background: linear-gradient(to top,
-    transparent 0%,
-    rgba(255, 215, 0, 0.2) 20%,
-    rgba(255, 215, 0, 0.4) 40%,
-    rgba(255, 165, 0, 0.6) 60%,
-    rgba(255, 165, 0, 0.8) 80%,
-    rgba(255, 165, 0, 1) 100%
-  );
+      transparent 0%,
+      rgba(255, 215, 0, 0.2) 20%,
+      rgba(255, 215, 0, 0.4) 40%,
+      rgba(255, 165, 0, 0.6) 60%,
+      rgba(255, 165, 0, 0.8) 80%,
+      rgba(255, 165, 0, 1) 100%);
   transform-origin: bottom center;
   filter: blur(1px);
   animation: ray-pulse 3s ease-in-out infinite;
@@ -176,10 +170,13 @@ p {
 }
 
 @keyframes ray-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     height: 100px;
     opacity: 0.7;
   }
+
   50% {
     height: 150px;
     opacity: 1;
@@ -191,12 +188,10 @@ p {
   content: '';
   position: absolute;
   inset: -20px;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 215, 0, 0.3) 0%,
-    rgba(255, 165, 0, 0.2) 30%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at center,
+      rgba(255, 215, 0, 0.3) 0%,
+      rgba(255, 165, 0, 0.2) 30%,
+      transparent 70%);
   border-radius: 50%;
   z-index: 0;
   animation: glow-pulse 4s ease-in-out infinite;
@@ -205,15 +200,19 @@ p {
 }
 
 @keyframes glow-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.5;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.1);
   }
 }
+
 /* Chat specific enhancements */
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;
@@ -235,15 +234,17 @@ p {
 .response-content h4 {
   font-family: inherit;
   letter-spacing: 0.025em;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.response-content p, .response-content li {
+.response-content p,
+.response-content li {
   font-size: 0.875rem;
   line-height: 1.6;
 }
 
 .response-content strong {
   font-weight: 700;
-  color: rgb(147, 197, 253); /* Text-blue-300 */
+  color: rgb(147, 197, 253);
+  /* Text-blue-300 */
 }

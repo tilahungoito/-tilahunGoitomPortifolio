@@ -11,6 +11,15 @@ interface Message {
     timestamp: Date;
 }
 
+// Animated Placeholder Suggestions
+const suggestions = [
+    "Ask me about my AI Health Assistant...",
+    "What are my Flutter skills?",
+    "Tell me about my software engineering degree...",
+    "How can I help a farmer?",
+    "Show me your GitHub and LinkedIn..."
+];
+
 export default function AIChatBot() {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
@@ -28,13 +37,6 @@ export default function AIChatBot() {
     const [isFocused, setIsFocused] = useState(false);
 
     // Animated Placeholder Logic
-    const suggestions = [
-        "Ask me about my AI Health Assistant...",
-        "What are my Flutter skills?",
-        "Tell me about my software engineering degree...",
-        "How can I help a farmer?",
-        "Show me your GitHub and LinkedIn..."
-    ];
     const [placeholder, setPlaceholder] = useState('');
     const [suggestionIndex, setSuggestionIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
@@ -76,7 +78,7 @@ export default function AIChatBot() {
         }, typingSpeed);
 
         return () => clearTimeout(timeout);
-    }, [charIndex, isDeleting, suggestionIndex, isFocused, suggestions]);
+    }, [charIndex, isDeleting, suggestionIndex, isFocused]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
