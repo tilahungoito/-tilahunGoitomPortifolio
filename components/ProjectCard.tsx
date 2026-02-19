@@ -31,7 +31,9 @@ import {
   SiWordpress,
   SiNestjs,
   SiTypeorm,
-  SiSwagger
+  SiSwagger,
+  SiDocker,
+  SiPrisma
 } from 'react-icons/si';
 import { DiJava } from 'react-icons/di';
 import Image from 'next/image';
@@ -84,7 +86,9 @@ const techIcons: Record<string, React.ReactElement> = {
   'WordPress': <SiWordpress className="text-blue-600" />,
   'NestJS': <SiNestjs className="text-red-500" />,
   'TypeORM': <SiTypeorm className="text-red-600" />,
-  'Swagger': <SiSwagger className="text-green-500" />
+  'Swagger': <SiSwagger className="text-green-500" />,
+  'Docker': <SiDocker className="text-blue-400" />,
+  'Prisma': <SiPrisma className="text-slate-700 dark:text-slate-200" />
 };
 
 export default function ProjectCard({ project, isActive }: ProjectCardProps) {

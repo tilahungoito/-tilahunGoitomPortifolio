@@ -72,6 +72,26 @@ export const projects: Project[] = [
         image: '/facilities-finder.png',
         images: ['/ai-doctor.png', '/pneumonia-detection.png', '/health-history.png', '/facilities-finder.png', '/m1.jpg', '/m2.jpg', '/m3.jpg', '/m4.jpg'],
         link: 'https://github.com/5TH-SOFTWARE-ENGINEERING/AI-Based-Health-Assistant-with-Clinical-Decision-Support-for-Malaria-and-Pneumonia.git',
+    },
+    {
+        id: 8,
+        title: 'Centralized Education Governance & EMIS Platform',
+        description: 'A nationwide Education Management Information System (EMIS) built for the Tigray Regional Education Bureau. This full-stack platform manages the entire education hierarchy — from regional bureaus down to individual schools — enabling centralized governance, student enrollment tracking, teacher HR management, academic scheduling, and cross-institution analytics. Features include a 5-tier hierarchical access control (Region → Zone → Woreda → Institution), school resource monitoring, announcement broadcasting, student & staff transfer workflows, and comprehensive reporting dashboards. Designed to modernize and digitize public education administration at scale.',
+        technologies: ['Next.js', 'NestJS', 'PostgreSQL', 'TypeScript', 'Tailwind CSS', 'Docker'],
+        image: '/edu1.png',
+        images: ['/edu1.png', '/edu2.png'],
+        link: 'https://github.com/tilahungoito',
+        github: 'https://github.com/tilahungoito'
+    },
+    {
+        id: 9,
+        title: 'National Mining Licensing & Governance System',
+        description: 'A production-grade, multi-tenant mining governance platform built for the Ethiopian Ministry of Mines. This system streamlines the end-to-end mineral license application process through a 6-step wizard with GIS map integration for plot selection. Features a robust multi-layer workflow engine with Role-Based Access Control (RBAC), covering applicant submission, technical review, payment integration, and final approval. Includes an immutable audit trail, an interactive GIS analytics dashboard showing nationwide mineral deposit distributions across regions and zones, real-time production statistics, and a permit lifecycle management system. Ensures regulatory compliance and full transparency across all licensing stages.',
+        technologies: ['Next.js', 'NestJS', 'PostgreSQL', 'TypeScript', 'Prisma', 'Docker'],
+        image: '/shimering.png',
+        images: ['/shimering.png', '/addcontent.png', '/loginnote.png'],
+        link: 'https://github.com/tilahungoito',
+        github: 'https://github.com/tilahungoito'
     }
 ];
 
