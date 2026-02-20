@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaHome, FaCode, FaProjectDiagram, FaComments, FaDownload, FaChevronDown } from 'react-icons/fa';
+import { FaHome, FaCode, FaProjectDiagram, FaComments, FaDownload, FaChevronDown, FaBookOpen } from 'react-icons/fa';
 
 interface TopNavigationProps {
     isCertificateModalOpen: boolean;
@@ -19,7 +19,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ setIsCertificateModalOpen
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
 
-            const sections = ['home', 'skills', 'projects', 'testimonials', 'contact'];
+            const sections = ['home', 'skills', 'projects', 'testimonials', 'blog', 'contact'];
             const currentSection = sections.find(section => {
                 const element = document.getElementById(section);
                 if (element) {
@@ -76,6 +76,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ setIsCertificateModalOpen
         },
         { id: 'projects', label: 'Projects', icon: <FaProjectDiagram /> },
         { id: 'testimonials', label: 'Testimonials', icon: <FaComments /> },
+        { id: 'blog', label: 'Blog', icon: <FaBookOpen /> },
         { id: 'contact', label: 'Contact', icon: <FaDownload /> }
     ];
 

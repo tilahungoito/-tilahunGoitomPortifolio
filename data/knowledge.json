@@ -21,7 +21,11 @@
         "Cross-Platform Mobile Development (Flutter/Dart)",
         "Artificial Intelligence (Machine Learning, Deep Learning)",
         "Clinical Decision Support Systems",
-        "Database Management"
+        "GIS Integration & Mapping",
+        "Government & Enterprise Platform Development",
+        "Database Management",
+        "Role-Based Access Control (RBAC)",
+        "Microservices with NestJS & Docker"
     ],
     "institutions": [
         {
@@ -44,9 +48,74 @@
                 "Hospital Management System"
             ],
             "role": "Lead Developer"
+        },
+        {
+            "name": "Tigray Regional Education Bureau",
+            "projects": [
+                "Centralized Education Governance & EMIS Platform"
+            ],
+            "role": "Lead Full Stack Developer",
+            "description": "Built a nationwide Education Management Information System (EMIS) managing the entire Tigray education hierarchy from regional bureaus down to individual schools."
+        },
+        {
+            "name": "Ethiopian Ministry of Mines",
+            "projects": [
+                "National Mining Licensing & Governance System"
+            ],
+            "role": "Lead Full Stack Developer",
+            "description": "Built a production-grade multi-tenant mining governance platform, including a 6-step GIS-integrated license application wizard with RBAC workflow engine."
         }
     ],
     "projects": [
+        {
+            "id": 9,
+            "title": "National Mining Licensing & Governance System",
+            "description": "A production-grade, multi-tenant mining governance platform built for the Ethiopian Ministry of Mines. Streamlines the end-to-end mineral license application process through a 6-step wizard with GIS map integration for plot selection. Features a robust multi-layer workflow engine with Role-Based Access Control (RBAC), covering applicant submission, technical review, payment integration, and final approval. Includes an immutable audit trail, an interactive GIS analytics dashboard showing nationwide mineral deposit distributions across regions and zones, real-time production statistics, and a permit lifecycle management system.",
+            "technologies": [
+                "Next.js",
+                "NestJS",
+                "PostgreSQL",
+                "TypeScript",
+                "Prisma",
+                "Docker",
+                "GIS",
+                "Leaflet"
+            ],
+            "github": "https://github.com/tilahungoito",
+            "type": "Government/Enterprise Project",
+            "client": "Ethiopian Ministry of Mines",
+            "highlights": [
+                "6-step license application wizard with GIS plot selection",
+                "RBAC with applicant, reviewer, approver, and admin roles",
+                "Immutable audit trail for regulatory compliance",
+                "Interactive GIS analytics dashboard",
+                "Nationwide mineral deposit distribution maps"
+            ]
+        },
+        {
+            "id": 8,
+            "title": "Centralized Education Governance & EMIS Platform",
+            "description": "A nationwide Education Management Information System (EMIS) built for the Tigray Regional Education Bureau. This full-stack platform manages the entire education hierarchy — from regional bureaus down to individual schools — enabling centralized governance, student enrollment tracking, teacher HR management, academic scheduling, and cross-institution analytics. Features include a 5-tier hierarchical access control (Region → Zone → Woreda → Institution), school resource monitoring, announcement broadcasting, student & staff transfer workflows, and comprehensive reporting dashboards.",
+            "technologies": [
+                "Next.js",
+                "NestJS",
+                "PostgreSQL",
+                "TypeScript",
+                "Tailwind CSS",
+                "Docker",
+                "Prisma"
+            ],
+            "github": "https://github.com/tilahungoito",
+            "type": "Government/Enterprise Project",
+            "client": "Tigray Regional Education Bureau",
+            "highlights": [
+                "5-tier hierarchical RBAC (Region → Zone → Woreda → Institution → School)",
+                "Student enrollment and transfer workflow system",
+                "Teacher HR management and academic scheduling",
+                "Cross-institution analytics and reporting dashboards",
+                "Announcement broadcasting system"
+            ]
+        },
         {
             "id": 7,
             "title": "AI-Based Health Assistant (Malaria & Pneumonia Detection)",
@@ -81,6 +150,34 @@
             "type": "Institutional Project"
         },
         {
+            "id": 5,
+            "title": "Mekelle University Research Network",
+            "description": "A WordPress-based platform for academic collaboration and research visibility at Mekelle University. Enables researchers to create profiles, showcase publications, and find collaborators.",
+            "technologies": [
+                "WordPress",
+                "PHP",
+                "MySQL",
+                "JavaScript",
+                "CSS"
+            ],
+            "type": "Academic Project",
+            "client": "Mekelle University"
+        },
+        {
+            "id": 4,
+            "title": "Product Hub Marketplace",
+            "description": "A versatile e-commerce platform that enables users to showcase and sell any product or service. Features intuitive item listing, product search, and buyer-seller transactions.",
+            "technologies": [
+                "React",
+                "Node.js",
+                "Vite",
+                "Express",
+                "MongoDB"
+            ],
+            "link": "https://findproducts-2.onrender.com/",
+            "type": "Solo Project"
+        },
+        {
             "id": 3,
             "title": "Disease Prediction System",
             "description": "Analyzes symptoms and vitals using XGBoost to predict the likelihood of various diseases.",
@@ -106,6 +203,21 @@
             ],
             "github": "https://github.com/tilahungoito/Shire-Hospital-patient-appointment-system",
             "type": "Institutional Project"
+        },
+        {
+            "id": 1,
+            "title": "E-commerce Platform (Peer Courses)",
+            "description": "A full-stack e-commerce solution for educational materials. Enables buying and selling of books, lectures, and tutorials with a collaborative learning environment.",
+            "technologies": [
+                "React",
+                "Node.js",
+                "MongoDB",
+                "Express",
+                "Next.js",
+                "Tailwind CSS"
+            ],
+            "link": "https://peer-courses-tilahun-dtqk-git-main-tilahuns-projects-82416c09.vercel.app",
+            "type": "Full Stack Project"
         }
     ],
     "collaborations": [
@@ -118,6 +230,16 @@
             "partner": "Ethiopian Insurance Corporation Team",
             "project": "Role Based Insurance System",
             "synergy": "Enterprise-level role-based access control and secure financial handling."
+        },
+        {
+            "partner": "Tigray Regional Education Bureau",
+            "project": "Centralized Education EMIS Platform",
+            "synergy": "Digitizing public education administration at scale with 5-tier hierarchical governance."
+        },
+        {
+            "partner": "Ethiopian Ministry of Mines",
+            "project": "National Mining Licensing System",
+            "synergy": "GIS-integrated regulatory platform with multi-layer RBAC and immutable audit trail."
         }
     ]
 }

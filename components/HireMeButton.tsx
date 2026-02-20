@@ -87,10 +87,17 @@ const HireMeButton = () => {
       console.log('Admin email sent:', adminResponse);
 
       // Send auto-reply to user
+      // Extra aliases cover common EmailJS template variable names for the recipient
       const replyTemplateParams = {
-        to_email: formData.email,
+        to_email: formData.email,       // {{to_email}}
+        email: formData.email,          // {{email}}
+        recipient_email: formData.email,// {{recipient_email}}
+        user_email: formData.email,     // {{user_email}}
         to_name: formData.name,
+        user_name: formData.name,
+        name: formData.name,
         from_name: 'Tilahun Goitom',
+        reply_to: 'tilay1921@gmail.com',
         message: `Thank you for reaching out! I have received your message and will get back to you as soon as possible.\n\nBest regards,\nTilahun Goitom`
       };
 

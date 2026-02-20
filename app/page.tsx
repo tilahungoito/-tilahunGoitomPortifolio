@@ -3,16 +3,23 @@
 import AnimatedText from '../components/AnimatedText';
 import HireMeButton from '../components/HireMeButton';
 import { motion } from 'framer-motion';
-import Skills from '../components/Skills';
 import CertificateModal from '../components/CertificateModal';
-import { AnimatedTestimonials } from '../components/ui/animated-testimonials';
 import DownloadCV from '../components/DownloadCV';
-import FeaturedProjects from '../components/FeaturedProjects';
 import Image from 'next/image';
 import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import TopNavigation from '../components/TopNavigation';
 import ScrollToTop from '../components/ScrollToTop';
+import dynamic from 'next/dynamic';
+
+// Lazy-loaded components (reduce initial JS bundle)
+const Skills = dynamic(() => import('../components/Skills'), { ssr: false });
+const FeaturedProjects = dynamic(() => import('../components/FeaturedProjects'), { ssr: false });
+const Blog = dynamic(() => import('../components/Blog'), { ssr: false });
+const AnimatedTestimonials = dynamic(
+  () => import('../components/ui/animated-testimonials').then(m => ({ default: m.AnimatedTestimonials })),
+  { ssr: false }
+);
 
 const Home = () => {
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
@@ -501,6 +508,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Blog Section */}
+      <Blog />
 
       <section id="contact" className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-7xl mx-auto">
