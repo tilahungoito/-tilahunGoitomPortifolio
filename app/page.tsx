@@ -7,7 +7,7 @@ import CertificateModal from '../components/CertificateModal';
 import DownloadCV from '../components/DownloadCV';
 import Image from 'next/image';
 import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import TopNavigation from '../components/TopNavigation';
 import ScrollToTop from '../components/ScrollToTop';
 import dynamic from 'next/dynamic';
@@ -24,12 +24,73 @@ const AnimatedTestimonials = dynamic(
 const Home = () => {
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
   const [typingText, setTypingText] = useState('Software Engineer');
+  const [activeToyId, setActiveToyId] = useState<number | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const toyOrbiters = [
+    { id: 1, label: 'Robot developer one', pos: '-top-20 left-2', delay: 0 },
+    { id: 2, label: 'Robot developer two', pos: '-right-20 top-8', delay: 0.3 },
+    { id: 3, label: 'Robot developer three', pos: '-bottom-20 right-4', delay: 0.6 },
+    { id: 4, label: 'Robot developer four', pos: '-left-20 bottom-8', delay: 0.9 },
+  ];
+
+  const playKeyboardTap = () => {
+    if (typeof window === 'undefined') return;
+    const AudioCtx = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtx) return;
+    const audioCtx = audioCtxRef.current ?? new AudioCtx();
+    audioCtxRef.current = audioCtx;
+    void audioCtx.resume();
+    const now = audioCtx.currentTime;
+
+    // Soft "shush + key tick" mix for a smoother typing texture.
+    const hush = audioCtx.createOscillator();
+    const hushGain = audioCtx.createGain();
+    const hushFilter = audioCtx.createBiquadFilter();
+    hush.type = 'triangle';
+    hush.frequency.setValueAtTime(220, now);
+    hushFilter.type = 'lowpass';
+    hushFilter.frequency.setValueAtTime(780, now);
+    hushGain.gain.setValueAtTime(0.0001, now);
+    hushGain.gain.linearRampToValueAtTime(0.012, now + 0.015);
+    hushGain.gain.linearRampToValueAtTime(0.0001, now + 0.12);
+    hush.connect(hushFilter).connect(hushGain).connect(audioCtx.destination);
+    hush.start(now);
+    hush.stop(now + 0.14);
+
+    const keyTick = audioCtx.createOscillator();
+    const keyTickGain = audioCtx.createGain();
+    keyTick.type = 'square';
+    keyTick.frequency.setValueAtTime(950, now + 0.03);
+    keyTickGain.gain.setValueAtTime(0.0001, now + 0.028);
+    keyTickGain.gain.exponentialRampToValueAtTime(0.02, now + 0.034);
+    keyTickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+    keyTick.connect(keyTickGain).connect(audioCtx.destination);
+    keyTick.start(now + 0.028);
+    keyTick.stop(now + 0.08);
+
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTypingText((prev) => (prev === 'Software Engineer' ? 'Tech Enthusiast' : 'Software Engineer'));
     }, 4000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (activeToyId === null) return;
+    const typingLoop = setInterval(() => {
+      playKeyboardTap();
+    }, 210);
+    return () => clearInterval(typingLoop);
+  }, [activeToyId]);
+
+  useEffect(() => {
+    return () => {
+      if (audioCtxRef.current) {
+        void audioCtxRef.current.close();
+      }
+    };
   }, []);
 
 
@@ -191,13 +252,7 @@ const Home = () => {
                       />
                     ))}
                   </div>
-                  <Image
-                    src="/tilahun1.jpg"
-                    alt="Tilahun 1"
-                    width={64}
-                    height={64}
-                    className="rounded-full border-2 border-white shadow-lg relative z-10"
-                  />
+                 
                 </div>
               </motion.div>
 
@@ -228,13 +283,7 @@ const Home = () => {
                       />
                     ))}
                   </div>
-                  <Image
-                    src="/tilahun2.jpg"
-                    alt="Tilahun 2"
-                    width={64}
-                    height={64}
-                    className="rounded-full border-2 border-white shadow-lg relative z-10"
-                  />
+                 
                 </div>
               </motion.div>
 
@@ -265,13 +314,7 @@ const Home = () => {
                       />
                     ))}
                   </div>
-                  <Image
-                    src="/tilahun3.jpg"
-                    alt="Tilahun 3"
-                    width={64}
-                    height={64}
-                    className="rounded-full border-2 border-white shadow-lg relative z-10"
-                  />
+                 
                 </div>
               </motion.div>
 
@@ -302,19 +345,120 @@ const Home = () => {
                       />
                     ))}
                   </div>
-                  <Image
-                    src="/tilahun4.jpg"
-                    alt="Tilahun 4"
-                    width={64}
-                    height={64}
-                    className="rounded-full border-2 border-white shadow-lg relative z-10"
-                  />
+                 
                 </div>
               </motion.div>
 
               {/* Profile image with proper positioning */}
               <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="relative">
+                <div className="relative w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80">
+                  {toyOrbiters.map((toy) => (
+                    <motion.button
+                      key={toy.id}
+                      type="button"
+                      aria-label={`${toy.label} tapping keyboard`}
+                      className={`absolute ${toy.pos} z-40 w-28 h-24 sm:w-32 sm:h-28 rounded-2xl border border-white/40 bg-slate-900/70 backdrop-blur-md flex items-center justify-center shadow-xl`}
+                      animate={{ y: [0, -8, 0], rotate: [0, 8, -8, 0] }}
+                      transition={{
+                        duration: 2.8,
+                        repeat: Infinity,
+                        delay: toy.delay,
+                        ease: 'easeInOut',
+                      }}
+                      whileHover={{ scale: 1.12 }}
+                      whileFocus={{ scale: 1.12 }}
+                      onMouseEnter={() => setActiveToyId(toy.id)}
+                      onFocus={() => setActiveToyId(toy.id)}
+                      onMouseLeave={() => setActiveToyId((current) => (current === toy.id ? null : current))}
+                      onBlur={() => setActiveToyId((current) => (current === toy.id ? null : current))}
+                    >
+                      <div className="relative w-24 h-20 sm:w-28 sm:h-24">
+                        <div className="absolute right-0 top-7 w-4 h-9 rounded-sm bg-slate-600/90 border border-slate-500" />
+                        <div className="absolute right-2 top-14 w-2 h-5 rounded-sm bg-slate-600/90" />
+                        <div className="absolute left-3 top-11 w-12 h-3 rounded bg-slate-700 border border-slate-500" />
+                        <div className="absolute left-7 top-7 w-6 h-5 rounded-md bg-slate-700 border border-slate-500" />
+                        <motion.div
+                          className="absolute left-7 top-2 w-8 h-8"
+                          animate={{ rotate: [8, 14, 8], y: [0, 1, 0] }}
+                          transition={{ duration: 0.35, repeat: Infinity, delay: toy.delay }}
+                        >
+                          <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-slate-200 border-2 border-slate-700">
+                            <div className="absolute left-2 top-2 w-1 h-1 rounded-full bg-cyan-500" />
+                            <div className="absolute right-2 top-2 w-1 h-1 rounded-full bg-cyan-500" />
+                            <div className="absolute left-1/2 -translate-x-1/2 bottom-2 w-3 h-1 rounded-full bg-slate-700" />
+                          </div>
+                        </motion.div>
+                        <div className="absolute left-11 top-9 w-10 h-6 rounded bg-slate-800 border border-slate-500" />
+                        <div className="absolute left-5 top-[38px] w-12 h-3 rounded-sm bg-slate-800 border border-slate-600" />
+                        <motion.div
+                          className="absolute left-8 top-[38px] w-4 h-1.5 rounded-full bg-cyan-300"
+                          animate={{ y: [0, 1.6, 0], rotate: [22, 6, 22] }}
+                          transition={{ duration: 0.22, repeat: Infinity, delay: toy.delay }}
+                        />
+                        <motion.div
+                          className="absolute left-14 top-[38px] w-4 h-1.5 rounded-full bg-cyan-300"
+                          animate={{ y: [0, 1.6, 0], rotate: [-18, -2, -18] }}
+                          transition={{ duration: 0.22, repeat: Infinity, delay: toy.delay + 0.08 }}
+                        />
+                        <div className="absolute right-2 top-3 w-12 h-8">
+                          <svg viewBox="0 0 120 80" className="w-full h-full">
+                            <rect x="16" y="6" width="88" height="50" rx="5" className="fill-slate-900 stroke-slate-500" strokeWidth="3" />
+                            <rect x="22" y="12" width="76" height="34" rx="3" className="fill-cyan-500/20" />
+                            <motion.rect
+                              x="26"
+                              y="17"
+                              width="50"
+                              height="4"
+                              rx="2"
+                              className="fill-cyan-300"
+                              animate={{ opacity: [0.3, 1, 0.3], width: [44, 58, 44] }}
+                              transition={{ duration: 1.2, repeat: Infinity, delay: toy.delay }}
+                            />
+                            <motion.rect
+                              x="26"
+                              y="24"
+                              width="62"
+                              height="4"
+                              rx="2"
+                              className="fill-blue-300"
+                              animate={{ opacity: [0.25, 0.9, 0.25], width: [56, 66, 56] }}
+                              transition={{ duration: 1.4, repeat: Infinity, delay: toy.delay + 0.2 }}
+                            />
+                            <motion.rect
+                              x="26"
+                              y="31"
+                              width="40"
+                              height="4"
+                              rx="2"
+                              className="fill-emerald-300"
+                              animate={{ opacity: [0.25, 0.9, 0.25], width: [34, 48, 34] }}
+                              transition={{ duration: 1.1, repeat: Infinity, delay: toy.delay + 0.4 }}
+                            />
+                            <rect x="8" y="58" width="104" height="12" rx="4" className="fill-slate-700 stroke-slate-500" strokeWidth="2" />
+                            {[...Array(10)].map((_, i) => (
+                              <rect
+                                key={i}
+                                x={12 + i * 10}
+                                y="62"
+                                width="7"
+                                height="5"
+                                rx="1"
+                                className={activeToyId === toy.id && i % 2 === 0 ? 'fill-cyan-300' : 'fill-slate-500'}
+                              />
+                            ))}
+                          </svg>
+                        </div>
+                        <motion.div
+                          className="absolute -top-2 -left-1 px-1.5 py-0.5 rounded bg-cyan-500/30 border border-cyan-300/50 text-[8px] font-semibold tracking-wide text-cyan-100"
+                          animate={{ opacity: [0.6, 1, 0.6] }}
+                          transition={{ duration: 1.6, repeat: Infinity }}
+                        >
+                          AGENTIC AI
+                        </motion.div>
+                      </div>
+                    </motion.button>
+                  ))}
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-4 ring-white/40">
                   {/* Optimized Sun Rays Container */}
                   <div className="absolute inset-0 animate-sun-rays pointer-events-none">
                     {[...Array(12)].map((_, i) => (
@@ -333,9 +477,10 @@ const Home = () => {
                     alt="Profile"
                     width={800}
                     height={800}
-                    className="w-full h-full object-contain object-center relative z-10 rounded-full"
+                    className="w-full h-full object-cover object-[center_top] relative z-10 rounded-full scale-105"
                     priority
                   />
+                  </div>
                 </div>
               </div>
             </div>

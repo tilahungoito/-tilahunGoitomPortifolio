@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import { projects } from '../data/projects';
-import { FiChevronLeft, FiChevronRight, FiGrid, FiLayers } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiGrid, FiLayers, FiList, FiClock, FiMenu } from 'react-icons/fi';
 
 interface FeaturedProjectsProps {
     autoSlideInterval?: number; // in milliseconds
@@ -16,7 +16,8 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
-    const [viewMode, setViewMode] = useState<'carousel' | 'grid'>('carousel');
+    const [viewMode, setViewMode] = useState<'carousel' | 'grid' | 'spotlight' | 'timeline' | 'compact'>('spotlight');
+    const [spotlightIndex, setSpotlightIndex] = useState(0);
 
     const totalProjects = projects.length;
 
@@ -93,7 +94,7 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({
 
                 {/* View Mode Toggle */}
                 <div className="flex justify-center mb-8">
-                    <div className="flex bg-[rgb(var(--color-card))] p-1 rounded-xl shadow-sm border border-[rgb(var(--color-border))]">
+                    <div className="flex flex-wrap justify-center bg-[rgb(var(--color-card))] p-1 rounded-xl shadow-sm border border-[rgb(var(--color-border))] gap-1">
                         <button
                             onClick={() => setViewMode('carousel')}
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${viewMode === 'carousel'
@@ -113,6 +114,36 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({
                         >
                             <FiGrid size={18} />
                             <span className="text-sm font-medium">Grid</span>
+                        </button>
+                        <button
+                            onClick={() => setViewMode('spotlight')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${viewMode === 'spotlight'
+                                ? 'bg-[rgb(var(--color-primary))] text-white shadow-md'
+                                : 'text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-foreground))]'
+                                }`}
+                        >
+                            <FiList size={18} />
+                            <span className="text-sm font-medium">Spotlight</span>
+                        </button>
+                        <button
+                            onClick={() => setViewMode('timeline')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${viewMode === 'timeline'
+                                ? 'bg-[rgb(var(--color-primary))] text-white shadow-md'
+                                : 'text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-foreground))]'
+                                }`}
+                        >
+                            <FiClock size={18} />
+                            <span className="text-sm font-medium">Timeline</span>
+                        </button>
+                        <button
+                            onClick={() => setViewMode('compact')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${viewMode === 'compact'
+                                ? 'bg-[rgb(var(--color-primary))] text-white shadow-md'
+                                : 'text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-foreground))]'
+                                }`}
+                        >
+                            <FiMenu size={18} />
+                            <span className="text-sm font-medium">Compact</span>
                         </button>
                     </div>
                 </div>
@@ -229,7 +260,7 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({
                                     </motion.div>
                                 )}
                             </motion.div>
-                        ) : (
+                        ) : viewMode === 'grid' ? (
                             <motion.div
                                 key="grid"
                                 initial={{ opacity: 0, y: 50 }}
@@ -244,6 +275,136 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({
                                             project={project}
                                             isActive={true}
                                         />
+                                    </div>
+                                ))}
+                            </motion.div>
+                        ) : viewMode === 'spotlight' ? (
+                            <motion.div
+                                key="spotlight"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 30 }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start"
+                            >
+                                <div className="lg:col-span-1 bg-[rgb(var(--color-card))] border border-[rgb(var(--color-border))] rounded-2xl p-3 max-h-[600px] overflow-y-auto">
+                                    {projects.map((project, index) => (
+                                        <button
+                                            key={project.id}
+                                            onClick={() => setSpotlightIndex(index)}
+                                            className={`w-full text-left p-3 rounded-xl mb-2 transition-all ${spotlightIndex === index
+                                                ? 'bg-[rgb(var(--color-primary))] text-white shadow-md'
+                                                : 'hover:bg-[rgb(var(--color-border))]/40 text-[rgb(var(--color-foreground))]'
+                                                }`}
+                                        >
+                                            <p className="font-semibold">{project.title}</p>
+                                            <p className={`text-xs mt-1 ${spotlightIndex === index ? 'text-white/90' : 'text-[rgb(var(--color-muted))]'}`}>
+                                                {project.technologies.slice(0, 2).join(' • ')}
+                                            </p>
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="lg:col-span-2">
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={projects[spotlightIndex].id}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.35 }}
+                                        >
+                                            <ProjectCard
+                                                project={projects[spotlightIndex]}
+                                                isActive={true}
+                                            />
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </div>
+                            </motion.div>
+                        ) : viewMode === 'timeline' ? (
+                            <motion.div
+                                key="timeline"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 30 }}
+                                transition={{ duration: 0.4 }}
+                                className="space-y-5 max-w-5xl mx-auto"
+                            >
+                                {projects.map((project, index) => (
+                                    <motion.div
+                                        key={project.id}
+                                        initial={{ opacity: 0, x: index % 2 === 0 ? -25 : 25 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.35, delay: index * 0.05 }}
+                                        className="relative card p-5 border border-[rgb(var(--color-border))]"
+                                    >
+                                        <span className="absolute -left-3 top-6 w-6 h-6 rounded-full bg-[rgb(var(--color-primary))] text-white text-xs flex items-center justify-center shadow-md">
+                                            {index + 1}
+                                        </span>
+                                        <h3 className="text-lg font-semibold text-[rgb(var(--color-foreground))]">{project.title}</h3>
+                                        <p className="text-sm text-[rgb(var(--color-muted))] mt-2 line-clamp-3">{project.description}</p>
+                                        <div className="flex flex-wrap gap-2 mt-3">
+                                            {project.technologies.slice(0, 5).map((tech) => (
+                                                <span
+                                                    key={tech}
+                                                    className="px-2.5 py-1 rounded-full text-xs bg-[rgb(var(--color-border))]/40 text-[rgb(var(--color-foreground))]"
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className="mt-4">
+                                            <a
+                                                href={project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-sm font-medium text-[rgb(var(--color-primary))] hover:underline"
+                                            >
+                                                Open Project
+                                            </a>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="compact"
+                                initial={{ opacity: 0, y: 25 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 25 }}
+                                transition={{ duration: 0.35 }}
+                                className="max-w-6xl mx-auto card border border-[rgb(var(--color-border))] overflow-hidden"
+                            >
+                                <div className="grid grid-cols-1 md:grid-cols-12 text-sm font-semibold bg-[rgb(var(--color-card))] border-b border-[rgb(var(--color-border))]">
+                                    <div className="md:col-span-4 px-4 py-3">Project</div>
+                                    <div className="md:col-span-4 px-4 py-3">Technologies</div>
+                                    <div className="md:col-span-2 px-4 py-3">Type</div>
+                                    <div className="md:col-span-2 px-4 py-3 text-right">Action</div>
+                                </div>
+                                {projects.map((project) => (
+                                    <div
+                                        key={project.id}
+                                        className="grid grid-cols-1 md:grid-cols-12 border-b border-[rgb(var(--color-border))]/60 last:border-b-0 hover:bg-[rgb(var(--color-border))]/20 transition-colors"
+                                    >
+                                        <div className="md:col-span-4 px-4 py-3 font-medium text-[rgb(var(--color-foreground))]">
+                                            {project.title}
+                                        </div>
+                                        <div className="md:col-span-4 px-4 py-3 text-[rgb(var(--color-muted))]">
+                                            {project.technologies.slice(0, 3).join(', ')}
+                                        </div>
+                                        <div className="md:col-span-2 px-4 py-3 text-[rgb(var(--color-muted))]">
+                                            {project.github ? 'Open Source' : 'Product'}
+                                        </div>
+                                        <div className="md:col-span-2 px-4 py-3 text-left md:text-right">
+                                            <a
+                                                href={project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-[rgb(var(--color-primary))] hover:underline font-medium"
+                                            >
+                                                View
+                                            </a>
+                                        </div>
                                     </div>
                                 ))}
                             </motion.div>
