@@ -11,7 +11,8 @@ const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_USER_ID;
 const REPLY_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID;
 
-const HireMeButton = () => {
+const HireMeButton = (props: { showLauncher?: boolean }) => {
+  const { showLauncher = true } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -38,6 +39,12 @@ const HireMeButton = () => {
       console.error('EmailJS initialization error:', errorMessage);
       setInitError(errorMessage);
     }
+  }, []);
+
+  useEffect(() => {
+    const handler = () => setIsModalOpen(true);
+    window.addEventListener('orbitdock:open-contact', handler);
+    return () => window.removeEventListener('orbitdock:open-contact', handler);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,31 +158,33 @@ const HireMeButton = () => {
 
   return (
     <>
-      <motion.button
-        onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 z-50 p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="relative">
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.5, 0.8, 0.5],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <FaPaperPlane className="text-2xl text-[rgb(var(--color-primary))]" />
-        </div>
-      </motion.button>
+      {showLauncher && (
+        <motion.button
+          onClick={() => setIsModalOpen(true)}
+          className="fixed bottom-8 right-8 z-50 p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="relative">
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.5, 0.8, 0.5],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <FaPaperPlane className="text-2xl text-[rgb(var(--color-primary))]" />
+          </div>
+        </motion.button>
+      )}
 
       <AnimatePresence>
         {isModalOpen && (

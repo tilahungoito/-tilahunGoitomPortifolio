@@ -119,7 +119,7 @@ const Skills: React.FC<SkillsProps> = ({ setIsCertificateModalOpen }) => {
     };
 
     return (
-        <section id="skills" className="py-16">
+        <div className="py-16">
             <div className="container mx-auto px-4">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
@@ -206,7 +206,7 @@ const Skills: React.FC<SkillsProps> = ({ setIsCertificateModalOpen }) => {
                     </p>
                 </motion.div>
             </div>
-        </section>
+        </div>
     );
 };
 

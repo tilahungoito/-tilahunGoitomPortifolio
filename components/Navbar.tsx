@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useScrollDirection } from './useScrollDirection';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,6 +13,7 @@ const Navbar = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const TG="{TGDEV}";
+  const { direction, isAtTop } = useScrollDirection();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -31,8 +33,17 @@ const Navbar = () => {
     setIsSkillsMenuOpen(false);
   }, [pathname]);
 
+  const isVisible = isMobileMenuOpen ? true : (!isAtTop && direction === 'up');
+
+  useEffect(() => {
+    if (direction === 'down') setIsSkillsMenuOpen(false);
+  }, [direction]);
+
   const toggleMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsMobileMenuOpen((open) => {
+      const next = !open;
+      return next;
+    });
   };
 
   const toggleSkillsMenu = () => {
@@ -74,12 +85,12 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="sticky top-0 z-[100] bg-light/80 backdrop-blur-sm shadow-sm"
+      initial={false}
+      animate={{ y: isVisible ? 0 : -110 }}
+      transition={{ duration: 0.22, ease: 'easeOut' }}
+      className="fixed top-0 left-0 right-0 z-[100] bg-[rgb(var(--color-card))]/85 backdrop-blur-md shadow-sm border-b border-[rgb(var(--color-border))]"
     >
-      <div className="w-full px-2 sm:px-4 lg:px-8 py-4 flex justify-between items-center">
+      <div className="relative w-full px-2 sm:px-4 lg:px-8 py-4 flex justify-between items-center">
       <Link href="/" className="flex items-center gap-3">
   {/* Logo Image with Circle and Hover Effect */}
   <div className="relative">
@@ -135,32 +146,42 @@ const Navbar = () => {
         {/* Desktop Links */}
         <div className="hidden md:flex gap-6 relative z-[101]">
           <div className="relative" ref={dropdownRef}>
-            <button 
-              onClick={toggleSkillsMenu}
-              className="flex items-center gap-1 px-3 py-2 text-gray-700 hover:text-primary transition-colors"
-            >
-            Skills
-              <span className={`text-xs transition-transform duration-200 ${isSkillsMenuOpen ? 'rotate-180' : ''}`}>▼</span>
-            </button>
+            <div className="flex items-center">
+              <Link
+                href="/#skills"
+                className="px-3 py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
+                onClick={() => setIsSkillsMenuOpen(false)}
+              >
+                Skills
+              </Link>
+              <button
+                type="button"
+                aria-label="Toggle skills menu"
+                onClick={toggleSkillsMenu}
+                className="px-2 py-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
+              >
+                <span className={`text-xs transition-transform duration-200 inline-block ${isSkillsMenuOpen ? 'rotate-180' : ''}`}>▼</span>
+              </button>
+            </div>
             {isSkillsMenuOpen && (
-              <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg py-2 z-[102]">
+              <div className="absolute top-full left-0 mt-1 w-48 bg-[rgb(var(--color-card))] rounded-lg shadow-lg py-2 z-[102] border border-[rgb(var(--color-border))]">
                 <Link 
                   href="/#skills"
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
+                  className="block w-full text-left px-4 py-2 hover:bg-[rgb(var(--color-background))] transition-colors text-[rgb(var(--color-foreground))]"
                   onClick={() => setIsSkillsMenuOpen(false)}
                 >
                   Technical Skills
                 </Link>
                 <Link 
                   href="/certifications"
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
+                  className="block w-full text-left px-4 py-2 hover:bg-[rgb(var(--color-background))] transition-colors text-[rgb(var(--color-foreground))]"
                   onClick={() => setIsSkillsMenuOpen(false)}
                 >
                   Certifications
                 </Link>
                 <Link 
-                  href="/blogs"
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
+                  href="/#blog"
+                  className="block w-full text-left px-4 py-2 hover:bg-[rgb(var(--color-background))] transition-colors text-[rgb(var(--color-foreground))]"
                   onClick={() => setIsSkillsMenuOpen(false)}
                 >
                   Blogs
@@ -170,13 +191,13 @@ const Navbar = () => {
           </div>
           <Link 
             href="/#projects" 
-            className="px-3 py-2 text-gray-700 hover:text-primary transition-colors"
+            className="px-3 py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
           >
             Projects
           </Link>
           <Link 
             href="/#contact" 
-            className="px-3 py-2 text-gray-700 hover:text-primary transition-colors"
+            className="px-3 py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
           >
             Contact
           </Link>
@@ -192,21 +213,34 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:hidden bg-light/90 backdrop-blur-sm px-6 py-4 flex flex-col gap-4 absolute top-16 left-0 right-0 shadow-md z-[101]`}
+        className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:hidden bg-[rgb(var(--color-card))]/95 backdrop-blur-md px-4 py-4 flex flex-col gap-3 absolute top-full left-0 right-0 shadow-lg z-[101] border-b border-[rgb(var(--color-border))] max-h-[calc(100vh-4.5rem)] overflow-y-auto`}
       >
         <div className="flex flex-col">
-          <button 
-            onClick={toggleSkillsMenu}
-            className="flex items-center justify-between py-2 text-gray-700 hover:text-primary transition-colors"
-          >
-          Skills
-            <span className={`text-xs transition-transform duration-200 ${isSkillsMenuOpen ? 'rotate-180' : ''}`}>▼</span>
-          </button>
+          <div className="flex items-center justify-between">
+            <Link
+              href="/#skills"
+              className="py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
+              onClick={() => {
+                setIsSkillsMenuOpen(false);
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Skills
+            </Link>
+            <button
+              type="button"
+              aria-label="Toggle skills menu"
+              onClick={toggleSkillsMenu}
+              className="px-2 py-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
+            >
+              <span className={`text-xs transition-transform duration-200 inline-block ${isSkillsMenuOpen ? 'rotate-180' : ''}`}>▼</span>
+            </button>
+          </div>
           {isSkillsMenuOpen && (
             <div className="pl-4 flex flex-col gap-2">
               <Link 
                 href="/#skills"
-                className="py-2 text-gray-700 hover:text-primary transition-colors"
+                className="py-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
                 onClick={() => {
                   setIsSkillsMenuOpen(false);
                   setIsMobileMenuOpen(false);
@@ -216,7 +250,7 @@ const Navbar = () => {
               </Link>
               <Link 
                 href="/certifications"
-                className="py-2 text-gray-700 hover:text-primary transition-colors"
+                className="py-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
                 onClick={() => {
                   setIsSkillsMenuOpen(false);
                   setIsMobileMenuOpen(false);
@@ -225,8 +259,8 @@ const Navbar = () => {
                 Certifications
               </Link>
               <Link 
-                href="/blogs"
-                className="py-2 text-gray-700 hover:text-primary transition-colors"
+                href="/#blog"
+                className="py-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
                 onClick={() => {
                   setIsSkillsMenuOpen(false);
                   setIsMobileMenuOpen(false);
@@ -239,14 +273,14 @@ const Navbar = () => {
         </div>
         <Link 
           href="/#projects"
-          className="py-2 text-gray-700 hover:text-primary transition-colors"
+          className="py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
           onClick={() => setIsMobileMenuOpen(false)}
         >
           Projects
         </Link>
         <Link 
           href="/#contact"
-          className="py-2 text-gray-700 hover:text-primary transition-colors"
+          className="py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
           onClick={() => setIsMobileMenuOpen(false)}
         >
           Contact

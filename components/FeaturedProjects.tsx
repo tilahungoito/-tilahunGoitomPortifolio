@@ -72,7 +72,7 @@ const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({
     };
 
     return (
-        <section id="projects" className="py-16 px-4 sm:px-6 lg:px-8">
+        <section id="projects" className="scroll-mt-24 sm:scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-7xl mx-auto">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}

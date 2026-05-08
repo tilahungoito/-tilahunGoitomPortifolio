@@ -6,6 +6,14 @@ export interface BlogPost {
     title: string;
     excerpt: string;
     content: string;
+    caseStudy?: string;
+    mediaUrl?: string;
+    mediaType?: 'gif' | 'image' | 'video';
+    metrics?: Array<{
+        label: string;
+        before: string;
+        after: string;
+    }>;
     tags: string[];
     date: string;
     readTime: string;
@@ -46,6 +54,14 @@ export const blogPosts: BlogPost[] = [
             "",
             "Day 25-28: Conducted user training with 3 regional offices via Zoom. Wrote a 40-page admin manual. The system went live and processed its first real license application on Day 28. A proud moment. 🎉",
         ].join("\n"),
+        caseStudy: "Digitalized a paper-heavy licensing workflow into a secure platform with GIS boundary drawing, strict state transitions, and tamper-evident audits to reduce processing time and increase transparency.",
+        mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3lmeGQ2aTh3bW9sNW9udTdkYmx5YjE2M2NxbTRjN2JjMGN2Y2N4eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/13HgwGsXF0aiGY/giphy.gif",
+        mediaType: "gif",
+        metrics: [
+            { label: "License processing cycle", before: "Weeks to months", after: "Structured digital flow" },
+            { label: "GIS overlap validation", before: "Manual map checks", after: "Automated PostGIS checks" },
+            { label: "Auditability", before: "Fragmented paperwork", after: "Immutable event trail" },
+        ],
         tags: ["NestJS", "GIS", "Next.js", "PostgreSQL", "RBAC"],
         date: "Feb 2026",
         readTime: "8 min read",
@@ -86,6 +102,14 @@ export const blogPosts: BlogPost[] = [
             "",
             "Day 27-28: Deployed on-premise (Bureau has its own servers, no cloud). Used Docker Compose. Ran initial data migration from their old Excel files — cleaned and imported 47,000 student records. System is live. 🌟",
         ].join("\n"),
+        caseStudy: "Implemented hierarchical data governance with scope-aware access controls, bulk data operations, and practical dashboards used by regional education administrators.",
+        mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2FjMWQwM2R6bnY3d3pjbHkza2Jma2o4Ym5vN3VhYjN6Y2Q1b2s5dSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0HlBO7eyXzSZkJri/giphy.gif",
+        mediaType: "gif",
+        metrics: [
+            { label: "Student import throughput", before: "Manual entry", after: "5,000 rows < 3 sec" },
+            { label: "Data visibility control", before: "Cross-scope exposure risk", after: "Scope-guarded access" },
+            { label: "Operational reporting", before: "Spreadsheet-based", after: "Live drilldown dashboard" },
+        ],
         tags: ["Education", "TypeScript", "NestJS", "Docker", "Prisma"],
         date: "Jan 2026",
         readTime: "6 min read",
@@ -126,6 +150,14 @@ export const blogPosts: BlogPost[] = [
             "",
             "Day 27-28: Demo day at the Faculty of Medicine. 40+ attendees. Ran 20 live image analyses — 19 correct predictions. The one error was a very blurry image, which the model correctly flagged as low-confidence. System received approval for a formal clinical pilot study. 🏆",
         ].join("\n"),
+        caseStudy: "Delivered dual-platform AI-assisted diagnosis flow with confidence-based recommendations and Grad-CAM explanations to improve trust during clinical use.",
+        mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2V2b2JjZGNtY3pmMXh3NWdnN3N6YnB2YzRhMGt0dDdxM2s3dXpqZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7aD2saalBwwftBIY/giphy.gif",
+        mediaType: "gif",
+        metrics: [
+            { label: "Malaria model accuracy", before: "No AI support", after: "97.2% test accuracy" },
+            { label: "Pneumonia model accuracy", before: "No AI support", after: "93.8% test accuracy" },
+            { label: "Inference latency", before: "N/A", after: "~210ms per image" },
+        ],
         tags: ["TensorFlow", "Flask", "Flutter", "Deep Learning", "Healthcare"],
         date: "Dec 2025",
         readTime: "10 min read",
@@ -172,6 +204,14 @@ export const blogPosts: BlogPost[] = [
             "**What I'd tell my Year-1 self:**",
             "Start building. Build ugly things. Show them to people. Fix what breaks. Repeat. The gap between 'student project' and 'production system' is just a lot of repeated iterations. Every bug you debug teaches you something you cannot learn from a textbook. 🚀",
         ].join("\n"),
+        caseStudy: "Transitioned from student projects to enterprise delivery by adopting architecture-first planning, performance tuning, and user-centered iteration.",
+        mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDMxYjQ4YWJqbnF2ZGx3eTR3anQyb2dqaHQ2YjNheW5iM2x0cG9jMCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0MYt5jPR6QX5pnqM/giphy.gif",
+        mediaType: "gif",
+        metrics: [
+            { label: "Project scale", before: "Classroom use", after: "Enterprise/government use" },
+            { label: "Delivery style", before: "Feature-first coding", after: "Architecture-first planning" },
+            { label: "Quality loop", before: "Ad-hoc fixes", after: "Ship, measure, iterate" },
+        ],
         tags: ["Career", "Full Stack", "Reflections", "Software Engineering"],
         date: "Nov 2025",
         readTime: "5 min read",

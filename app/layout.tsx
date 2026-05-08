@@ -5,13 +5,17 @@ import dynamic from 'next/dynamic';
 import MotionWrapper from '../components/MotionWrapper';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import ThemeToggle from '@/components/ThemeToggle';
+import OrbitDock from '@/components/OrbitDock';
 
 const inter = Inter({ subsets: ['latin'] });
 
 // Navbar with dynamic import (still fine)
 const Navbar = dynamic(() => import('../components/Navbar'), {
   loading: () => <div className="h-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300"></div>,
+});
+
+const TopNavigation = dynamic(() => import('../components/TopNavigation'), {
+  loading: () => null,
 });
 
 export const metadata: Metadata = {
@@ -32,10 +36,11 @@ export default function RootLayout({
       <body className={`${inter.className} transition-colors duration-300`}>
         <ThemeProvider>
           <div className="relative">
+            <TopNavigation />
             <Navbar />
-            <ThemeToggle />
           </div>
           <MotionWrapper>{children}</MotionWrapper>
+          <OrbitDock />
         </ThemeProvider>
       </body>
     </html>

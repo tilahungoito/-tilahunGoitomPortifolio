@@ -3,17 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaHome, FaCode, FaProjectDiagram, FaComments, FaDownload, FaChevronDown, FaBookOpen } from 'react-icons/fa';
+import Link from 'next/link';
+import { useScrollDirection } from './useScrollDirection';
 
-interface TopNavigationProps {
-    isCertificateModalOpen: boolean;
-    setIsCertificateModalOpen: (isOpen: boolean) => void;
-}
-
-const TopNavigation: React.FC<TopNavigationProps> = ({ setIsCertificateModalOpen }) => {
+const TopNavigation: React.FC = () => {
     const [activeSection, setActiveSection] = useState('home');
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSkillsSubmenuOpen, setIsSkillsSubmenuOpen] = useState(false);
+    const { direction, isAtTop } = useScrollDirection();
+    const isVisible = isAtTop || direction === 'down';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -53,12 +52,6 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ setIsCertificateModalOpen
     };
 
     const handleNavigationClick = (sectionId: string) => {
-        if (sectionId === 'certifications') {
-            setIsCertificateModalOpen(true);
-            setIsMobileMenuOpen(false);
-            setIsSkillsSubmenuOpen(false);
-            return;
-        }
         scrollToSection(sectionId);
         setIsMobileMenuOpen(false);
         setIsSkillsSubmenuOpen(false);
@@ -83,9 +76,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ setIsCertificateModalOpen
     return (
         <>
             <motion.nav
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-[rgb(var(--color-card))] shadow-lg' : 'bg-transparent'
+                initial={false}
+                animate={{ y: isVisible ? 0 : -110 }}
+                transition={{ duration: 0.22, ease: 'easeOut' }}
+                className={`fixed top-0 left-0 right-0 z-[99] transition-all duration-300 ${isScrolled ? 'bg-[rgb(var(--color-card))]/90 backdrop-blur-md shadow-lg border-b border-[rgb(var(--color-border))]' : 'bg-transparent'
                     }`}
             >
                 <div className="container mx-auto px-4">
@@ -167,16 +161,17 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ setIsCertificateModalOpen
                                             className="absolute top-full left-0 mt-2 w-48 bg-[rgb(var(--color-card))] rounded-lg shadow-lg overflow-hidden"
                                         >
                                             {item.submenu.map((subItem) => (
-                                                <motion.button
-                                                    key={subItem.id}
-                                                    onClick={() => handleNavigationClick(subItem.id)}
-                                                    className="w-full flex items-center gap-2 px-4 py-2 text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))] transition-colors"
-                                                    whileHover={{ scale: 1.02 }}
-                                                    whileTap={{ scale: 0.98 }}
-                                                >
-                                                    {subItem.icon}
-                                                    <span>{subItem.label}</span>
-                                                </motion.button>
+                                                subItem.id === 'certifications' ? (
+                                                    <Link
+                                                        key={subItem.id}
+                                                        href="/certifications"
+                                                        className="w-full flex items-center gap-2 px-4 py-2 text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))] transition-colors"
+                                                        onClick={() => setIsSkillsSubmenuOpen(false)}
+                                                    >
+                                                        {subItem.icon}
+                                                        <span>{subItem.label}</span>
+                                                    </Link>
+                                                ) : null
                                             ))}
                                         </motion.div>
                                     )}
@@ -245,16 +240,20 @@ const TopNavigation: React.FC<TopNavigationProps> = ({ setIsCertificateModalOpen
                                                     className="pl-8 mt-2"
                                                 >
                                                     {item.submenu.map((subItem) => (
-                                                        <motion.button
-                                                            key={subItem.id}
-                                                            onClick={() => handleNavigationClick(subItem.id)}
-                                                            className="w-full flex items-center gap-2 px-4 py-2 text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))] rounded-lg transition-colors"
-                                                            whileHover={{ scale: 1.02 }}
-                                                            whileTap={{ scale: 0.98 }}
-                                                        >
-                                                            {subItem.icon}
-                                                            <span>{subItem.label}</span>
-                                                        </motion.button>
+                                                        subItem.id === 'certifications' ? (
+                                                            <Link
+                                                                key={subItem.id}
+                                                                href="/certifications"
+                                                                className="w-full flex items-center gap-2 px-4 py-2 text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))] rounded-lg transition-colors"
+                                                                onClick={() => {
+                                                                    setIsMobileMenuOpen(false);
+                                                                    setIsSkillsSubmenuOpen(false);
+                                                                }}
+                                                            >
+                                                                {subItem.icon}
+                                                                <span>{subItem.label}</span>
+                                                            </Link>
+                                                        ) : null
                                                     ))}
                                                 </motion.div>
                                             )}

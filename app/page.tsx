@@ -8,7 +8,6 @@ import DownloadCV from '../components/DownloadCV';
 import Image from 'next/image';
 import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
 import { useState, useEffect, useRef } from 'react';
-import TopNavigation from '../components/TopNavigation';
 import ScrollToTop from '../components/ScrollToTop';
 import dynamic from 'next/dynamic';
 
@@ -96,14 +95,10 @@ const Home = () => {
 
   return (
     <div className="overflow-x-hidden w-full">
-      <TopNavigation
-        isCertificateModalOpen={isCertificateModalOpen}
-        setIsCertificateModalOpen={setIsCertificateModalOpen}
-      />
-      <HireMeButton />
+      <HireMeButton showLauncher={false} />
       <ScrollToTop />
 
-      <section id="home" className="min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+      <section id="home" className="scroll-mt-24 sm:scroll-mt-28 min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-8 items-center w-full max-w-7xl mx-auto">
           <div className="order-2 md:order-1">
             <AnimatedText
@@ -458,7 +453,7 @@ const Home = () => {
                       </div>
                     </motion.button>
                   ))}
-                  <div className="relative w-full h-full rounded-full overflow-hidden ring-4 ring-white/40">
+                  <div className="relative glow-orb w-full h-full rounded-full overflow-hidden ring-4 ring-white/40">
                   {/* Optimized Sun Rays Container */}
                   <div className="absolute inset-0 animate-sun-rays pointer-events-none">
                     {[...Array(12)].map((_, i) => (
@@ -510,98 +505,9 @@ const Home = () => {
           </motion.div>
         </div>
 
-        <style jsx global>{`
-    @keyframes handwriting {
-      from {
-        clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
-      }
-      to {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-      }
-    }
-    .handwriting-animation {
-      display: inline-block;
-      animation: handwriting 2s ease-in-out forwards;
-      animation-delay: calc(var(--delay) * 0.4s);
-    }
-    @keyframes sun-rays {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-    .animate-sun-rays {
-      animation: sun-rays 30s linear infinite;
-      position: absolute;
-      inset: -100px;
-      z-index: 1;
-      will-change: transform;
-      pointer-events: none;
-    }
-    .sun-ray {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 2px;
-      height: 100px;
-      background: linear-gradient(to top,
-        transparent 0%,
-        rgba(255, 215, 0, 0.2) 20%,
-        rgba(255, 215, 0, 0.4) 40%,
-        rgba(255, 165, 0, 0.6) 60%,
-        rgba(255, 165, 0, 0.8) 80%,
-        rgba(255, 165, 0, 1) 100%
-      );
-      transform-origin: bottom center;
-      filter: blur(1px);
-      animation: ray-pulse 3s ease-in-out infinite;
-      animation-delay: calc(var(--i) * 0.2s);
-      will-change: transform, height, opacity;
-      pointer-events: none;
-    }
-    @keyframes ray-pulse {
-      0%, 100% {
-        height: 100px;
-        opacity: 0.7;
-      }
-      50% {
-        height: 150px;
-        opacity: 1;
-      }
-    }
-    /* Optimized glow effect */
-    .relative::before {
-      content: '';
-      position: absolute;
-      inset: -20px;
-      background: radial-gradient(
-        circle at center,
-        rgba(255, 215, 0, 0.3) 0%,
-        rgba(255, 165, 0, 0.2) 30%,
-        transparent 70%
-      );
-      border-radius: 50%;
-      z-index: 0;
-      animation: glow-pulse 4s ease-in-out infinite;
-      will-change: transform, opacity;
-      pointer-events: none;
-    }
-    @keyframes glow-pulse {
-      0%, 100% {
-        opacity: 0.5;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.8;
-        transform: scale(1.1);
-      }
-    }
-  `}</style>
       </section>
 
-      <section id="skills" className="py-8 px-4 sm:px-6 lg:px-8">
+      <section id="skills" className="scroll-mt-24 sm:scroll-mt-28 py-8 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">My Skills</h2>
           <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto text-sm sm:text-base">
@@ -618,7 +524,7 @@ const Home = () => {
 
       <FeaturedProjects autoSlideInterval={5000} />
 
-      <section id="testimonials" className="py-16 px-4 sm:px-6 lg:px-8">
+      <section id="testimonials" className="scroll-mt-24 sm:scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center text-[rgb(var(--color-foreground))]">What People Say</h2>
           <p className="text-[rgb(var(--color-muted))] text-center mb-12 max-w-2xl mx-auto text-sm sm:text-base">
@@ -657,7 +563,7 @@ const Home = () => {
       {/* Blog Section */}
       <Blog />
 
-      <section id="contact" className="py-16 px-4 sm:px-6 lg:px-8">
+      <section id="contact" className="scroll-mt-24 sm:scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-7xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center text-[rgb(var(--color-foreground))]">Get In Touch</h2>
           <div className="max-w-md mx-auto card card-hover p-6 sm:p-8">

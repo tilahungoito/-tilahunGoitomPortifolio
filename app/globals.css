@@ -44,6 +44,7 @@
 
 body {
   @apply bg-[rgb(var(--color-background))] text-[rgb(var(--color-foreground))];
+  overflow-x: hidden;
 }
 
 h1,
@@ -183,8 +184,8 @@ p {
   }
 }
 
-/* Optimized glow effect */
-.relative::before {
+/* Optimized glow effect (scoped; avoids mobile overflow) */
+.glow-orb::before {
   content: '';
   position: absolute;
   inset: -20px;

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { blogPosts, BlogPost } from '../data/blogs';
-import { FiArrowUpRight, FiClock, FiCalendar, FiPlus, FiMinus, FiX, FiLogOut, FiSettings, FiEdit3, FiChevronDown } from 'react-icons/fi';
+import { FiArrowUpRight, FiClock, FiCalendar, FiX, FiSettings, FiEdit3, FiChevronDown } from 'react-icons/fi';
 
 const ADMIN_EMAIL = 'tilahun1goitomg@gmail.com';
 const STORAGE_KEY_EMAIL = 'blog_admin_email';
@@ -19,38 +19,81 @@ const GRADIENTS = [
 ];
 
 function formatContent(text: string) {
-    return text.split('\n').map((line, i) => {
+    const lines = text.split('\n');
+    const nodes: React.ReactNode[] = [];
+
+    let listItems: React.ReactNode[] = [];
+    const flushList = () => {
+        if (listItems.length === 0) return;
+        nodes.push(
+            <ul key={`ul-${nodes.length}`} className="list-disc pl-5 space-y-1 text-xs text-[rgb(var(--color-muted))] leading-relaxed">
+                {listItems}
+            </ul>
+        );
+        listItems = [];
+    };
+
+    lines.forEach((line, i) => {
         if (line.startsWith('**') && line.endsWith('**')) {
-            return (
-                <p key={i} className="font-bold text-[rgb(var(--color-foreground))] mt-4 mb-1 text-sm">
+            flushList();
+            nodes.push(
+                <p key={`h-${i}`} className="font-bold text-[rgb(var(--color-foreground))] mt-4 mb-1 text-sm">
                     {line.replace(/\*\*/g, '')}
                 </p>
             );
+            return;
         }
+
         if (line.startsWith('- ')) {
-            return (
-                <li key={i} className="ml-4 text-xs text-[rgb(var(--color-muted))] list-disc leading-relaxed">
-                    {line.slice(2).replace(/\*\*(.*?)\*\*/g, '$1')}
+            const content = line.slice(2);
+            const parts = content.split(/(\*\*.*?\*\*)/g);
+            listItems.push(
+                <li key={`li-${i}`} className="marker:text-[rgb(var(--color-primary))]">
+                    {parts.map((part, j) =>
+                        part.startsWith('**') && part.endsWith('**')
+                            ? (
+                                <strong key={`li-${i}-b-${j}`} className="text-[rgb(var(--color-foreground))] font-semibold">
+                                    {part.replace(/\*\*/g, '')}
+                                </strong>
+                            )
+                            : <span key={`li-${i}-t-${j}`}>{part}</span>
+                    )}
                 </li>
             );
+            return;
         }
-        if (line.trim() === '') return <br key={i} />;
+
+        if (line.trim() === '') {
+            flushList();
+            nodes.push(<div key={`sp-${i}`} className="h-2" />);
+            return;
+        }
+
+        flushList();
         const parts = line.split(/(\*\*.*?\*\*)/g);
-        return (
-            <p key={i} className="text-xs text-[rgb(var(--color-muted))] leading-relaxed">
+        nodes.push(
+            <p key={`p-${i}`} className="text-xs text-[rgb(var(--color-muted))] leading-relaxed">
                 {parts.map((part, j) =>
                     part.startsWith('**') && part.endsWith('**')
-                        ? <strong key={j} className="text-[rgb(var(--color-foreground))]">{part.replace(/\*\*/g, '')}</strong>
-                        : part
+                        ? (
+                            <strong key={`p-${i}-b-${j}`} className="text-[rgb(var(--color-foreground))] font-semibold">
+                                {part.replace(/\*\*/g, '')}
+                            </strong>
+                        )
+                        : <span key={`p-${i}-t-${j}`}>{part}</span>
                 )}
             </p>
         );
     });
+
+    flushList();
+    return nodes;
 }
 
 export default function Blog() {
     const [allPosts, setAllPosts] = useState<BlogPost[]>(blogPosts);
     const [expandedId, setExpandedId] = useState<number | null>(null);
+    const [hoveredMediaId, setHoveredMediaId] = useState<number | null>(null);
     const [adminEmail, setAdminEmail] = useState<string | null>(null);
 
     const [showLogin, setShowLogin] = useState(false);
@@ -62,10 +105,12 @@ export default function Blog() {
         title: '', excerpt: '', content: '', tags: '', emoji: '📝',
         date: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
         readTime: '5 min read', link: '#', gradient: GRADIENTS[0].value,
+        caseStudy: '', mediaUrl: '', mediaType: 'gif' as 'gif' | 'image' | 'video',
     });
     const [formError, setFormError] = useState('');
     const addModalRef = useRef<HTMLDivElement>(null);
     const loginModalRef = useRef<HTMLDivElement>(null);
+    const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
 
     useEffect(() => {
         const storedEmail = localStorage.getItem(STORAGE_KEY_EMAIL);
@@ -122,6 +167,9 @@ export default function Blog() {
             title: form.title.trim(),
             excerpt: form.excerpt.trim(),
             content: form.content.trim(),
+            caseStudy: form.caseStudy.trim() || undefined,
+            mediaUrl: form.mediaUrl.trim() || undefined,
+            mediaType: form.mediaUrl.trim() ? form.mediaType : undefined,
             tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
             date: form.date.trim() || new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
             readTime: form.readTime.trim(),
@@ -136,12 +184,29 @@ export default function Blog() {
         localStorage.setItem(STORAGE_KEY_POSTS, JSON.stringify(updated));
         setAllPosts([newPost, ...allPosts]);
         setShowAdd(false);
-        setForm({ title: '', excerpt: '', content: '', tags: '', emoji: '📝', date: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }), readTime: '5 min read', link: '#', gradient: GRADIENTS[0].value });
+        setForm({
+            title: '', excerpt: '', content: '', tags: '', emoji: '📝',
+            date: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+            readTime: '5 min read', link: '#', gradient: GRADIENTS[0].value,
+            caseStudy: '', mediaUrl: '', mediaType: 'gif',
+        });
         setFormError('');
     }
 
+    useEffect(() => {
+        const videoEl = hoveredMediaId ? videoRefs.current[hoveredMediaId] : null;
+        if (!videoEl) return;
+
+        const playPromise = videoEl.play();
+        if (playPromise) {
+            playPromise.catch(() => {
+                // Ignore autoplay restrictions quietly.
+            });
+        }
+    }, [hoveredMediaId]);
+
     return (
-        <section id="blog" className="py-16 px-4 sm:px-6 lg:px-8">
+        <section id="blog" className="scroll-mt-24 sm:scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-4xl mx-auto">
                 {/* Header */}
                 <motion.div
@@ -151,9 +216,9 @@ export default function Blog() {
                     transition={{ duration: 0.55 }}
                     className="mb-12"
                 >
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-2">Insights & Articles</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold mb-2">Real Work Showcase</h2>
                     <p className="text-[rgb(var(--color-muted))] text-sm sm:text-base">
-                        Sharing what I&apos;ve learned building government-scale platforms and AI systems.
+                        Case studies from real systems I have built, including project demos with GIFs and media previews.
                     </p>
                 </motion.div>
 
@@ -220,6 +285,83 @@ export default function Blog() {
                                                         ))}
                                                     </div>
                                                 </div>
+
+                                                {post.mediaUrl && (
+                                                    <div
+                                                        className="mb-6 overflow-hidden rounded-xl border border-[rgb(var(--color-border))] bg-black/10 relative group"
+                                                        onMouseEnter={() => setHoveredMediaId(post.id)}
+                                                        onMouseLeave={() => {
+                                                            setHoveredMediaId((current) => (current === post.id ? null : current));
+                                                            const currentVideo = videoRefs.current[post.id];
+                                                            if (currentVideo) {
+                                                                currentVideo.pause();
+                                                                currentVideo.currentTime = 0;
+                                                            }
+                                                        }}
+                                                    >
+                                                        {post.mediaType === 'video' ? (
+                                                            <video
+                                                                ref={(el) => {
+                                                                    videoRefs.current[post.id] = el;
+                                                                }}
+                                                                src={post.mediaUrl}
+                                                                controls
+                                                                muted
+                                                                loop={hoveredMediaId === post.id}
+                                                                playsInline
+                                                                className="w-full h-auto max-h-[420px] object-cover"
+                                                            />
+                                                        ) : (
+                                                            <img
+                                                                src={post.mediaUrl}
+                                                                alt={`${post.title} media preview`}
+                                                                className="w-full h-auto max-h-[420px] object-cover"
+                                                                loading="lazy"
+                                                            />
+                                                        )}
+                                                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
+                                                        <div className="absolute top-3 left-3 flex items-center gap-2">
+                                                            <span className="text-[10px] uppercase tracking-wide font-semibold px-2 py-1 rounded-full bg-black/65 text-white border border-white/20">
+                                                                {post.mediaType === 'video' ? 'Video Demo' : post.mediaType === 'gif' ? 'GIF Preview' : 'Image Preview'}
+                                                            </span>
+                                                            <span className="text-[10px] uppercase tracking-wide font-semibold px-2 py-1 rounded-full bg-[rgb(var(--color-primary))]/80 text-white border border-[rgb(var(--color-primary))]/60">
+                                                                Live Case
+                                                            </span>
+                                                        </div>
+                                                        {post.mediaType === 'video' && (
+                                                            <div className="absolute bottom-3 right-3 text-[10px] font-semibold px-2 py-1 rounded-full bg-black/70 text-white border border-white/20">
+                                                                Hover to autoplay
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+
+                                                {post.caseStudy && (
+                                                    <div className="mb-6 p-4 rounded-xl border border-[rgb(var(--color-primary))]/25 bg-[rgb(var(--color-primary))]/5">
+                                                        <p className="text-[11px] font-bold uppercase tracking-wide text-[rgb(var(--color-primary))] mb-2">
+                                                            Case Study
+                                                        </p>
+                                                        <p className="text-sm text-[rgb(var(--color-foreground))] leading-relaxed">
+                                                            {post.caseStudy}
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                {post.metrics && post.metrics.length > 0 && (
+                                                    <div className="mb-6 grid gap-2 sm:grid-cols-3">
+                                                        {post.metrics.map((metric) => (
+                                                            <div key={metric.label} className="rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] p-3">
+                                                                <p className="text-[11px] font-semibold text-[rgb(var(--color-foreground))] mb-2">{metric.label}</p>
+                                                                <p className="text-[10px] text-[rgb(var(--color-muted))]">
+                                                                    <span className="font-semibold">Before:</span> {metric.before}
+                                                                </p>
+                                                                <p className="text-[10px] text-emerald-400">
+                                                                    <span className="font-semibold">After:</span> {metric.after}
+                                                                </p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
 
                                                 <div className="pl-4 border-l-2 border-[rgb(var(--color-primary))]/30 space-y-1 mb-8">
                                                     {formatContent(post.content)}
@@ -309,6 +451,13 @@ export default function Blog() {
                             <div className="space-y-4">
                                 <input type="text" placeholder="Title" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] text-sm" />
                                 <textarea placeholder="Short Excerpt" value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] text-sm h-16" />
+                                <textarea placeholder="Case Study Summary (What impact did this project create?)" value={form.caseStudy} onChange={e => setForm(f => ({ ...f, caseStudy: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] text-sm h-20" />
+                                <input type="url" placeholder="Media URL (GIF/Image/Video link)" value={form.mediaUrl} onChange={e => setForm(f => ({ ...f, mediaUrl: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] text-sm" />
+                                <select value={form.mediaType} onChange={e => setForm(f => ({ ...f, mediaType: e.target.value as 'gif' | 'image' | 'video' }))} className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] text-sm">
+                                    <option value="gif">GIF</option>
+                                    <option value="image">Image</option>
+                                    <option value="video">Video</option>
+                                </select>
                                 <textarea placeholder="Full Content (Daily/Weekly Diary)" value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] text-sm h-64 font-mono" />
                                 <input type="text" placeholder="Tags (React, AI...)" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} className="w-full px-4 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))] text-sm" />
                                 <div className="grid grid-cols-2 gap-3">

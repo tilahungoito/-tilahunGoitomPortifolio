@@ -27,6 +27,9 @@ const suggestions = [
 const PARTICLES = [0, 60, 120, 180, 240, 300];
 
 export default function AIChatBot() {
+    const showLauncher = typeof window === 'undefined'
+        ? true
+        : (window as unknown as { __ORBIT_DOCK__?: boolean }).__ORBIT_DOCK__ !== true;
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [messages, setMessages] = useState<Message[]>([
@@ -59,6 +62,12 @@ export default function AIChatBot() {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen]);
+
+    useEffect(() => {
+        const openHandler = () => setIsOpen(true);
+        window.addEventListener('orbitdock:open-ai', openHandler);
+        return () => window.removeEventListener('orbitdock:open-ai', openHandler);
+    }, []);
 
     useEffect(() => {
         if (isFocused) {
@@ -406,7 +415,7 @@ export default function AIChatBot() {
             </AnimatePresence>
 
             {/* ─── Animated AI Orb Button ─── */}
-            {!isOpen && (
+            {showLauncher && !isOpen && (
                 <motion.div
                     className="relative pointer-events-auto"
                     onHoverStart={() => setIsHovered(true)}
