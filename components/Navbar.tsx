@@ -50,6 +50,12 @@ const Navbar = () => {
     setIsSkillsMenuOpen(!isSkillsMenuOpen);
   };
 
+  const navigateToSection = (sectionId: string) => {
+    window.location.href = `/#${sectionId}`;
+    setIsSkillsMenuOpen(false);
+    setIsMobileMenuOpen(false);
+  };
+
   // Animation for the container
   const containerVariants: Variants = {
     initial: { x: 0 },
@@ -150,7 +156,10 @@ const Navbar = () => {
               <Link
                 href="/#skills"
                 className="px-3 py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
-                onClick={() => setIsSkillsMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateToSection('skills');
+                }}
               >
                 Skills
               </Link>
@@ -168,7 +177,10 @@ const Navbar = () => {
                 <Link 
                   href="/#skills"
                   className="block w-full text-left px-4 py-2 hover:bg-[rgb(var(--color-background))] transition-colors text-[rgb(var(--color-foreground))]"
-                  onClick={() => setIsSkillsMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateToSection('skills');
+                  }}
                 >
                   Technical Skills
                 </Link>
@@ -182,7 +194,10 @@ const Navbar = () => {
                 <Link 
                   href="/#blog"
                   className="block w-full text-left px-4 py-2 hover:bg-[rgb(var(--color-background))] transition-colors text-[rgb(var(--color-foreground))]"
-                  onClick={() => setIsSkillsMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateToSection('blog');
+                  }}
                 >
                   Blogs
           </Link>
@@ -192,12 +207,20 @@ const Navbar = () => {
           <Link 
             href="/#projects" 
             className="px-3 py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              navigateToSection('projects');
+            }}
           >
             Projects
           </Link>
           <Link 
             href="/#contact" 
             className="px-3 py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              navigateToSection('contact');
+            }}
           >
             Contact
           </Link>
@@ -220,9 +243,9 @@ const Navbar = () => {
             <Link
               href="/#skills"
               className="py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
-              onClick={() => {
-                setIsSkillsMenuOpen(false);
-                setIsMobileMenuOpen(false);
+              onClick={(e) => {
+                e.preventDefault();
+                navigateToSection('skills');
               }}
             >
               Skills
@@ -241,9 +264,9 @@ const Navbar = () => {
               <Link 
                 href="/#skills"
                 className="py-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
-                onClick={() => {
-                  setIsSkillsMenuOpen(false);
-                  setIsMobileMenuOpen(false);
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateToSection('skills');
                 }}
               >
                 Technical Skills
@@ -261,9 +284,9 @@ const Navbar = () => {
               <Link 
                 href="/#blog"
                 className="py-2 text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] transition-colors"
-                onClick={() => {
-                  setIsSkillsMenuOpen(false);
-                  setIsMobileMenuOpen(false);
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateToSection('blog');
                 }}
               >
                 Blogs
@@ -274,14 +297,20 @@ const Navbar = () => {
         <Link 
           href="/#projects"
           className="py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
-          onClick={() => setIsMobileMenuOpen(false)}
+          onClick={(e) => {
+            e.preventDefault();
+            navigateToSection('projects');
+          }}
         >
           Projects
         </Link>
         <Link 
           href="/#contact"
           className="py-2 text-[rgb(var(--color-foreground))] hover:text-[rgb(var(--color-primary))] transition-colors"
-          onClick={() => setIsMobileMenuOpen(false)}
+          onClick={(e) => {
+            e.preventDefault();
+            navigateToSection('contact');
+          }}
         >
           Contact
         </Link>

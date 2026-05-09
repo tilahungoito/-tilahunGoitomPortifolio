@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
 import { useState, useEffect, useRef } from 'react';
 import ScrollToTop from '../components/ScrollToTop';
+import ThemeToggle from '../components/ThemeToggle';
 import dynamic from 'next/dynamic';
 
 // Lazy-loaded components (reduce initial JS bundle)
@@ -97,6 +98,7 @@ const Home = () => {
     <div className="overflow-x-hidden w-full">
       <HireMeButton showLauncher={false} />
       <ScrollToTop />
+      <ThemeToggle />
 
       <section id="home" className="scroll-mt-24 sm:scroll-mt-28 min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-8 items-center w-full max-w-7xl mx-auto">

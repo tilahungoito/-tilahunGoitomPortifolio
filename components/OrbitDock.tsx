@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { FaBrain, FaPaperPlane } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
-import ThemeToggle from './ThemeToggle';
 
 export default function OrbitDock() {
   // signal AIChatBot to hide its own launcher orb
@@ -12,13 +11,20 @@ export default function OrbitDock() {
   }
 
   const radius = 36;
+  const orbitPoints = [
+    { x: 60, y: 60 - radius }, // top
+    { x: 60, y: 60 + radius }, // bottom
+  ];
 
   const launchAI = () => window.dispatchEvent(new Event('orbitdock:open-ai'));
   const launchContact = () => window.dispatchEvent(new Event('orbitdock:open-contact'));
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const openBlogSettings = () => window.dispatchEvent(new Event('orbitdock:open-blog-settings'));
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[120] pointer-events-none">
+    <div
+      className="fixed left-1/2 -translate-x-1/2 z-[120] pointer-events-none"
+      style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+    >
       <motion.div
         className="relative w-[120px] h-[120px]"
         animate={{ rotate: -360 }}
@@ -30,19 +36,26 @@ export default function OrbitDock() {
 
         {/* connection lines */}
         <svg className="absolute inset-0 pointer-events-none opacity-60" viewBox="0 0 120 120">
-          <line x1="60" y1="60" x2="60" y2={60 - radius} stroke="rgba(59,130,246,0.35)" strokeWidth="1" />
-          <line x1="60" y1="60" x2={60 + radius} y2="60" stroke="rgba(59,130,246,0.35)" strokeWidth="1" />
-          <line x1="60" y1="60" x2="60" y2={60 + radius} stroke="rgba(59,130,246,0.35)" strokeWidth="1" />
-          <line x1="60" y1="60" x2={60 - radius} y2="60" stroke="rgba(59,130,246,0.35)" strokeWidth="1" />
+          {orbitPoints.map((point, idx) => (
+            <line
+              key={idx}
+              x1="60"
+              y1="60"
+              x2={point.x}
+              y2={point.y}
+              stroke="rgba(59,130,246,0.32)"
+              strokeWidth="0.8"
+            />
+          ))}
         </svg>
 
         {/* center planet */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[rgb(var(--color-card))] border border-[rgb(var(--color-border))] shadow-lg pointer-events-auto">
           <button
             type="button"
-            onClick={scrollTop}
+            onClick={openBlogSettings}
             className="w-full h-full rounded-full grid place-items-center text-[rgb(var(--color-primary))]"
-            aria-label="Scroll to top"
+            aria-label="Open blog settings"
           >
             <FiSettings size={18} />
           </button>
@@ -69,14 +82,6 @@ export default function OrbitDock() {
             </button>
           </div>
 
-          {/* Theme */}
-          <div
-            className="absolute left-1/2 top-1/2 pointer-events-auto"
-            style={{ transform: `translate(-50%, -50%) translate(${radius}px, 0px)` }}
-          >
-            <ThemeToggle embedded />
-          </div>
-
           {/* Message */}
           <div
             className="absolute left-1/2 top-1/2 pointer-events-auto"
@@ -92,20 +97,6 @@ export default function OrbitDock() {
             </button>
           </div>
 
-          {/* Extra “settings” planet (optional quick action) */}
-          <div
-            className="absolute left-1/2 top-1/2 pointer-events-auto"
-            style={{ transform: `translate(-50%, -50%) translate(-${radius}px, 0px)` }}
-          >
-            <button
-              type="button"
-              onClick={scrollTop}
-              className="w-10 h-10 rounded-full bg-[rgb(var(--color-card))] text-[rgb(var(--color-muted))] shadow-lg border border-[rgb(var(--color-border))] grid place-items-center hover:text-[rgb(var(--color-primary))] hover:scale-105 active:scale-95 transition"
-              aria-label="Quick settings (scroll top)"
-            >
-              <FiSettings size={18} />
-            </button>
-          </div>
         </motion.div>
       </motion.div>
     </div>

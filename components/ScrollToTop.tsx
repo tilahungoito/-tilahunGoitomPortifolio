@@ -6,30 +6,25 @@ import { FaArrowUp } from 'react-icons/fa';
 
 const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const [lastScrollY, setLastScrollY] = useState(0);
 
     useEffect(() => {
+        let lastScrollY = 0;
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
             
-            // Show button when scrolling up and past 300px
-            if (currentScrollY < lastScrollY && currentScrollY > 300) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-            
-            setLastScrollY(currentScrollY);
+            // Show as soon as user starts scrolling up.
+            setIsVisible(currentScrollY < lastScrollY && currentScrollY > 10);
+            lastScrollY = currentScrollY;
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [lastScrollY]);
+    }, []);
 
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: 'auto'
         });
     };
 

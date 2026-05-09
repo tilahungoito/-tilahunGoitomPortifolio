@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { blogPosts, BlogPost } from '../data/blogs';
-import { FiArrowUpRight, FiClock, FiCalendar, FiX, FiSettings, FiEdit3, FiChevronDown } from 'react-icons/fi';
+import { FiArrowUpRight, FiClock, FiCalendar, FiX, FiEdit3, FiChevronDown } from 'react-icons/fi';
 
 const ADMIN_EMAIL = 'tilahun1goitomg@gmail.com';
 const STORAGE_KEY_EMAIL = 'blog_admin_email';
@@ -204,6 +204,19 @@ export default function Blog() {
             });
         }
     }, [hoveredMediaId]);
+
+    useEffect(() => {
+        const handleOpenBlogSettings = () => {
+            if (adminEmail === ADMIN_EMAIL) {
+                setShowAdd(true);
+                return;
+            }
+            setShowLogin(true);
+        };
+
+        window.addEventListener('orbitdock:open-blog-settings', handleOpenBlogSettings);
+        return () => window.removeEventListener('orbitdock:open-blog-settings', handleOpenBlogSettings);
+    }, [adminEmail]);
 
     return (
         <section id="blog" className="scroll-mt-24 sm:scroll-mt-28 py-16 px-4 sm:px-6 lg:px-8">
@@ -406,16 +419,7 @@ export default function Blog() {
                                 Logout
                             </button>
                         </>
-                    ) : (
-                        <motion.button
-                            onClick={() => setShowLogin(true)}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="w-10 h-10 rounded-full bg-[rgb(var(--color-card))] border border-[rgb(var(--color-border))] flex items-center justify-center text-[rgb(var(--color-muted))] hover:text-[rgb(var(--color-primary))] shadow-lg"
-                        >
-                            <FiSettings size={18} />
-                        </motion.button>
-                    )}
+                    ) : null}
                 </div>
             </div>
 

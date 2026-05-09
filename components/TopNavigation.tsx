@@ -37,22 +37,8 @@ const TopNavigation: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const scrollToSection = (sectionId: string) => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            const offset = 80;
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }
-    };
-
     const handleNavigationClick = (sectionId: string) => {
-        scrollToSection(sectionId);
+        window.location.href = `/#${sectionId}`;
         setIsMobileMenuOpen(false);
         setIsSkillsSubmenuOpen(false);
     };
@@ -84,7 +70,7 @@ const TopNavigation: React.FC = () => {
             >
                 <div className="container mx-auto px-4">
                     <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-4">
+                        <Link href="/" className="flex items-center gap-4">
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
@@ -125,33 +111,52 @@ const TopNavigation: React.FC = () => {
                                     }}
                                 />
                             </motion.div>
-                        </div>
+                        </Link>
 
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-8">
                             {navItems.map((item) => (
                                 <div key={item.id} className="relative">
-                                    <motion.button
-                                        onClick={() => {
-                                            if (item.id === 'skills') {
-                                                setIsSkillsSubmenuOpen(!isSkillsSubmenuOpen);
-                                            } else {
-                                                handleNavigationClick(item.id);
-                                            }
-                                        }}
-                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
-                                            ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
-                                            : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
-                                            }`}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        {item.icon}
-                                        <span>{item.label}</span>
-                                        {item.submenu && (
-                                            <FaChevronDown className={`transition-transform ${isSkillsSubmenuOpen ? 'rotate-180' : ''}`} />
-                                        )}
-                                    </motion.button>
+                                    {item.submenu ? (
+                                        <div className="flex items-center gap-1">
+                                            <motion.button
+                                                onClick={() => handleNavigationClick(item.id)}
+                                                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
+                                                    ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                                    : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                                    }`}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                {item.icon}
+                                                <span>{item.label}</span>
+                                            </motion.button>
+                                            <button
+                                                type="button"
+                                                aria-label="Toggle skills submenu"
+                                                onClick={() => setIsSkillsSubmenuOpen(!isSkillsSubmenuOpen)}
+                                                className={`p-2 rounded-lg transition-colors ${activeSection === item.id
+                                                    ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                                    : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                                    }`}
+                                            >
+                                                <FaChevronDown className={`transition-transform ${isSkillsSubmenuOpen ? 'rotate-180' : ''}`} />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <motion.button
+                                            onClick={() => handleNavigationClick(item.id)}
+                                            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
+                                                ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                                : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                                }`}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            {item.icon}
+                                            <span>{item.label}</span>
+                                        </motion.button>
+                                    )}
 
                                     {item.submenu && isSkillsSubmenuOpen && (
                                         <motion.div
@@ -208,29 +213,50 @@ const TopNavigation: React.FC = () => {
                                 <div className="flex flex-col space-y-2">
                                     {navItems.map((item) => (
                                         <div key={item.id}>
-                                            <motion.button
-                                                onClick={() => {
-                                                    if (item.submenu) {
-                                                        setIsSkillsSubmenuOpen(!isSkillsSubmenuOpen);
-                                                    } else {
-                                                        handleNavigationClick(item.id);
-                                                    }
-                                                }}
-                                                className={`w-full flex items-center justify-between px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
-                                                    ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
-                                                    : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
-                                                    }`}
-                                                whileHover={{ scale: 1.02 }}
-                                                whileTap={{ scale: 0.98 }}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    {item.icon}
-                                                    <span>{item.label}</span>
+                                            {item.submenu ? (
+                                                <div className="w-full flex items-center gap-2">
+                                                    <motion.button
+                                                        onClick={() => handleNavigationClick(item.id)}
+                                                        className={`flex-1 flex items-center justify-between px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
+                                                            ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                                            : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                                            }`}
+                                                        whileHover={{ scale: 1.02 }}
+                                                        whileTap={{ scale: 0.98 }}
+                                                    >
+                                                        <div className="flex items-center gap-2">
+                                                            {item.icon}
+                                                            <span>{item.label}</span>
+                                                        </div>
+                                                    </motion.button>
+                                                    <button
+                                                        type="button"
+                                                        aria-label="Toggle skills submenu"
+                                                        onClick={() => setIsSkillsSubmenuOpen(!isSkillsSubmenuOpen)}
+                                                        className={`px-3 py-2 rounded-lg transition-colors ${activeSection === item.id
+                                                            ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                                            : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                                            }`}
+                                                    >
+                                                        <FaChevronDown className={`transition-transform ${isSkillsSubmenuOpen ? 'rotate-180' : ''}`} />
+                                                    </button>
                                                 </div>
-                                                {item.submenu && (
-                                                    <FaChevronDown className={`transition-transform ${isSkillsSubmenuOpen ? 'rotate-180' : ''}`} />
-                                                )}
-                                            </motion.button>
+                                            ) : (
+                                                <motion.button
+                                                    onClick={() => handleNavigationClick(item.id)}
+                                                    className={`w-full flex items-center justify-between px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
+                                                        ? 'text-[rgb(var(--color-primary))] bg-[rgb(var(--color-primary))]/10'
+                                                        : 'text-[rgb(var(--color-foreground))] hover:bg-[rgb(var(--color-card-hover))]'
+                                                        }`}
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        {item.icon}
+                                                        <span>{item.label}</span>
+                                                    </div>
+                                                </motion.button>
+                                            )}
 
                                             {item.submenu && isSkillsSubmenuOpen && (
                                                 <motion.div
